@@ -1,11 +1,8 @@
 ﻿using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO.Abstractions;
 using WordCount.Implementations;
 using WordCount.Interfaces;
+using WordCount.Extensions;
 
 namespace WordCount
 {
@@ -20,24 +17,14 @@ namespace WordCount
 
         private static IInteractor CreateInteractor()
         {
-            var containerBuilder = new ContainerBuilder();
+            ContainerBuilder containerBuilder = new ContainerBuilder();
 
-            containerBuilder
-                .RegisterType<Interactor>()
-                .As<IInteractor>()
-                .SingleInstance();
-
-            containerBuilder
-                .RegisterType<ConsoleTextInput>()
-                .As<ITextInput>();
-
-            containerBuilder
-                .RegisterType<WordCountAnalyzer>()
-                .As<IWordCountAnalyzer>();
-
-            containerBuilder
-                .RegisterType<WordCountAnalyzerOutput>()
-                .As<IWordCountAnalyzerOutput>();
+            containerBuilder.Register<IInteractor, Interactor>();
+            containerBuilder.Register<ITextInput, ConsoleTextInput>();
+            containerBuilder.Register<IWordCountAnalyzer, WordCountAnalyzer>();
+            containerBuilder.Register<IWordCountAnalyzerOutput, WordCountAnalyzerOutput>();
+            containerBuilder.Register<IStopwordLoader, StopwordLoader>();
+            containerBuilder.Register<IFileSystem, FileSystem>();
 
             return containerBuilder
                 .Build()

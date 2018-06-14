@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WordCount.Interfaces;
 using WordCount.Models;
 
@@ -10,9 +7,19 @@ namespace WordCount.Implementations
 {
     public class WordCountAnalyzer : IWordCountAnalyzer
     {
-        public WordCountAnalyzerResult Analyze(string text)
+        public WordCountAnalyzerResult Analyze(
+            string text,
+            List<string> stopwords = null)
         {
-            int numberOfWords = text.Split(' ').Count();
+            List<string> splitByWhitespace = text.Split(' ').ToList();
+            if (stopwords != null)
+            {
+                splitByWhitespace.RemoveAll((s) =>
+                {
+                    return stopwords.Contains(item: s);
+                }); 
+            }
+            int numberOfWords = splitByWhitespace.Count;
             return new WordCountAnalyzerResult()
             {
                 NumberOfWords = numberOfWords
