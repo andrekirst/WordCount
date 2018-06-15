@@ -2,6 +2,6 @@
 {
     public interface IInteractor
     {
-        int Execute();
+        int Execute(string[] args);
     }
 }

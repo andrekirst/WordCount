@@ -49,16 +49,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
+    <Compile Include="Implementations\ConsoleDisplayOutput.cs" />
+    <Compile Include="Implementations\ConsoleParameterArgumentsReader.cs" />
     <Compile Include="Implementations\ConsoleTextInput.cs" />
     <Compile Include="Implementations\Interactor.cs" />
     <Compile Include="Implementations\StopwordLoader.cs" />
     <Compile Include="Implementations\WordCountAnalyzer.cs" />
     <Compile Include="Implementations\WordCountAnalyzerOutput.cs" />
+    <Compile Include="Interfaces\IArgumentsReader.cs" />
+    <Compile Include="Interfaces\IDisplayOutput.cs" />
     <Compile Include="Interfaces\IInteractor.cs" />
     <Compile Include="Interfaces\IStopwordLoader.cs" />
     <Compile Include="Interfaces\ITextInput.cs" />
     <Compile Include="Interfaces\IWordCountAnalyzer.cs" />
     <Compile Include="Interfaces\IWordCountAnalyzerOutput.cs" />
+    <Compile Include="Models\ArgumentsReaderResult.cs" />
     <Compile Include="Models\WordCountAnalyzerResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,13 +6,13 @@ using WordCount.Extensions;
 
 namespace WordCount
 {
-    public class Program
+    public static class Program
     {
         public static int Main(string[] args)
         {
             IInteractor interactor = CreateInteractor();
 
-            return interactor.Execute();
+            return interactor.Execute(args: args);
         }
 
         private static IInteractor CreateInteractor()
@@ -25,6 +25,8 @@ namespace WordCount
             containerBuilder.Register<IWordCountAnalyzerOutput, WordCountAnalyzerOutput>();
             containerBuilder.Register<IStopwordLoader, StopwordLoader>();
             containerBuilder.Register<IFileSystem, FileSystem>();
+            containerBuilder.Register<IDisplayOutput, ConsoleDisplayOutput>();
+            containerBuilder.Register<IArgumentsReader, ConsoleParameterArgumentsReader>();
 
             return containerBuilder
                 .Build()

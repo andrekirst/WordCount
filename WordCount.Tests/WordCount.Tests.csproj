@@ -86,6 +86,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ConsoleParameterArgumentsReaderTests.cs" />
+    <Compile Include="InteractorTests.cs" />
     <Compile Include="StopwordLoaderTests.cs" />
     <Compile Include="WordCountAnalyzerOutputTests.cs" />
     <Compile Include="WordCountAnalyzerTests.cs" />

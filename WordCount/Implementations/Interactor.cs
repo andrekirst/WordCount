@@ -11,24 +11,30 @@ namespace WordCount.Implementations
         private readonly IWordCountAnalyzer _wordCountAnalyzer;
         private readonly IWordCountAnalyzerOutput _wordCountAnalyzerOutput;
         private readonly IStopwordLoader _stopwordLoader;
-        
+        private readonly IArgumentsReader _argumentsReader;
+        private readonly IDisplayOutput _displayOutput;
+
         public Interactor(
             ITextInput textInput,
             IWordCountAnalyzer wordCountAnalyzer,
             IWordCountAnalyzerOutput wordCountAnalyzerOutput,
-            IStopwordLoader stopwordLoader)
+            IStopwordLoader stopwordLoader,
+            IArgumentsReader argumentsReader,
+            IDisplayOutput displayOutput)
         {
             _textInput = textInput;
             _wordCountAnalyzer = wordCountAnalyzer;
             _wordCountAnalyzerOutput = wordCountAnalyzerOutput;
             _stopwordLoader = stopwordLoader;
+            _argumentsReader = argumentsReader;
+            _displayOutput = displayOutput;
         }
 
-        public int Execute()
+        public int Execute(string[] args)
         {
-            Console.Write("Enter text: ");
+            ArgumentsReaderResult argumentsReaderResult = _argumentsReader.ReadArguments(args: args);
 
-            string text = _textInput.GetInputText();
+            string text = _textInput.GetInputText(argumentsReaderResult: argumentsReaderResult);
 
             List<string> stopwords = _stopwordLoader.GetStopwords();
 
@@ -38,7 +44,7 @@ namespace WordCount.Implementations
 
             string displayResultAsString = _wordCountAnalyzerOutput.DisplayResultAsString(wordCountAnalyzerResult: analyzeResult);
 
-            Console.WriteLine(value: displayResultAsString);
+            _displayOutput.WriteLine(text: displayResultAsString);
 
             return 0;
         }
