@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using WordCount.Interfaces;
@@ -18,7 +17,7 @@ namespace WordCount.Implementations
 
         public List<string> GetStopwords()
         {
-            if (!_fileSystem.File.Exists(StopwordFileName))
+            if (!_fileSystem.File.Exists(path: StopwordFileName))
             {
                 return null;
             }

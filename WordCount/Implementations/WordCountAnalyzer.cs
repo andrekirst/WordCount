@@ -12,6 +12,7 @@ namespace WordCount.Implementations
             List<string> stopwords = null)
         {
             List<string> splitByWhitespace = text.Split(' ').ToList();
+
             if (stopwords != null)
             {
                 splitByWhitespace.RemoveAll((s) =>
@@ -19,6 +20,7 @@ namespace WordCount.Implementations
                     return stopwords.Contains(item: s);
                 }); 
             }
+
             int numberOfWords = splitByWhitespace.Count;
             return new WordCountAnalyzerResult()
             {

@@ -11,7 +11,7 @@ namespace WordCount.Implementations
         private readonly IWordCountAnalyzer _wordCountAnalyzer;
         private readonly IWordCountAnalyzerOutput _wordCountAnalyzerOutput;
         private readonly IStopwordLoader _stopwordLoader;
-
+        
         public Interactor(
             ITextInput textInput,
             IWordCountAnalyzer wordCountAnalyzer,
@@ -38,7 +38,7 @@ namespace WordCount.Implementations
 
             string displayResultAsString = _wordCountAnalyzerOutput.DisplayResultAsString(wordCountAnalyzerResult: analyzeResult);
 
-            Console.WriteLine(displayResultAsString);
+            Console.WriteLine(value: displayResultAsString);
 
             return 0;
         }
