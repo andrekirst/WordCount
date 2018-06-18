@@ -1,11 +1,8 @@
 ﻿using Autofac;
 using Moq;
-using System;
-using System.Linq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using Xunit;
-using WordCount.Extensions;
 
 namespace WordCount.Tests
 {
@@ -30,27 +27,27 @@ namespace WordCount.Tests
 
             var containerBuilder = new ContainerBuilder();
             containerBuilder
-                .RegisterInstance(_textInput.Object)
+                .RegisterInstance(instance: _textInput.Object)
                 .As<ITextInput>();
 
             containerBuilder
-                .RegisterInstance(_wordCountAnalyzer.Object)
+                .RegisterInstance(instance: _wordCountAnalyzer.Object)
                 .As<IWordCountAnalyzer>();
 
             containerBuilder
-                .RegisterInstance(_wordCountAnalyzerOutput.Object)
+                .RegisterInstance(instance: _wordCountAnalyzerOutput.Object)
                 .As<IWordCountAnalyzerOutput>();
 
             containerBuilder
-                .RegisterInstance(_stopwordLoader.Object)
+                .RegisterInstance(instance: _stopwordLoader.Object)
                 .As<IStopwordLoader>();
 
             containerBuilder
-                .RegisterInstance(_argumentsReader.Object)
+                .RegisterInstance(instance: _argumentsReader.Object)
                 .As<IArgumentsReader>();
 
             containerBuilder
-                .RegisterInstance(_displayOutput.Object)
+                .RegisterInstance(instance: _displayOutput.Object)
                 .As<IDisplayOutput>();
 
             containerBuilder
@@ -69,7 +66,7 @@ namespace WordCount.Tests
             _systemUnderTest.Execute(args: args);
 
             _argumentsReader
-                .Verify(v => v.ReadArguments(args), Times.Once);
+                .Verify(expression: v => v.ReadArguments(args), times: Times.Once);
         }
     }
 }

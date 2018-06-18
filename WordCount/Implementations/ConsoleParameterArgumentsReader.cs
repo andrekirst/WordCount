@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using WordCount.Interfaces;
 using WordCount.Models;
 
@@ -12,15 +8,11 @@ namespace WordCount.Implementations
     {
         public ArgumentsReaderResult ReadArguments(string[] args)
         {
-            if (args == null || !args.Any())
-            {
-                return null;
-            }
+            bool isSourceTextFilePresent = args != null && args.Any();
 
-            return new ArgumentsReaderResult()
-            {
-                SourceTextFile = args[0]
-            };
+            return new ArgumentsReaderResult(
+                sourceTextFile: isSourceTextFilePresent ? args[0] : null,
+                isSourceTextFilePresent: isSourceTextFilePresent);
         }
     }
 }

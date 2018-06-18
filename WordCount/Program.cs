@@ -1,11 +1,14 @@
-﻿using Autofac;
+﻿using System.Diagnostics.CodeAnalysis;
+using Autofac;
 using System.IO.Abstractions;
+using WordCount.Abstractions.Console;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Extensions;
 
 namespace WordCount
 {
+    [ExcludeFromCodeCoverage]
     public static class Program
     {
         public static int Main(string[] args)
@@ -20,13 +23,14 @@ namespace WordCount
             ContainerBuilder containerBuilder = new ContainerBuilder();
 
             containerBuilder.Register<IInteractor, Interactor>();
-            containerBuilder.Register<ITextInput, ConsoleTextInput>();
+            containerBuilder.Register<ITextInput, TextInput>();
             containerBuilder.Register<IWordCountAnalyzer, WordCountAnalyzer>();
             containerBuilder.Register<IWordCountAnalyzerOutput, WordCountAnalyzerOutput>();
             containerBuilder.Register<IStopwordLoader, StopwordLoader>();
             containerBuilder.Register<IFileSystem, FileSystem>();
             containerBuilder.Register<IDisplayOutput, ConsoleDisplayOutput>();
             containerBuilder.Register<IArgumentsReader, ConsoleParameterArgumentsReader>();
+            containerBuilder.Register<IConsole, Console>();
 
             return containerBuilder
                 .Build()

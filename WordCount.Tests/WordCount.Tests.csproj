@@ -86,9 +86,11 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ConsoleDisplayOutputTests.cs" />
     <Compile Include="ConsoleParameterArgumentsReaderTests.cs" />
     <Compile Include="InteractorTests.cs" />
     <Compile Include="StopwordLoaderTests.cs" />
+    <Compile Include="TextInputTests.cs" />
     <Compile Include="WordCountAnalyzerOutputTests.cs" />
     <Compile Include="WordCountAnalyzerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

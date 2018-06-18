@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using WordCount.Implementations;
+﻿using WordCount.Implementations;
 using WordCount.Models;
 using Xunit;
 
@@ -8,24 +6,27 @@ namespace WordCount.Tests
 {
     public class ConsoleParameterArgumentsReaderTests
     {
-        [Fact]
-        public void ConsoleParameterArgumentsReaderTests_Arguments_null_Expect_null()
+        private readonly ConsoleParameterArgumentsReader _systemUnderTest;
+
+        public ConsoleParameterArgumentsReaderTests()
         {
-            ConsoleParameterArgumentsReader systemUnderTest = new ConsoleParameterArgumentsReader();
-
-            ArgumentsReaderResult actual = systemUnderTest.ReadArguments(args: null);
-
-            Assert.Null(@object: actual);
+            _systemUnderTest = new ConsoleParameterArgumentsReader();
         }
 
         [Fact]
-        public void ConsoleParameterArgumentsReaderTests_Arguments_empty_Expect_null()
+        public void ConsoleParameterArgumentsReaderTests_Arguments_null_Expect_IsSourceTextFilePresent_False()
         {
-            ConsoleParameterArgumentsReader systemUnderTest = new ConsoleParameterArgumentsReader();
+            ArgumentsReaderResult actual = _systemUnderTest.ReadArguments(args: null);
 
-            ArgumentsReaderResult actual = systemUnderTest.ReadArguments(args: new string[] { });
+            Assert.False(condition: actual.IsSourceTextFilePresent);
+        }
 
-            Assert.Null(@object: actual);
+        [Fact]
+        public void ConsoleParameterArgumentsReaderTests_Arguments_empty_Expect_IsSourceTextFilePresent_False()
+        {
+            ArgumentsReaderResult actual = _systemUnderTest.ReadArguments(args: new string[] { });
+
+            Assert.False(condition: actual.IsSourceTextFilePresent);
         }
 
         [Fact]
@@ -33,9 +34,17 @@ namespace WordCount.Tests
         {
             ConsoleParameterArgumentsReader systemUnderTest = new ConsoleParameterArgumentsReader();
 
-            ArgumentsReaderResult actual = systemUnderTest.ReadArguments(args: new string[] { "mytext.txt" });
+            ArgumentsReaderResult actual = systemUnderTest.ReadArguments(args: new[] { "mytext.txt" });
 
             Assert.Equal(expected: "mytext.txt", actual: actual.SourceTextFile);
+        }
+
+        [Fact]
+        public void ConsoleParameterArgumentsReaderTests_Arguments_One_Entry_mytext_Expect_IsSourceTextFilePresent_True()
+        {
+            ArgumentsReaderResult actual = _systemUnderTest.ReadArguments(args: new[] { "mytext.txt" });
+
+            Assert.True(condition: actual.IsSourceTextFilePresent);
         }
     }
 }

@@ -11,9 +11,9 @@ namespace WordCount.Tests
         public void WordCountAnalyzerTests_Analyze_Text_Bla_bla_Expect_2_Words()
         {
             WordCountAnalyzer systemUnterTest = new WordCountAnalyzer();
-            WordCountAnalyzerResult actual = systemUnterTest.Analyze("Bla bla");
+            WordCountAnalyzerResult actual = systemUnterTest.Analyze(text: "Bla bla");
 
-            Assert.Equal(2, actual: actual.NumberOfWords);
+            Assert.Equal(expected: 2, actual: actual.NumberOfWords);
         }
 
         [Fact]
@@ -21,10 +21,10 @@ namespace WordCount.Tests
         {
             WordCountAnalyzer systemUnterTest = new WordCountAnalyzer();
             WordCountAnalyzerResult actual = systemUnterTest.Analyze(
-                "This is a Text",
-                new List<string>() { "a" });
+                text: "This is a Text",
+                stopwords: new List<string>() { "a" });
 
-            Assert.Equal(3, actual: actual.NumberOfWords);
+            Assert.Equal(expected: 3, actual: actual.NumberOfWords);
         }
     }
 }

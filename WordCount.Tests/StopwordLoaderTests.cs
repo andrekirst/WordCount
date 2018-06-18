@@ -34,8 +34,8 @@ namespace WordCount.Tests
         public void StopwordLoaderTests_GetStopwords_FileNotExist_Return_null()
         {
             _mockFileSystem
-                .Setup(m => m.File.ReadAllLines(It.IsAny<string>()))
-                .Throws(new FileNotFoundException());
+                .Setup(expression: m => m.File.ReadAllLines(It.IsAny<string>()))
+                .Throws(exception: new FileNotFoundException());
 
             List<string> actual = _systemUnderTest.GetStopwords();
 
@@ -46,8 +46,8 @@ namespace WordCount.Tests
         public void StopwordLoaderTests_GetStopwords_FileEmpty_Return_null()
         {
             _mockFileSystem
-                .Setup(m => m.File.ReadAllLines(It.IsAny<string>()))
-                .Returns(new string[] { });
+                .Setup(expression: m => m.File.ReadAllLines(It.IsAny<string>()))
+                .Returns(value: new string[] { });
 
             List<string> actual = _systemUnderTest.GetStopwords();
 
@@ -58,12 +58,12 @@ namespace WordCount.Tests
         public void StopwordLoaderTests_GetStopwords_Contains_1_Row_With_word_a_Return_List_with_one_Entry_a()
         {
             _mockFileSystem
-                .Setup(m => m.File.Exists(It.IsAny<string>()))
-                .Returns(true);
+                .Setup(expression: m => m.File.Exists(It.IsAny<string>()))
+                .Returns(value: true);
 
             _mockFileSystem
-                .Setup(m => m.File.ReadAllLines(It.IsAny<string>()))
-                .Returns(new[] { "a" });
+                .Setup(expression: m => m.File.ReadAllLines(It.IsAny<string>()))
+                .Returns(value: new[] { "a" });
 
             List<string> actual = _systemUnderTest.GetStopwords();
 

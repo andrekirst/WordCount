@@ -48,10 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstractions\Console\Console.cs" />
+    <Compile Include="Abstractions\Console\IConsole.cs" />
     <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
     <Compile Include="Implementations\ConsoleDisplayOutput.cs" />
     <Compile Include="Implementations\ConsoleParameterArgumentsReader.cs" />
-    <Compile Include="Implementations\ConsoleTextInput.cs" />
+    <Compile Include="Implementations\TextInput.cs" />
     <Compile Include="Implementations\Interactor.cs" />
     <Compile Include="Implementations\StopwordLoader.cs" />
     <Compile Include="Implementations\WordCountAnalyzer.cs" />

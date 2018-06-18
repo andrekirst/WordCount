@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WordCount.Abstractions.Console;
 using WordCount.Interfaces;
 
 namespace WordCount.Implementations
 {
     public class ConsoleDisplayOutput : IDisplayOutput
     {
+        private readonly IConsole _console;
+
+        public ConsoleDisplayOutput(IConsole console)
+        {
+            _console = console;
+        }
+
         public void Write(string text)
         {
-            Console.Write(value: text);
+            _console.Write(text: text);
         }
 
         public void WriteLine(string text)
         {
-            Console.WriteLine(value: text);
+            _console.WriteLine(text: text);
         }
     }
 }

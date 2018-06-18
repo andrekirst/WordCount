@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WordCount.Models
+﻿namespace WordCount.Models
 {
     public class ArgumentsReaderResult
     {
-        public string SourceTextFile { get; set; }
+        public ArgumentsReaderResult(
+            string sourceTextFile,
+            bool isSourceTextFilePresent)
+        {
+            SourceTextFile = sourceTextFile;
+            IsSourceTextFilePresent = isSourceTextFilePresent;
+        }
+
+        public string SourceTextFile { get; private set; }
+
+        public bool IsSourceTextFilePresent { get; private set; }
     }
 }

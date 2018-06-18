@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WordCount.Interfaces;
 using WordCount.Models;
 
@@ -33,6 +32,8 @@ namespace WordCount.Implementations
         public int Execute(string[] args)
         {
             ArgumentsReaderResult argumentsReaderResult = _argumentsReader.ReadArguments(args: args);
+
+            _displayOutput.Write(text: "Enter text: ");
 
             string text = _textInput.GetInputText(argumentsReaderResult: argumentsReaderResult);
 
