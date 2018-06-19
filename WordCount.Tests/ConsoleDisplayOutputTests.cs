@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Autofac;
+﻿using Autofac;
 using Moq;
 using WordCount.Abstractions.Console;
 using WordCount.Implementations;
@@ -10,7 +8,7 @@ namespace WordCount.Tests
 {
     public class ConsoleDisplayOutputTests
     {
-        private Mock<IConsole> _mockConsole;
+        private readonly Mock<IConsole> _mockConsole;
 
         private readonly ConsoleDisplayOutput _systemUnderTest;
 
@@ -21,10 +19,12 @@ namespace WordCount.Tests
             var containerBuilder = new ContainerBuilder();
             containerBuilder
                 .RegisterInstance(instance: _mockConsole.Object)
-                .As<IConsole>();
+                .As<IConsole>()
+                .SingleInstance();
 
             containerBuilder
-                .RegisterType<ConsoleDisplayOutput>();
+                .RegisterType<ConsoleDisplayOutput>()
+                .SingleInstance();
 
             _systemUnderTest = containerBuilder
                 .Build()

@@ -28,30 +28,37 @@ namespace WordCount.Tests
             var containerBuilder = new ContainerBuilder();
             containerBuilder
                 .RegisterInstance(instance: _textInput.Object)
-                .As<ITextInput>();
+                .As<ITextInput>()
+                .SingleInstance();
 
             containerBuilder
                 .RegisterInstance(instance: _wordCountAnalyzer.Object)
-                .As<IWordCountAnalyzer>();
+                .As<IWordCountAnalyzer>()
+                .SingleInstance();
 
             containerBuilder
                 .RegisterInstance(instance: _wordCountAnalyzerOutput.Object)
-                .As<IWordCountAnalyzerOutput>();
+                .As<IWordCountAnalyzerOutput>()
+                .SingleInstance();
 
             containerBuilder
                 .RegisterInstance(instance: _stopwordLoader.Object)
-                .As<IStopwordLoader>();
+                .As<IStopwordLoader>()
+                .SingleInstance();
 
             containerBuilder
                 .RegisterInstance(instance: _argumentsReader.Object)
-                .As<IArgumentsReader>();
+                .As<IArgumentsReader>()
+                .SingleInstance();
 
             containerBuilder
                 .RegisterInstance(instance: _displayOutput.Object)
-                .As<IDisplayOutput>();
+                .As<IDisplayOutput>()
+                .SingleInstance();
 
             containerBuilder
-                .RegisterType<Interactor>();
+                .RegisterType<Interactor>()
+                .SingleInstance();
 
             _systemUnderTest = containerBuilder
                 .Build()

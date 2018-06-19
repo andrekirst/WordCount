@@ -2,6 +2,7 @@
 using Autofac;
 using System.IO.Abstractions;
 using WordCount.Abstractions.Console;
+using WordCount.AutofacModules;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Extensions;
@@ -21,6 +22,11 @@ namespace WordCount
         private static IInteractor CreateInteractor()
         {
             ContainerBuilder containerBuilder = new ContainerBuilder();
+
+#if DEBUG
+            containerBuilder
+                    .RegisterModule<LogRequestsModule>(); 
+#endif
 
             containerBuilder.Register<IInteractor, Interactor>();
             containerBuilder.Register<ITextInput, TextInput>();

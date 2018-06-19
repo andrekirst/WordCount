@@ -10,8 +10,8 @@
             IsSourceTextFilePresent = isSourceTextFilePresent;
         }
 
-        public string SourceTextFile { get; private set; }
+        public string SourceTextFile { get; }
 
-        public bool IsSourceTextFilePresent { get; private set; }
+        public bool IsSourceTextFilePresent { get; }
     }
 }

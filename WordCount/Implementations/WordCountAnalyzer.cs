@@ -11,14 +11,19 @@ namespace WordCount.Implementations
             string text,
             List<string> stopwords = null)
         {
+            if (string.IsNullOrWhiteSpace(value: text))
+            {
+                return new WordCountAnalyzerResult()
+                {
+                    NumberOfWords = 0
+                };
+            }
+
             List<string> splitByWhitespace = text.Split(' ').ToList();
 
             if (stopwords != null)
             {
-                splitByWhitespace.RemoveAll((s) =>
-                {
-                    return stopwords.Contains(item: s);
-                }); 
+                splitByWhitespace.RemoveAll(match: stopwords.Contains); 
             }
 
             int numberOfWords = splitByWhitespace.Count;

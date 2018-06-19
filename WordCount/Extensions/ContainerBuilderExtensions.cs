@@ -1,16 +1,22 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Autofac;
+using Autofac.Builder;
 
 namespace WordCount.Extensions
 {
     [ExcludeFromCodeCoverage]
     public static class ContainerBuilderExtensions
     {
-        public static void Register<TService, TImplementation>(this ContainerBuilder containerBuilder)
+        public static IRegistrationBuilder<
+            TImplementation,
+            ConcreteReflectionActivatorData,
+            SingleRegistrationStyle>
+            Register<TService, TImplementation>(this ContainerBuilder containerBuilder)
         {
-            containerBuilder
+            return containerBuilder
                 .RegisterType<TImplementation>()
-                .As<TService>();
+                .As<TService>()
+                .SingleInstance();
         }
     }
 }
