@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WordCount.Interfaces;
 using WordCount.Models;
@@ -19,7 +20,9 @@ namespace WordCount.Implementations
                 };
             }
 
-            List<string> splitByWhitespace = text.Split(' ').ToList();
+            List<string> splitByWhitespace = text.Split(
+                separator: new[] { " ", Environment.NewLine },
+                options: StringSplitOptions.None).ToList();
 
             if (stopwords != null)
             {

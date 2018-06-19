@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WordCount.Implementations;
 using WordCount.Models;
 using Xunit;
@@ -30,6 +31,16 @@ namespace WordCount.Tests
                 stopwords: new List<string>() { "a" });
 
             Assert.Equal(expected: 3, actual: actual.NumberOfWords);
+        }
+
+        [Fact]
+        public void WordCountAnalyzerTests_Analyze_Stopword_a_Mary_has_a_little_lamb_with_Newlines_Expect_4_Words()
+        {
+            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(
+                text: $"Mary had{Environment.NewLine}a little{Environment.NewLine}lamb",
+                stopwords: new List<string>() { "the", "a", "on", "off" });
+
+            Assert.Equal(expected: 4, actual: actual.NumberOfWords);
         }
 
         [Theory]

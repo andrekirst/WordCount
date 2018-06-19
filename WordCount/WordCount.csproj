@@ -76,6 +76,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="sample.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="stopwords.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

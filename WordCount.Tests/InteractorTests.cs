@@ -2,6 +2,7 @@
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
+using WordCount.Models;
 using Xunit;
 
 namespace WordCount.Tests
@@ -68,12 +69,48 @@ namespace WordCount.Tests
         [Fact]
         public void InteractorTests_Call_ReadArguments_Verify_1_Call()
         {
-            string[] args = new string[] { "mytext.txt" };
+            string[] args = { "mytext.txt" };
+
+            _argumentsReader
+                .Setup(expression: m => m.ReadArguments(args))
+                .Returns(value: new ArgumentsReaderResult(
+                    sourceTextFile: It.IsAny<string>(),
+                    isSourceTextFilePresent: true));
 
             _systemUnderTest.Execute(args: args);
 
             _argumentsReader
                 .Verify(expression: v => v.ReadArguments(args), times: Times.Once);
+        }
+
+        [Fact]
+        public void InteractorTests_ArgumentReader_no_file_is_present_expect_DisplayOutput_Enter_Text()
+        {
+            _argumentsReader
+                .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
+                .Returns(new Models.ArgumentsReaderResult(It.IsAny<string>(), false));
+
+            _systemUnderTest.Execute(args: It.IsAny<string[]>());
+
+            _displayOutput
+                .Verify(
+                    expression: v => v.Write("Enter text: "),
+                    times: Times.Once);
+        }
+
+        [Fact]
+        public void InteractorTests_ArgumentReader_file_is_present_expect_not_DisplayOutput_Enter_Text()
+        {
+            _argumentsReader
+                .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
+                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), true));
+
+            _systemUnderTest.Execute(args: It.IsAny<string[]>());
+
+            _displayOutput
+                .Verify(
+                    expression: v => v.Write("Enter text: "),
+                    times: Times.Never);
         }
     }
 }
