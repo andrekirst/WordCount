@@ -37,6 +37,7 @@ namespace WordCount
             containerBuilder.Register<IDisplayOutput, ConsoleDisplayOutput>();
             containerBuilder.Register<IArgumentsReader, ConsoleParameterArgumentsReader>();
             containerBuilder.Register<IConsole, Console>();
+            containerBuilder.Register<ITextSplit, TextSplit>();
 
             return containerBuilder
                 .Build()
