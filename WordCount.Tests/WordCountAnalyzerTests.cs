@@ -98,5 +98,45 @@ namespace WordCount.Tests
 
             Assert.Equal(expected: 0, actual: actual.NumberOfWords);
         }
+
+        [Fact]
+        public void WordCountAnalyzerTests_Long_text_Bla_bla_bla_Expect_Number_of_Words_3()
+        {
+            string text = "Bla bla bla";
+            List<string> mockValues = new List<string>() { "Bla", "bla", "bla" };
+            List<string> mockValuesStopwordsRemoved = new List<string>() { "Bla", "bla", "bla" };
+
+            _mockTextSplit
+                .Setup(m => m.Split(text))
+                .Returns(value: new TextSplitResult(mockValues));
+
+            _mockStopwordRemover
+                .Setup(m => m.RemoveStopwords(mockValues))
+                .Returns(new StopwordRemoverResult() { Values = mockValuesStopwordsRemoved });
+
+            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
+
+            Assert.Equal(3, actual.NumberOfWords);
+        }
+
+        [Fact]
+        public void WordCountAnalyzerTests_Long_text_Bla_bla_bla_Expect_Number_of_unique_Words_2()
+        {
+            string text = "Bla bla bla";
+
+            List<string> mockValues = new List<string>() { "Bla", "bla", "bla" };
+
+            _mockTextSplit
+                .Setup(m => m.Split(text))
+                .Returns(value: new TextSplitResult(mockValues));
+
+            _mockStopwordRemover
+                .Setup(m => m.RemoveStopwords(mockValues))
+                .Returns(new StopwordRemoverResult() { Values = mockValues });
+
+            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
+
+            Assert.Equal(2, actual.NumberOfUniqueWords);
+        }
     }
 }

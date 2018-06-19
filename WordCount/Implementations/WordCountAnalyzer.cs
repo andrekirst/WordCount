@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using WordCount.Interfaces;
 using WordCount.Models;
 
@@ -31,10 +32,14 @@ namespace WordCount.Implementations
 
             StopwordRemoverResult stopwordRemoverResult = _stopwordRemover.RemoveStopwords(values: textSplitResult.Values);
 
-            int numberOfWords = stopwordRemoverResult.Values.Count;
+            List<string> words = stopwordRemoverResult.Values;
+
+            int numberOfWords = words.Count;
+            int numberOfUniqueWords = words.Distinct().Count();
             return new WordCountAnalyzerResult()
             {
-                NumberOfWords = numberOfWords
+                NumberOfWords = numberOfWords,
+                NumberOfUniqueWords = numberOfUniqueWords
             };
         }
     }
