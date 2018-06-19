@@ -90,6 +90,7 @@
     <Compile Include="ConsoleParameterArgumentsReaderTests.cs" />
     <Compile Include="InteractorTests.cs" />
     <Compile Include="StopwordLoaderTests.cs" />
+    <Compile Include="StopwordRemoverTests.cs" />
     <Compile Include="TextInputTests.cs" />
     <Compile Include="TextSplitTests.cs" />
     <Compile Include="WordCountAnalyzerOutputTests.cs" />

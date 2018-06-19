@@ -32,12 +32,13 @@ namespace WordCount
             containerBuilder.Register<ITextInput, TextInput>();
             containerBuilder.Register<IWordCountAnalyzer, WordCountAnalyzer>();
             containerBuilder.Register<IWordCountAnalyzerOutput, WordCountAnalyzerOutput>();
-            containerBuilder.Register<IStopwordLoader, StopwordLoader>();
             containerBuilder.Register<IFileSystem, FileSystem>();
+            containerBuilder.Register<IConsole, Console>();
             containerBuilder.Register<IDisplayOutput, ConsoleDisplayOutput>();
             containerBuilder.Register<IArgumentsReader, ConsoleParameterArgumentsReader>();
-            containerBuilder.Register<IConsole, Console>();
             containerBuilder.Register<ITextSplit, TextSplit>();
+            containerBuilder.Register<IStopwordLoader, StopwordLoader>();
+            containerBuilder.Register<IStopwordRemover, StopwordRemover>();
 
             return containerBuilder
                 .Build()

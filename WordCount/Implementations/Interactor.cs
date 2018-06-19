@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using WordCount.Interfaces;
+﻿using WordCount.Interfaces;
 using WordCount.Models;
 
 namespace WordCount.Implementations
@@ -9,7 +8,6 @@ namespace WordCount.Implementations
         private readonly ITextInput _textInput;
         private readonly IWordCountAnalyzer _wordCountAnalyzer;
         private readonly IWordCountAnalyzerOutput _wordCountAnalyzerOutput;
-        private readonly IStopwordLoader _stopwordLoader;
         private readonly IArgumentsReader _argumentsReader;
         private readonly IDisplayOutput _displayOutput;
 
@@ -17,14 +15,12 @@ namespace WordCount.Implementations
             ITextInput textInput,
             IWordCountAnalyzer wordCountAnalyzer,
             IWordCountAnalyzerOutput wordCountAnalyzerOutput,
-            IStopwordLoader stopwordLoader,
             IArgumentsReader argumentsReader,
             IDisplayOutput displayOutput)
         {
             _textInput = textInput;
             _wordCountAnalyzer = wordCountAnalyzer;
             _wordCountAnalyzerOutput = wordCountAnalyzerOutput;
-            _stopwordLoader = stopwordLoader;
             _argumentsReader = argumentsReader;
             _displayOutput = displayOutput;
         }
@@ -40,11 +36,7 @@ namespace WordCount.Implementations
 
             string text = _textInput.GetInputText(argumentsReaderResult: argumentsReaderResult);
 
-            List<string> stopwords = _stopwordLoader.GetStopwords();
-
-            WordCountAnalyzerResult analyzeResult = _wordCountAnalyzer.Analyze(
-                text: text,
-                stopwords: stopwords);
+            WordCountAnalyzerResult analyzeResult = _wordCountAnalyzer.Analyze(text: text);
 
             string displayResultAsString = _wordCountAnalyzerOutput.DisplayResultAsString(wordCountAnalyzerResult: analyzeResult);
 

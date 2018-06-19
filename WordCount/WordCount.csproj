@@ -54,6 +54,7 @@
     <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
     <Compile Include="Implementations\ConsoleDisplayOutput.cs" />
     <Compile Include="Implementations\ConsoleParameterArgumentsReader.cs" />
+    <Compile Include="Implementations\StopwordRemover.cs" />
     <Compile Include="Implementations\TextInput.cs" />
     <Compile Include="Implementations\Interactor.cs" />
     <Compile Include="Implementations\StopwordLoader.cs" />
@@ -64,11 +65,13 @@
     <Compile Include="Interfaces\IDisplayOutput.cs" />
     <Compile Include="Interfaces\IInteractor.cs" />
     <Compile Include="Interfaces\IStopwordLoader.cs" />
+    <Compile Include="Interfaces\IStopwordRemover.cs" />
     <Compile Include="Interfaces\ITextInput.cs" />
     <Compile Include="Interfaces\ITextSplit.cs" />
     <Compile Include="Interfaces\IWordCountAnalyzer.cs" />
     <Compile Include="Interfaces\IWordCountAnalyzerOutput.cs" />
     <Compile Include="Models\ArgumentsReaderResult.cs" />
+    <Compile Include="Models\StopwordRemoverResult.cs" />
     <Compile Include="Models\TextSplitResult.cs" />
     <Compile Include="Models\WordCountAnalyzerResult.cs" />
     <Compile Include="Program.cs" />
