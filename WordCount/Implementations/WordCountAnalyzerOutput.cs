@@ -7,7 +7,7 @@ namespace WordCount.Implementations
     {
         public string DisplayResultAsString(WordCountAnalyzerResult wordCountAnalyzerResult)
         {
-            return $"Number of words: {wordCountAnalyzerResult.NumberOfWords}";
+            return $"Number of words: {wordCountAnalyzerResult.NumberOfWords}, unique: {wordCountAnalyzerResult.NumberOfUniqueWords}";
         }
     }
 }
