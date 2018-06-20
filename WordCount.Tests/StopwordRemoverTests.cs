@@ -1,8 +1,6 @@
 ﻿using Autofac;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Models;

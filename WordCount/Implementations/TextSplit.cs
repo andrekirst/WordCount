@@ -1,6 +1,6 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 using WordCount.Interfaces;
 using WordCount.Models;
 
@@ -15,11 +15,17 @@ namespace WordCount.Implementations
                 return new TextSplitResult(new List<string>());
             }
 
-            List<string> splitByWhitespace = text.Split(
-                separator: new[] { " ", Environment.NewLine },
-                options: StringSplitOptions.None).ToList();
+            MatchCollection regexMatches = Regex.Matches(
+                input: text,
+                pattern: "[a-zA-Z]{1,}",
+                options: RegexOptions.Compiled);
 
-            return new TextSplitResult(values: splitByWhitespace);
+            List<string> splitByRegex = regexMatches
+                .OfType<Match>()
+                .Select((m) => m.Value)
+                .ToList();
+
+            return new TextSplitResult(values: splitByRegex);
         }
     }
 }

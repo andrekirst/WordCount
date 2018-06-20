@@ -1,5 +1,4 @@
 ﻿using Moq;
-using System;
 using System.Collections.Generic;
 using Autofac;
 using WordCount.Implementations;
