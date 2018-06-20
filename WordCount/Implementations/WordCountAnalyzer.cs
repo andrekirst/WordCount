@@ -24,10 +24,7 @@ namespace WordCount.Implementations
 
             if (!textSplitResult.ValuesAvailable)
             {
-                return new WordCountAnalyzerResult()
-                {
-                    NumberOfWords = 0
-                };
+                return new WordCountAnalyzerResult();
             }
 
             StopwordRemoverResult stopwordRemoverResult = _stopwordRemover.RemoveStopwords(values: textSplitResult.Values);
@@ -36,10 +33,12 @@ namespace WordCount.Implementations
 
             int numberOfWords = words.Count;
             int numberOfUniqueWords = words.Distinct().Count();
+            double averageWordLength = words.Average(s => s.Length);
             return new WordCountAnalyzerResult()
             {
                 NumberOfWords = numberOfWords,
-                NumberOfUniqueWords = numberOfUniqueWords
+                NumberOfUniqueWords = numberOfUniqueWords,
+                AverageWordLength = averageWordLength
             };
         }
     }
