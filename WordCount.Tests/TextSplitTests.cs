@@ -64,5 +64,16 @@ namespace WordCount.Tests
 
             Assert.False(condition: actual.ValuesAvailable);
         }
+
+        [Fact]
+        public void TextSplitTests_Humpty_Dumpty_Text_Expect_12_Words()
+        {
+            const string text = "Humpty-Dumpty sat on a wall. Humpty-Dumpty had a great fall.";
+            TextSplitResult actual = _systemUnderTest.Split(text: text);
+
+            Assert.Equal(
+                expected: 10,
+                actual: actual.Values.Count);
+        }
     }
 }

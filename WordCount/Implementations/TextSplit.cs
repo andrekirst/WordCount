@@ -17,7 +17,7 @@ namespace WordCount.Implementations
 
             MatchCollection regexMatches = Regex.Matches(
                 input: text,
-                pattern: "[a-zA-Z]{1,}",
+                pattern: @"[a-zA-Z\-]{1,}",
                 options: RegexOptions.Compiled);
 
             List<string> splitByRegex = regexMatches
