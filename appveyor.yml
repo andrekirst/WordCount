@@ -1,0 +1,33 @@
+# Erweiterte Dokumentation: https://www.appveyor.com/docs/appveyor-yml/
+
+# Version festlegen
+version: 1.0.{build}
+
+clone_folder: c:\projects\WordCount
+
+skip_branch_with_pr: false
+
+# VM-Template für Visual Studio 2017
+image: Visual Studio 2017
+
+platform: Any CPU
+configuration: Release
+
+matrix:
+  fast_finish: true
+
+environment:
+  SONARQUBE_TOKEN:
+    secure: ACcdrpuhAnH8XDKRMUFdE4pjTH1vlH5LEvG0U5MDyuQYfDY3zjFXVzA0HLlmtQSq
+
+install:
+  - choco install "msbuild-sonarqube-runner" -y
+  - dotnet restore c:\projects\WordCount\WordCount.sln
+
+build_script:
+  - ps: MSBuild.SonarQube.Runner.exe begin /n:"WordCount" /k:"andrekirst:WordCount" /d:"sonar.organization=andrekirst-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$($env:SONARQUBE_TOKEN)" /v:"$($env:appveyor_build_version)"
+  - dotnet build c:\projects\WordCount\WordCount.sln -c Release
+  - ps: MSBuild.SonarQube.Runner.exe end /d:"sonar.login=$($env:SONARQUBE_TOKEN)"
+
+test_script:
+  - dotnet test c:\projects\WordCount\WordCount.Tests\WordCount.Tests.csproj -c Release
