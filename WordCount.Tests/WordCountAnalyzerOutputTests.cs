@@ -12,9 +12,10 @@ namespace WordCount.Tests
             string actual = systemUnderTest.DisplayResultAsString(wordCountAnalyzerResult: new Models.WordCountAnalyzerResult()
             {
                 NumberOfWords = 2,
-                NumberOfUniqueWords = 1
+                NumberOfUniqueWords = 1,
+                AverageWordLength = 5.63
             });
-            string expected = "Number of words: 2, unique: 1";
+            const string expected = "Number of words: 2, unique: 1; average word length: 5.63 characters";
 
             Assert.Equal(expected: expected, actual: actual);
         }

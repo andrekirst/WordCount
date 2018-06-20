@@ -135,7 +135,27 @@ namespace WordCount.Tests
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
-            Assert.Equal(2, actual.NumberOfUniqueWords);
+            Assert.Equal(2, actual: actual.NumberOfUniqueWords);
+        }
+
+        [Fact]
+        public void WordCountAnalyzerTests_Text_Bla_bla_bla_Expect_Average_word_Length_3()
+        {
+            string text = "Bla bla bla";
+
+            List<string> mockValues = new List<string>() { "Bla", "bla", "bla" };
+
+            _mockTextSplit
+                .Setup(m => m.Split(text))
+                .Returns(value: new TextSplitResult(mockValues));
+
+            _mockStopwordRemover
+                .Setup(expression: m => m.RemoveStopwords(mockValues))
+                .Returns(value: new StopwordRemoverResult() { Values = mockValues });
+
+            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
+
+            Assert.Equal(expected: 3.0, actual: actual.AverageWordLength);
         }
     }
 }
