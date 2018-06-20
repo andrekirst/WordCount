@@ -17,12 +17,12 @@ namespace WordCount.Implementations
 
             MatchCollection regexMatches = Regex.Matches(
                 input: text,
-                pattern: @"[a-zA-Z\-]{1,}",
+                pattern: @"[a-zA-Z\-\u00D8-\u00F6]{1,}",
                 options: RegexOptions.Compiled);
 
             List<string> splitByRegex = regexMatches
                 .OfType<Match>()
-                .Select((m) => m.Value)
+                .Select(m => m.Value)
                 .ToList();
 
             return new TextSplitResult(values: splitByRegex);

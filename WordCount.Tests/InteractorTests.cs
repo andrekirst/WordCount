@@ -81,7 +81,7 @@ namespace WordCount.Tests
         {
             _argumentsReader
                 .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
-                .Returns(new Models.ArgumentsReaderResult(It.IsAny<string>(), false));
+                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), false));
 
             _systemUnderTest.Execute(args: It.IsAny<string[]>());
 

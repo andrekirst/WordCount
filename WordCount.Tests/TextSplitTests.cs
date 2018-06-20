@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WordCount.Implementations;
 using WordCount.Models;
 using Xunit;
@@ -74,6 +75,20 @@ namespace WordCount.Tests
             Assert.Equal(
                 expected: 10,
                 actual: actual.Values.Count);
+        }
+
+        [Fact]
+        public void TextSplitTests_Text_with_Unicode_Expect_2_Words()
+        {
+            const string text = "Hello André";
+            TextSplitResult actual = _systemUnderTest.Split(text: text);
+
+            List<string> expected = new List<string>()
+                { "Hello", "André" };
+
+            Assert.Equal(
+                expected: expected,
+                actual: actual.Values);
         }
     }
 }
