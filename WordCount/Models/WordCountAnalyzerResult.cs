@@ -4,5 +4,6 @@
     {
         public int NumberOfWords { get; set; }
         public int NumberOfUniqueWords { get; set; }
+        public double AverageWordLength { get; set; }
     }
 }
