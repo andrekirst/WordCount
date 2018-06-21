@@ -38,7 +38,7 @@ build_script:
   - msbuild c:\projects\WordCount\WordCount.sln /property:Configuration=Release
   - ps: MSBuild.SonarQube.Runner.exe end /d:"sonar.login=$($env:SONARQUBE_TOKEN)"
   - ps: >-
-        $opencoverexe = (Resolve-Path "$env:APPVEYOR_BUILD_FOLDER\WordCount\packages\OpenCover.*\tools\OpenCover.Console.exe").ToString()
+        $opencoverexe = (Resolve-Path "$env:APPVEYOR_BUILD_FOLDER\packages\OpenCover.*\tools\OpenCover.Console.exe").ToString()
 
         & $opencoverexe -register:user -filter:"+[*]* -[*.Test*]*" -excludebyattribute:*ExcludeFromCodeCoverage* -target:vstest.console.exe "-targetargs:""$env:APPVEYOR_BUILD_FOLDER\WordCount\WordCount.Tests\bin\$env:CONFIGURATION\WordCount.Tests.dll""" -output:./opencovertests.xml
 
