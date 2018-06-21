@@ -28,6 +28,8 @@ environment:
     secure: ACcdrpuhAnH8XDKRMUFdE4pjTH1vlH5LEvG0U5MDyuQYfDY3zjFXVzA0HLlmtQSq
   CODECOV_TOKEN:
     secure: xD2Si76xwqwDjnJOB1w1SjTtiogJX9xn9fJbXXqlzyYAt3/32El2hxE3GW22Xu0X
+  COVERALLS_REPO_TOKEN:
+    secure: bfX6ISggSBc6AHPqmjFB4CG6xYnpU3mZbJEGtVvbd+XO16NZBd3IUeLvmFyCLhuC
 
 install:
   - choco install "msbuild-sonarqube-runner" -y
