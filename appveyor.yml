@@ -34,6 +34,7 @@ environment:
 install:
   - choco install "msbuild-sonarqube-runner" -y
   - choco install xunit -y
+  - choco install opencover.portable -y
 
 before_build:
   - nuget restore c:\projects\WordCount\WordCount.sln
