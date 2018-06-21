@@ -8,20 +8,20 @@ namespace WordCount.Implementations
     public class TextInput : ITextInput
     {
         private readonly IConsole _console;
-        private readonly IFileSystem _fileSystem;
+        private readonly ITextFileLoader _textFileLoader;
 
         public TextInput(
             IConsole console,
-            IFileSystem fileSystem)
+            ITextFileLoader textFileLoader)
         {
             _console = console;
-            _fileSystem = fileSystem;
+            _textFileLoader = textFileLoader;
         }
 
         public string GetInputText(ArgumentsReaderResult argumentsReaderResult)
         {
             return argumentsReaderResult != null && argumentsReaderResult.IsSourceTextFilePresent ?
-                _fileSystem.File.ReadAllText(path: argumentsReaderResult.SourceTextFile) :
+                _textFileLoader.ReadTextFile(path: argumentsReaderResult.SourceTextFile) :
                 _console.ReadLine();
         }
     }

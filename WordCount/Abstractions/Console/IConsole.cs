@@ -1,4 +1,6 @@
-﻿namespace WordCount.Abstractions.Console
+﻿using System;
+
+namespace WordCount.Abstractions.Console
 {
     public interface IConsole
     {
@@ -7,5 +9,9 @@
         void Write(string text);
 
         void WriteLine(string text);
+
+        ConsoleColor ForegroundColor { get; set; }
+
+        void ResetColor();
     }
 }

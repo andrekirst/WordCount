@@ -17,6 +17,13 @@ namespace WordCount.Implementations
             _console.Write(text: text);
         }
 
+        public void WriteErrorLine(string errorMessage)
+        {
+            _console.ForegroundColor = System.ConsoleColor.Red;
+            _console.WriteLine(text: errorMessage);
+            _console.ResetColor();
+        }
+
         public void WriteLine(string text)
         {
             _console.WriteLine(text: text);
