@@ -38,6 +38,7 @@ install:
   - choco install "msbuild-sonarqube-runner" -y
   - choco install xunit -y
   - choco install opencover.portable -y
+  - choco install codecov -y
 
 before_build:
   - nuget restore c:\projects\WordCount\WordCount.sln
@@ -47,3 +48,4 @@ build_script:
   - msbuild c:\projects\WordCount\WordCount.sln /property:Configuration=Release /t:Rebuild /p:RunCodeAnalysis=true /verbosity:minimal
   - ps: OpenCover.Console.exe -register -target:"vstest.console.exe" -targetargs:"c:\projects\WordCount\WordCount.Tests\bin\Release\WordCount.Tests.dll" -output:"c:\projects\WordCount\opencovertests.xml"
   #- ps: MSBuild.SonarQube.Runner.exe end /d:"sonar.login=$($env:SONARQUBE_TOKEN)"
+  - ps: codecov -f "c:\projects\WordCount\opencovertests.xml" -t $env:CODECOV_TOKEN
