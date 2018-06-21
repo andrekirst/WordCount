@@ -40,12 +40,12 @@ build_script:
   - ps: >-
         $opencoverexe = (Resolve-Path "$env:APPVEYOR_BUILD_FOLDER\packages\OpenCover.*\tools\OpenCover.Console.exe").ToString()
 
-        & $opencoverexe -register:user -filter:"+[*]* -[*.Test*]*" -excludebyattribute:*ExcludeFromCodeCoverage* -target:vstest.console.exe "-targetargs:""$env:APPVEYOR_BUILD_FOLDER\WordCount.Tests\bin\$env:CONFIGURATION\WordCount.Tests.dll""" -output:./opencovertests.xml
+        #& $opencoverexe -register:user -filter:"+[*]* -[*.Test*]*" -excludebyattribute:*ExcludeFromCodeCoverage* -target:vstest.console.exe "-targetargs:""$env:APPVEYOR_BUILD_FOLDER\WordCount.Tests\bin\$env:CONFIGURATION\WordCount.Tests.dll""" -output:./opencovertests.xml
 
-        $coveralls = (Resolve-Path "$env:APPVEYOR_BUILD_FOLDER\packages\coveralls.net.*\tools\csmacnz.Coveralls.exe").ToString()
+        #$coveralls = (Resolve-Path "$env:APPVEYOR_BUILD_FOLDER\packages\coveralls.net.*\tools\csmacnz.Coveralls.exe").ToString()
 
-        if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { & $coveralls --opencover -i ./opencovertests.xml --repoToken $env:COVERALLS_REPO_TOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --pullRequest $env:APPVEYOR_PULL_REQUEST_NUMBER --serviceName appveyor }
+        #if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { & $coveralls --opencover -i ./opencovertests.xml --repoToken $env:COVERALLS_REPO_TOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --pullRequest $env:APPVEYOR_PULL_REQUEST_NUMBER --serviceName appveyor }
         
-        if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & $coveralls --opencover -i ./opencovertests.xml --repoToken $env:COVERALLS_REPO_TOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --serviceName appveyor }
+        #if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & $coveralls --opencover -i ./opencovertests.xml --repoToken $env:COVERALLS_REPO_TOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --serviceName appveyor }
 
-        codecov -f ./opencovertests.xml -t $env:CODECOV_TOKEN
+        #codecov -f ./opencovertests.xml -t $env:CODECOV_TOKEN
