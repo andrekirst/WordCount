@@ -8,6 +8,7 @@ namespace WordCount.AutofacModules
     [ExcludeFromCodeCoverage]
     public class LogRequestsModule : Module
     {
+        [ExcludeFromCodeCoverage]
         protected override void AttachToComponentRegistration(
             IComponentRegistry componentRegistry,
             IComponentRegistration registration)
