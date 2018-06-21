@@ -13,11 +13,6 @@ namespace WordCount.AutofacModules
             IComponentRegistry componentRegistry,
             IComponentRegistration registration)
         {
-            void RegistrationAction(IInstanceActivator activator, string actionName)
-            {
-                Debug.WriteLine(value: $"{actionName} concrete type {activator.LimitType}");
-            }
-
             registration.Preparing += (sender, args) =>
             {
                 RegistrationAction(
@@ -38,6 +33,12 @@ namespace WordCount.AutofacModules
                     activator: args.Component.Activator,
                     actionName: "Activating");
             };
+        }
+
+        [ExcludeFromCodeCoverage]
+        private static void RegistrationAction(IInstanceActivator activator, string actionName)
+        {
+            Debug.WriteLine(value: $"{actionName} concrete type {activator.LimitType}");
         }
     }
 }
