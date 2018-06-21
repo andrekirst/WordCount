@@ -43,7 +43,7 @@ build_script:
   - ps: >-
         $opencoverexe = (Resolve-Path "$env:APPVEYOR_BUILD_FOLDER\packages\OpenCover.*\tools\OpenCover.Console.exe").ToString()
 
-        & $opencoverexe -register:user -filter:"+[*]* -[*.Tests*]*" -excludebyattribute:*ExcludeFromCodeCoverage* -target:vstest.console.exe "-targetargs:$env:APPVEYOR_BUILD_FOLDER\WordCount.Tests\bin\$env:CONFIGURATION\WordCount.Tests.dll /TestAdaptherPath:""$env:APPVEYOR_BUILD_FOLDER\packages\xunit.runner.visualstudio.2.3.1\build\_common\xunit.runner.visualstudio.testadapter.dll""" -output:$env:APPVEYOR_BUILD_FOLDER\opencovertests.xml
+        & $opencoverexe -register:user -filter:"+[*]* -[*.Tests*]*" -excludebyattribute:*ExcludeFromCodeCoverage* -target:vstest.console.exe -targetargs:"$env:APPVEYOR_BUILD_FOLDER\WordCount.Tests\bin\$env:CONFIGURATION\WordCount.Tests.dll /TestAdaptherPath:$env:APPVEYOR_BUILD_FOLDER\packages\xunit.runner.visualstudio.2.3.1\build\_common\xunit.runner.visualstudio.testadapter.dll" -output:$env:APPVEYOR_BUILD_FOLDER\opencovertests.xml
 
         $coveralls = (Resolve-Path "$env:APPVEYOR_BUILD_FOLDER\packages\coveralls.net.*\tools\csmacnz.Coveralls.exe").ToString()
 
