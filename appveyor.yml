@@ -37,7 +37,7 @@ install:
   - nuget restore c:\projects\WordCount\WordCount.sln
 
 build_script:
-  - ps: MSBuild.SonarQube.Runner.exe begin /n:"WordCount" /k:"andrekirst:WordCount" /d:"sonar.organization=andrekirst-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$($env:SONARQUBE_TOKEN)" /v:"$($env:appveyor_build_version)" /d:"sonar.exclusions=**/AssemblyInfo.cs" /d:"sonar.branch.name=$env:APPVEYOR_REPO_BRANCH" /d:"sonar.dotnet.visualstudio.testProjectPattern=*.Tests" /d:sonar.cs.opencover.reportsPaths="$env:APPVEYOR_BUILD_FOLDER\opencovertests.xml" /d:sonar.cs.vstest.reportsPath="$env:APPVEYOR_BUILD_FOLDER\WordCount\bin\$env:CONFIGURATION\TestResults*.trx"
+  - ps: MSBuild.SonarQube.Runner.exe begin /n:"WordCount" /k:"andrekirst:WordCount" /d:"sonar.organization=andrekirst-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$($env:SONARQUBE_TOKEN)" /v:"$($env:appveyor_build_version)" /d:"sonar.exclusions=**/AssemblyInfo.cs" /d:"sonar.dotnet.visualstudio.testProjectPattern=*.Tests" /d:sonar.cs.opencover.reportsPaths="$env:APPVEYOR_BUILD_FOLDER\opencovertests.xml" /d:sonar.cs.vstest.reportsPath="$env:APPVEYOR_BUILD_FOLDER\WordCount\bin\$env:CONFIGURATION\TestResults*.trx"
   - msbuild c:\projects\WordCount\WordCount.sln /property:Configuration=Release /t:Rebuild /p:RunCodeAnalysis=true
   #- ps: vstest.console /logger:Appveyor "$env:APPVEYOR_BUILD_FOLDER\WordCount.Tests\bin\$env:CONFIGURATION\WordCount.Tests.dll"
   - ps: >-
