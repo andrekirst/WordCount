@@ -50,4 +50,4 @@ build_script:
         
         if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & $coveralls --opencover -i ./opencovertests.xml --repoToken $env:COVERALLS_REPO_TOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --serviceName appveyor }
 
-        & codecov -f ./opencovertests.xml -t $env:CODECOV_TOKEN
+        codecov -f ./opencovertests.xml -t $env:CODECOV_TOKEN
