@@ -1,0 +1,43 @@
+# Erweiterte Dokumentation: https://www.appveyor.com/docs/appveyor-yml/
+
+# Version festlegen
+version: 1.0.{build}
+
+clone_folder: c:\projects\WordCount
+
+skip_branch_with_pr: false
+
+# VM-Template für Visual Studio 2017
+image: Visual Studio 2017
+
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "{version}"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "{version}"
+
+platform: Any CPU
+configuration: Release
+
+matrix:
+  fast_finish: true
+
+environment:
+  SONARQUBE_TOKEN:
+    secure: ACcdrpuhAnH8XDKRMUFdE4pjTH1vlH5LEvG0U5MDyuQYfDY3zjFXVzA0HLlmtQSq
+  CODECOV_TOKEN:
+    secure: xD2Si76xwqwDjnJOB1w1SjTtiogJX9xn9fJbXXqlzyYAt3/32El2hxE3GW22Xu0X
+  COVERALLS_REPO_TOKEN:
+    secure: bfX6ISggSBc6AHPqmjFB4CG6xYnpU3mZbJEGtVvbd+XO16NZBd3IUeLvmFyCLhuC
+
+install:
+  - choco install "msbuild-sonarqube-runner" -y
+
+before_build:
+  - nuget restore c:\projects\WordCount\WordCount.sln
+
+build_script:
+  - ps: MSBuild.SonarQube.Runner.exe begin /n:"WordCount" /k:"andrekirst:WordCount" /d:"sonar.organization=andrekirst-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$($env:SONARQUBE_TOKEN)" /v:"$($env:appveyor_build_version)" /d:"sonar.exclusions=**/AssemblyInfo.cs" /d:"sonar.branch.name=$env:APPVEYOR_REPO_BRANCH" /d:"sonar.dotnet.visualstudio.testProjectPattern=*.Tests" /d:sonar.cs.opencover.reportsPaths="$env:APPVEYOR_BUILD_FOLDER\opencovertests.xml" /d:sonar.cs.vstest.reportsPath="$env:APPVEYOR_BUILD_FOLDER\WordCount\bin\$env:CONFIGURATION\TestResults*.trx"
+  - msbuild c:\projects\WordCount\WordCount.sln /property:Configuration=Release /t:Rebuild /p:RunCodeAnalysis=true /verbosity:minimal
+  - ps: MSBuild.SonarQube.Runner.exe end /d:"sonar.login=$($env:SONARQUBE_TOKEN)"

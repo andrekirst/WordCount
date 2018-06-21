@@ -31,7 +31,7 @@ namespace WordCount.Tests
         }
 
         [Fact]
-        public void StopwordLoaderTests_GetStopwords_FileNotExist_Return_null()
+        public void StopwordLoaderTests_GetStopwords_FileNotExist_Return_EmptyList()
         {
             _mockFileSystem
                 .Setup(expression: m => m.File.ReadAllLines(It.IsAny<string>()))
@@ -39,11 +39,12 @@ namespace WordCount.Tests
 
             List<string> actual = _systemUnderTest.GetStopwords();
 
-            Assert.Null(@object: actual);
+            Assert.NotNull(@object: actual);
+            Assert.Empty(collection: actual);
         }
 
         [Fact]
-        public void StopwordLoaderTests_GetStopwords_FileEmpty_Return_null()
+        public void StopwordLoaderTests_GetStopwords_FileEmpty_Return_EmptyList()
         {
             _mockFileSystem
                 .Setup(expression: m => m.File.ReadAllLines(It.IsAny<string>()))
@@ -51,7 +52,8 @@ namespace WordCount.Tests
 
             List<string> actual = _systemUnderTest.GetStopwords();
 
-            Assert.Null(@object: actual);
+            Assert.NotNull(@object: actual);
+            Assert.Empty(collection: actual);
         }
 
         [Fact]

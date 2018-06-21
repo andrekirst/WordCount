@@ -19,7 +19,7 @@ namespace WordCount.Implementations
         {
             if (!_fileSystem.File.Exists(path: StopwordFileName))
             {
-                return null;
+                return new List<string>();
             }
 
             return _fileSystem
