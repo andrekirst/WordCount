@@ -3,6 +3,7 @@ using Autofac;
 using Moq;
 using WordCount.Abstractions.Console;
 using WordCount.Implementations;
+using WordCount.Interfaces;
 using WordCount.Models;
 using Xunit;
 
@@ -11,13 +12,13 @@ namespace WordCount.Tests
     public class TextInputTests
     {
         private readonly Mock<IConsole> _mockConsole;
-        private readonly Mock<IFileSystem> _mockFileSystem;
+        private readonly Mock<ITextFileLoader> _mockTextFileLoader;
         private readonly TextInput _systemUnderTest;
 
         public TextInputTests()
         {
             _mockConsole = new Mock<IConsole>();
-            _mockFileSystem = new Mock<IFileSystem>();
+            _mockTextFileLoader = new Mock<ITextFileLoader>();
 
             var containerBuilder = new ContainerBuilder();
 
@@ -26,8 +27,8 @@ namespace WordCount.Tests
                 .As<IConsole>();
 
             containerBuilder
-                .RegisterInstance(instance: _mockFileSystem.Object)
-                .As<IFileSystem>();
+                .RegisterInstance(instance: _mockTextFileLoader.Object)
+                .As<ITextFileLoader>();
 
             containerBuilder
                 .RegisterType<TextInput>();
@@ -52,8 +53,8 @@ namespace WordCount.Tests
         [Fact]
         public void TextInputTests_Parameter_argumentsReaderResult_Value_Blub_Expect_Blub()
         {
-            _mockFileSystem
-                .Setup(m => m.File.ReadAllText(It.IsAny<string>()))
+            _mockTextFileLoader
+                .Setup(m => m.ReadTextFile(It.IsAny<string>()))
                 .Returns(value: "Blub");
 
             string actual = _systemUnderTest.GetInputText(

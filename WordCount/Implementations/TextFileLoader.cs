@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.IO.Abstractions;
 using WordCount.Interfaces;
 
@@ -23,9 +24,9 @@ namespace WordCount.Implementations
             {
                 return _fileSystem.File.ReadAllText(path: path);
             }
-            catch (Exception)
+            catch (FileNotFoundException)
             {
-
+                _displayOutput.WriteErrorLine($"File \"{path}\" not found.");
                 throw;
             }
         }

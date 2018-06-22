@@ -42,13 +42,32 @@ namespace WordCount.Tests
         public void TextFileLoaderTests_FileNotFoundException_Thrown_Expect_DisplayOutput_WriteError()
         {
             _mockFileSystem
+                .Setup(m => m.File.ReadAllText("datei1.txt"))
+                .Throws(new FileNotFoundException("Error-Message", "datei1.txt"));
+
+            Assert.Throws<FileNotFoundException>(testCode: () =>
+            {
+                _systemUnderTest.ReadTextFile("datei1.txt");
+            });
+
+            _mockDisplayOutput
+                .Verify(
+                    expression: v => v.WriteErrorLine($"File \"datei1.txt\" not found."),
+                    times: Times.Once);
+        }
+
+        [Fact]
+        public void TextFileLoaderTests_FileNotFoundException_Thrown_Expect_FileNotFoundException()
+        {
+            _mockFileSystem
                 .Setup(m => m.File.ReadAllText(It.IsAny<string>()))
                 .Throws(new FileNotFoundException(It.IsAny<string>(), "datei1.txt"));
 
-            _systemUnderTest.ReadTextFile(It.IsAny<string>());
-
-            _mockDisplayOutput
-                .Verify(v => v.WriteErrorLine($"File \"datei1.txt\" not found."), Times.Once);
+            Assert.Throws<FileNotFoundException>(
+                testCode: () =>
+                {
+                    _systemUnderTest.ReadTextFile("datei1.txt");
+                });
         }
     }
 }
