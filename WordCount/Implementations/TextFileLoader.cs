@@ -20,15 +20,17 @@ namespace WordCount.Implementations
 
         public string ReadTextFile(string path)
         {
+            string text;
             try
             {
-                return _fileSystem.File.ReadAllText(path: path);
+                text = _fileSystem.File.ReadAllText(path: path);
             }
             catch (FileNotFoundException)
             {
                 _displayOutput.WriteErrorLine(errorMessage: $"File \"{path}\" not found.");
                 throw;
             }
+            return text;
         }
     }
 }

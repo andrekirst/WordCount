@@ -4,14 +4,18 @@
     {
         public ArgumentsReaderResult(
             string sourceTextFile,
-            bool isSourceTextFilePresent)
+            bool isSourceTextFileParameterPresent,
+            bool isIndexParameterPresent)
         {
             SourceTextFile = sourceTextFile;
-            IsSourceTextFilePresent = isSourceTextFilePresent;
+            IsSourceTextFileParameterPresent = isSourceTextFileParameterPresent;
+            IsIndexParameterPresent = isIndexParameterPresent;
         }
 
         public string SourceTextFile { get; }
 
-        public bool IsSourceTextFilePresent { get; }
+        public bool IsSourceTextFileParameterPresent { get; }
+
+        public bool IsIndexParameterPresent { get; }
     }
 }

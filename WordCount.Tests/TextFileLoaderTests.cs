@@ -69,5 +69,17 @@ namespace WordCount.Tests
                     _systemUnderTest.ReadTextFile("datei1.txt");
                 });
         }
+
+        [Fact]
+        public void TextFileLoaderTests_ReadAllText_Bla_Expect_Bla()
+        {
+            _mockFileSystem
+                .Setup(expression: m => m.File.ReadAllText(It.IsAny<string>()))
+                .Returns(value: "Bla");
+
+            string actual = _systemUnderTest.ReadTextFile(path: It.IsAny<string>());
+
+            Assert.Equal(expected: "Bla", actual: actual);
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace WordCount.Implementations
             {
                 ArgumentsReaderResult argumentsReaderResult = _argumentsReader.ReadArguments(args: args);
 
-                if (!argumentsReaderResult.IsSourceTextFilePresent)
+                if (!argumentsReaderResult.IsSourceTextFileParameterPresent)
                 {
                     _displayOutput.Write(text: "Enter text: ");
                 }
