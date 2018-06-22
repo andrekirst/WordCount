@@ -1,5 +1,4 @@
-﻿using System.IO.Abstractions;
-using WordCount.Abstractions.Console;
+﻿using WordCount.Abstractions.Console;
 using WordCount.Interfaces;
 using WordCount.Models;
 
@@ -20,7 +19,7 @@ namespace WordCount.Implementations
 
         public string GetInputText(ArgumentsReaderResult argumentsReaderResult)
         {
-            return argumentsReaderResult != null && argumentsReaderResult.IsSourceTextFilePresent ?
+            return argumentsReaderResult != null && argumentsReaderResult.IsSourceTextFileParameterPresent ?
                 _textFileLoader.ReadTextFile(path: argumentsReaderResult.SourceTextFile) :
                 _console.ReadLine();
         }

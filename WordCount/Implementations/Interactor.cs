@@ -10,19 +10,22 @@ namespace WordCount.Implementations
         private readonly IWordCountAnalyzerOutput _wordCountAnalyzerOutput;
         private readonly IArgumentsReader _argumentsReader;
         private readonly IDisplayOutput _displayOutput;
+        private readonly IIndexOutput _indexOutput;
 
         public Interactor(
             ITextInput textInput,
             IWordCountAnalyzer wordCountAnalyzer,
             IWordCountAnalyzerOutput wordCountAnalyzerOutput,
             IArgumentsReader argumentsReader,
-            IDisplayOutput displayOutput)
+            IDisplayOutput displayOutput,
+            IIndexOutput indexOutput)
         {
             _textInput = textInput;
             _wordCountAnalyzer = wordCountAnalyzer;
             _wordCountAnalyzerOutput = wordCountAnalyzerOutput;
             _argumentsReader = argumentsReader;
             _displayOutput = displayOutput;
+            _indexOutput = indexOutput;
         }
 
         public int Execute(string[] args)
@@ -31,7 +34,7 @@ namespace WordCount.Implementations
             {
                 ArgumentsReaderResult argumentsReaderResult = _argumentsReader.ReadArguments(args: args);
 
-                if (!argumentsReaderResult.IsSourceTextFilePresent)
+                if (!argumentsReaderResult.IsSourceTextFileParameterPresent)
                 {
                     _displayOutput.Write(text: "Enter text: ");
                 }
@@ -43,6 +46,11 @@ namespace WordCount.Implementations
                 string displayResultAsString = _wordCountAnalyzerOutput.DisplayResultAsString(wordCountAnalyzerResult: analyzeResult);
 
                 _displayOutput.WriteLine(text: displayResultAsString);
+
+                if (argumentsReaderResult.IsIndexParameterPresent)
+                {
+                    _indexOutput.OutputIndex(wordCountAnalyzerResult: analyzeResult); 
+                }
             }
             catch (System.Exception)
             {

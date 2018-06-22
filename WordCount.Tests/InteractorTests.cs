@@ -15,6 +15,7 @@ namespace WordCount.Tests
         private readonly Mock<IWordCountAnalyzerOutput> _mockWordCountAnalyzerOutput;
         private readonly Mock<IArgumentsReader> _mockArgumentsReader;
         private readonly Mock<IDisplayOutput> _mockDisplayOutput;
+        private readonly Mock<IIndexOutput> _mockIndexOutput;
         private readonly Interactor _systemUnderTest;
 
         public InteractorTests()
@@ -24,8 +25,15 @@ namespace WordCount.Tests
             _mockWordCountAnalyzerOutput = new Mock<IWordCountAnalyzerOutput>();
             _mockArgumentsReader = new Mock<IArgumentsReader>();
             _mockDisplayOutput = new Mock<IDisplayOutput>();
+            _mockIndexOutput = new Mock<IIndexOutput>();
 
             var containerBuilder = new ContainerBuilder();
+
+            containerBuilder
+                .RegisterInstance(instance: _mockIndexOutput.Object)
+                .As<IIndexOutput>()
+                .SingleInstance();
+
             containerBuilder
                 .RegisterInstance(instance: _mockTextInput.Object)
                 .As<ITextInput>()
@@ -69,7 +77,7 @@ namespace WordCount.Tests
 
             _mockArgumentsReader
                 .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
-                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), true));
+                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), true, It.IsAny<bool>()));
 
             int actual = _systemUnderTest.Execute(args: It.IsAny<string[]>());
 
@@ -85,7 +93,8 @@ namespace WordCount.Tests
                 .Setup(expression: m => m.ReadArguments(args))
                 .Returns(value: new ArgumentsReaderResult(
                     sourceTextFile: It.IsAny<string>(),
-                    isSourceTextFilePresent: true));
+                    isSourceTextFileParameterPresent: true,
+                    isIndexParameterPresent: It.IsAny<bool>()));
 
             _systemUnderTest.Execute(args: args);
 
@@ -98,7 +107,7 @@ namespace WordCount.Tests
         {
             _mockArgumentsReader
                 .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
-                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), false));
+                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), false, It.IsAny<bool>()));
 
             _systemUnderTest.Execute(args: It.IsAny<string[]>());
 
@@ -113,7 +122,7 @@ namespace WordCount.Tests
         {
             _mockArgumentsReader
                 .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
-                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), true));
+                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), true, It.IsAny<bool>()));
 
             _systemUnderTest.Execute(args: It.IsAny<string[]>());
 

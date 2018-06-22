@@ -18,7 +18,7 @@ namespace WordCount.Tests
         {
             ArgumentsReaderResult actual = _systemUnderTest.ReadArguments(args: null);
 
-            Assert.False(condition: actual.IsSourceTextFilePresent);
+            Assert.False(condition: actual.IsSourceTextFileParameterPresent);
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace WordCount.Tests
         {
             ArgumentsReaderResult actual = _systemUnderTest.ReadArguments(args: new string[] { });
 
-            Assert.False(condition: actual.IsSourceTextFilePresent);
+            Assert.False(condition: actual.IsSourceTextFileParameterPresent);
         }
 
         [Fact]
@@ -44,7 +44,14 @@ namespace WordCount.Tests
         {
             ArgumentsReaderResult actual = _systemUnderTest.ReadArguments(args: new[] { "mytext.txt" });
 
-            Assert.True(condition: actual.IsSourceTextFilePresent);
+            Assert.True(condition: actual.IsSourceTextFileParameterPresent);
+        }
+
+        [Fact]
+        public void ConsoleParameterArgumentsReaderTests_Argument_Index_Is_Present_Expect_IndexParameterPresent_True()
+        {
+            ArgumentsReaderResult actual = _systemUnderTest.ReadArguments(args: new[] {"-index"});
+            Assert.True(condition: actual.IsIndexParameterPresent);
         }
     }
 }
