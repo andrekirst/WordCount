@@ -48,5 +48,20 @@ namespace WordCount.Tests
             _mockConsole
                 .Verify(expression: v => v.WriteLine("A"), times: Times.Once);
         }
+
+        [Fact]
+        public void ConsoleDisplayOutputTests_WriteErrorLine_FEHLER_Color_Red()
+        {
+            _systemUnderTest.WriteErrorLine("FEHLER");
+
+            _mockConsole
+                .VerifySet(v1 => v1.ForegroundColor = System.ConsoleColor.Red, Times.Once);
+
+            _mockConsole
+                .Verify(v2 => v2.WriteLine("FEHLER"), Times.Once);
+
+            _mockConsole
+                .Verify(v3 => v3.ResetColor(), Times.Once);
+        }
     }
 }

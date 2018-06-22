@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
@@ -9,44 +10,44 @@ namespace WordCount.Tests
 {
     public class InteractorTests
     {
-        private readonly Mock<ITextInput> _textInput;
-        private readonly Mock<IWordCountAnalyzer> _wordCountAnalyzer;
-        private readonly Mock<IWordCountAnalyzerOutput> _wordCountAnalyzerOutput;
-        private readonly Mock<IArgumentsReader> _argumentsReader;
-        private readonly Mock<IDisplayOutput> _displayOutput;
+        private readonly Mock<ITextInput> _mockTextInput;
+        private readonly Mock<IWordCountAnalyzer> _mockWordCountAnalyzer;
+        private readonly Mock<IWordCountAnalyzerOutput> _mockWordCountAnalyzerOutput;
+        private readonly Mock<IArgumentsReader> _mockArgumentsReader;
+        private readonly Mock<IDisplayOutput> _mockDisplayOutput;
         private readonly Interactor _systemUnderTest;
 
         public InteractorTests()
         {
-            _textInput = new Mock<ITextInput>();
-            _wordCountAnalyzer = new Mock<IWordCountAnalyzer>();
-            _wordCountAnalyzerOutput = new Mock<IWordCountAnalyzerOutput>();
-            _argumentsReader = new Mock<IArgumentsReader>();
-            _displayOutput = new Mock<IDisplayOutput>();
+            _mockTextInput = new Mock<ITextInput>();
+            _mockWordCountAnalyzer = new Mock<IWordCountAnalyzer>();
+            _mockWordCountAnalyzerOutput = new Mock<IWordCountAnalyzerOutput>();
+            _mockArgumentsReader = new Mock<IArgumentsReader>();
+            _mockDisplayOutput = new Mock<IDisplayOutput>();
 
             var containerBuilder = new ContainerBuilder();
             containerBuilder
-                .RegisterInstance(instance: _textInput.Object)
+                .RegisterInstance(instance: _mockTextInput.Object)
                 .As<ITextInput>()
                 .SingleInstance();
 
             containerBuilder
-                .RegisterInstance(instance: _wordCountAnalyzer.Object)
+                .RegisterInstance(instance: _mockWordCountAnalyzer.Object)
                 .As<IWordCountAnalyzer>()
                 .SingleInstance();
 
             containerBuilder
-                .RegisterInstance(instance: _wordCountAnalyzerOutput.Object)
+                .RegisterInstance(instance: _mockWordCountAnalyzerOutput.Object)
                 .As<IWordCountAnalyzerOutput>()
                 .SingleInstance();
 
             containerBuilder
-                .RegisterInstance(instance: _argumentsReader.Object)
+                .RegisterInstance(instance: _mockArgumentsReader.Object)
                 .As<IArgumentsReader>()
                 .SingleInstance();
 
             containerBuilder
-                .RegisterInstance(instance: _displayOutput.Object)
+                .RegisterInstance(instance: _mockDisplayOutput.Object)
                 .As<IDisplayOutput>()
                 .SingleInstance();
 
@@ -60,11 +61,27 @@ namespace WordCount.Tests
         }
 
         [Fact]
+        public void InteractorTests_TextInput_Throws_Error_Expect_ReturnCode_1()
+        {
+            _mockTextInput
+                .Setup(m => m.GetInputText(It.IsAny<ArgumentsReaderResult>()))
+                .Throws<Exception>();
+
+            _mockArgumentsReader
+                .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
+                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), true));
+
+            int actual = _systemUnderTest.Execute(args: It.IsAny<string[]>());
+
+            Assert.Equal(expected: 1, actual: actual);
+        }
+
+        [Fact]
         public void InteractorTests_Call_ReadArguments_Verify_1_Call()
         {
             string[] args = { "mytext.txt" };
 
-            _argumentsReader
+            _mockArgumentsReader
                 .Setup(expression: m => m.ReadArguments(args))
                 .Returns(value: new ArgumentsReaderResult(
                     sourceTextFile: It.IsAny<string>(),
@@ -72,20 +89,20 @@ namespace WordCount.Tests
 
             _systemUnderTest.Execute(args: args);
 
-            _argumentsReader
+            _mockArgumentsReader
                 .Verify(expression: v => v.ReadArguments(args), times: Times.Once);
         }
 
         [Fact]
         public void InteractorTests_ArgumentReader_no_file_is_present_expect_DisplayOutput_Enter_Text()
         {
-            _argumentsReader
+            _mockArgumentsReader
                 .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
                 .Returns(new ArgumentsReaderResult(It.IsAny<string>(), false));
 
             _systemUnderTest.Execute(args: It.IsAny<string[]>());
 
-            _displayOutput
+            _mockDisplayOutput
                 .Verify(
                     expression: v => v.Write("Enter text: "),
                     times: Times.Once);
@@ -94,13 +111,13 @@ namespace WordCount.Tests
         [Fact]
         public void InteractorTests_ArgumentReader_file_is_present_expect_not_DisplayOutput_Enter_Text()
         {
-            _argumentsReader
+            _mockArgumentsReader
                 .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
                 .Returns(new ArgumentsReaderResult(It.IsAny<string>(), true));
 
             _systemUnderTest.Execute(args: It.IsAny<string[]>());
 
-            _displayOutput
+            _mockDisplayOutput
                 .Verify(
                     expression: v => v.Write("Enter text: "),
                     times: Times.Never);

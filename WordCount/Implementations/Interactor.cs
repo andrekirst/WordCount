@@ -27,20 +27,27 @@ namespace WordCount.Implementations
 
         public int Execute(string[] args)
         {
-            ArgumentsReaderResult argumentsReaderResult = _argumentsReader.ReadArguments(args: args);
-
-            if (!argumentsReaderResult.IsSourceTextFilePresent)
+            try
             {
-                _displayOutput.Write(text: "Enter text: "); 
+                ArgumentsReaderResult argumentsReaderResult = _argumentsReader.ReadArguments(args: args);
+
+                if (!argumentsReaderResult.IsSourceTextFilePresent)
+                {
+                    _displayOutput.Write(text: "Enter text: ");
+                }
+
+                string text = _textInput.GetInputText(argumentsReaderResult: argumentsReaderResult);
+
+                WordCountAnalyzerResult analyzeResult = _wordCountAnalyzer.Analyze(text: text);
+
+                string displayResultAsString = _wordCountAnalyzerOutput.DisplayResultAsString(wordCountAnalyzerResult: analyzeResult);
+
+                _displayOutput.WriteLine(text: displayResultAsString);
             }
-
-            string text = _textInput.GetInputText(argumentsReaderResult: argumentsReaderResult);
-
-            WordCountAnalyzerResult analyzeResult = _wordCountAnalyzer.Analyze(text: text);
-
-            string displayResultAsString = _wordCountAnalyzerOutput.DisplayResultAsString(wordCountAnalyzerResult: analyzeResult);
-
-            _displayOutput.WriteLine(text: displayResultAsString);
+            catch (System.Exception)
+            {
+                return 1;
+            }
 
             return 0;
         }
