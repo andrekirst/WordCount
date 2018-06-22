@@ -26,7 +26,7 @@ namespace WordCount.Implementations
             }
             catch (FileNotFoundException)
             {
-                _displayOutput.WriteErrorLine($"File \"{path}\" not found.");
+                _displayOutput.WriteErrorLine(errorMessage: $"File \"{path}\" not found.");
                 throw;
             }
         }
