@@ -40,6 +40,7 @@ namespace WordCount
             containerBuilder.Register<ITextSplit, TextSplit>();
             containerBuilder.Register<IStopwordLoader, StopwordLoader>();
             containerBuilder.Register<IStopwordRemover, StopwordRemover>();
+            containerBuilder.Register<IIndexOutput, IndexOutput>();
 
             return containerBuilder
                 .Build()

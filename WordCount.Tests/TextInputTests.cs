@@ -1,5 +1,4 @@
-﻿using System.IO.Abstractions;
-using Autofac;
+﻿using Autofac;
 using Moq;
 using WordCount.Abstractions.Console;
 using WordCount.Implementations;

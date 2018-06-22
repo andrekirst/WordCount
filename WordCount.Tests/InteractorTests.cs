@@ -15,6 +15,7 @@ namespace WordCount.Tests
         private readonly Mock<IWordCountAnalyzerOutput> _mockWordCountAnalyzerOutput;
         private readonly Mock<IArgumentsReader> _mockArgumentsReader;
         private readonly Mock<IDisplayOutput> _mockDisplayOutput;
+        private readonly Mock<IIndexOutput> _mockIndexOutput;
         private readonly Interactor _systemUnderTest;
 
         public InteractorTests()
@@ -24,8 +25,15 @@ namespace WordCount.Tests
             _mockWordCountAnalyzerOutput = new Mock<IWordCountAnalyzerOutput>();
             _mockArgumentsReader = new Mock<IArgumentsReader>();
             _mockDisplayOutput = new Mock<IDisplayOutput>();
+            _mockIndexOutput = new Mock<IIndexOutput>();
 
             var containerBuilder = new ContainerBuilder();
+
+            containerBuilder
+                .RegisterInstance(instance: _mockIndexOutput.Object)
+                .As<IIndexOutput>()
+                .SingleInstance();
+
             containerBuilder
                 .RegisterInstance(instance: _mockTextInput.Object)
                 .As<ITextInput>()

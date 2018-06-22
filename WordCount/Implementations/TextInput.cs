@@ -1,5 +1,4 @@
-﻿using System.IO.Abstractions;
-using WordCount.Abstractions.Console;
+﻿using WordCount.Abstractions.Console;
 using WordCount.Interfaces;
 using WordCount.Models;
 
