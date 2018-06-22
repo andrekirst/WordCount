@@ -77,7 +77,10 @@ namespace WordCount.Tests
 
             _mockArgumentsReader
                 .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
-                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), true, It.IsAny<bool>()));
+                .Returns(value: new ArgumentsReaderResult()
+                {
+                    IsSourceTextFileParameterPresent = true
+                });
 
             int actual = _systemUnderTest.Execute(args: It.IsAny<string[]>());
 
@@ -91,10 +94,10 @@ namespace WordCount.Tests
 
             _mockArgumentsReader
                 .Setup(expression: m => m.ReadArguments(args))
-                .Returns(value: new ArgumentsReaderResult(
-                    sourceTextFile: It.IsAny<string>(),
-                    isSourceTextFileParameterPresent: true,
-                    isIndexParameterPresent: It.IsAny<bool>()));
+                .Returns(value: new ArgumentsReaderResult()
+                {
+                    IsSourceTextFileParameterPresent = true
+                });
 
             _systemUnderTest.Execute(args: args);
 
@@ -107,7 +110,10 @@ namespace WordCount.Tests
         {
             _mockArgumentsReader
                 .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
-                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), false, It.IsAny<bool>()));
+                .Returns(new ArgumentsReaderResult()
+                {
+                    IsSourceTextFileParameterPresent = false
+                });
 
             _systemUnderTest.Execute(args: It.IsAny<string[]>());
 
@@ -122,7 +128,10 @@ namespace WordCount.Tests
         {
             _mockArgumentsReader
                 .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
-                .Returns(new ArgumentsReaderResult(It.IsAny<string>(), true, It.IsAny<bool>()));
+                .Returns(new ArgumentsReaderResult()
+                {
+                    IsSourceTextFileParameterPresent = true
+                });
 
             _systemUnderTest.Execute(args: It.IsAny<string[]>());
 

@@ -1,21 +1,16 @@
-﻿namespace WordCount.Models
+﻿using System.Collections.Generic;
+
+namespace WordCount.Models
 {
     public class ArgumentsReaderResult
     {
-        public ArgumentsReaderResult(
-            string sourceTextFile,
-            bool isSourceTextFileParameterPresent,
-            bool isIndexParameterPresent)
-        {
-            SourceTextFile = sourceTextFile;
-            IsSourceTextFileParameterPresent = isSourceTextFileParameterPresent;
-            IsIndexParameterPresent = isIndexParameterPresent;
-        }
+        public string SourceTextFile { get; set; }
 
-        public string SourceTextFile { get; }
+        public bool IsSourceTextFileParameterPresent { get; set; }
 
-        public bool IsSourceTextFileParameterPresent { get; }
+        public bool IsIndexParameterPresent { get; set; }
 
-        public bool IsIndexParameterPresent { get; }
+        public bool IsDictionaryParameterPresent { get; set; }
+        public string DictionaryTextFile { get; set; }
     }
 }

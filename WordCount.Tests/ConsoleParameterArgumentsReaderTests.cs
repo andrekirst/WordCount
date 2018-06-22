@@ -53,5 +53,19 @@ namespace WordCount.Tests
             ArgumentsReaderResult actual = _systemUnderTest.ReadArguments(args: new[] {"-index"});
             Assert.True(condition: actual.IsIndexParameterPresent);
         }
+
+        [Fact]
+        public void ConsoleParameterArgumentsReaderTests_Argument_Dictionary_Is_Present_Expect_DictionaryParameterPresent_True()
+        {
+            ArgumentsReaderResult actual = _systemUnderTest.ReadArguments(args: new[] { "-dictionary=dict.txt" });
+            Assert.True(condition: actual.IsDictionaryParameterPresent);
+        }
+
+        [Fact]
+        public void ConsoleParameterArgumentsReaderTests_Argument_Dictionary_Is_Present_Expect_DictionaryName_Dict_txt()
+        {
+            ArgumentsReaderResult actual = _systemUnderTest.ReadArguments(args: new[] { "-dictionary=dict.txt" });
+            Assert.Equal(expected: "dict.txt", actual: actual.DictionaryTextFile);
+        }
     }
 }

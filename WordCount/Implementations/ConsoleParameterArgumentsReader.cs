@@ -15,12 +15,22 @@ namespace WordCount.Implementations
             bool isIndexParameterPresent = argumentsList.Contains(item: IndexParameterName);
             argumentsList.Remove(item: IndexParameterName);
 
+            string dictionaryParameter = argumentsList
+                .FirstOrDefault(predicate: p => p.StartsWith(value: "-dictionary="));
+
+            bool isDictionaryParameterPresent = !string.IsNullOrEmpty(value: dictionaryParameter);
+            string dictionaryTextFile = dictionaryParameter?.Split('=')[1];
+
             bool isSourceTextFileParameterPresent = argumentsList.Any();
 
-            return new ArgumentsReaderResult(
-                sourceTextFile: isSourceTextFileParameterPresent ? argumentsList.First() : null,
-                isSourceTextFileParameterPresent: isSourceTextFileParameterPresent,
-                isIndexParameterPresent: isIndexParameterPresent);
+            return new ArgumentsReaderResult()
+            {
+                IsDictionaryParameterPresent = isDictionaryParameterPresent,
+                IsIndexParameterPresent = isIndexParameterPresent,
+                SourceTextFile = isSourceTextFileParameterPresent ? argumentsList.First() : null,
+                IsSourceTextFileParameterPresent = isSourceTextFileParameterPresent,
+                DictionaryTextFile = dictionaryTextFile
+            };
         }
     }
 }

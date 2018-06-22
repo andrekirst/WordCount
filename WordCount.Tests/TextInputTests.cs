@@ -57,10 +57,12 @@ namespace WordCount.Tests
                 .Returns(value: "Blub");
 
             string actual = _systemUnderTest.GetInputText(
-                argumentsReaderResult: new ArgumentsReaderResult(
-                    sourceTextFile: It.IsAny<string>(),
-                    isSourceTextFileParameterPresent: true,
-                    isIndexParameterPresent: It.IsAny<bool>()));
+                argumentsReaderResult: new ArgumentsReaderResult()
+                {
+                    SourceTextFile = It.IsAny<string>(),
+                    IsSourceTextFileParameterPresent = true,
+                    IsIndexParameterPresent = It.IsAny<bool>()
+                });
 
             Assert.Equal(expected: "Blub", actual: actual);
         }
