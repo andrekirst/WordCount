@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="ConsoleDisplayOutputTests.cs" />
     <Compile Include="ConsoleParameterArgumentsReaderTests.cs" />
+    <Compile Include="DictionaryFileLoaderTests.cs" />
     <Compile Include="IndexOutputTests.cs" />
     <Compile Include="InteractorTests.cs" />
     <Compile Include="StopwordLoaderTests.cs" />
