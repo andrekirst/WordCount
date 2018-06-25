@@ -12,17 +12,18 @@ namespace WordCount.Implementations
         {
             if (string.IsNullOrWhiteSpace(value: text))
             {
-                return new TextSplitResult(new List<string>());
+                return new TextSplitResult(values: new List<string>());
             }
 
+            // Regulärer Ausdruck, der Alle zeichen (inklusive - und Unicode-Zeichen) sucht und kein - am Ende haben
             MatchCollection regexMatches = Regex.Matches(
                 input: text,
-                pattern: @"[a-zA-Z\-\u00D8-\u00F6]{1,}",
+                pattern: @"[a-zA-Z\-\u00D8-\u00F6]{0,}[^-\s\d]",
                 options: RegexOptions.Compiled);
 
             List<string> splitByRegex = regexMatches
                 .OfType<Match>()
-                .Select(m => m.Value)
+                .Select(selector: m => m.Value)
                 .ToList();
 
             return new TextSplitResult(values: splitByRegex);

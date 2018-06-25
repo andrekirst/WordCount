@@ -13,19 +13,21 @@ namespace WordCount.Implementations
         public ArgumentsReaderResult ReadArguments(string[] args)
         {
             List<string> argumentsList = args == null ? new List<string>() : args.ToList();
+
+            // TODO Refactoring ArgumentParamer: Index
             bool isIndexParameterPresent = argumentsList.Contains(item: IndexParameterName);
             argumentsList.Remove(item: IndexParameterName);
 
+            // TODO Refactoring ArgumentParamer: Dictionary
             string dictionaryParameter = argumentsList
                 .FirstOrDefault(predicate: p => p.StartsWith(value: DictionaryParameterPrefix));
-
             bool isDictionaryParameterPresent = !string.IsNullOrEmpty(value: dictionaryParameter);
-            string dictionaryTextFile = dictionaryParameter?.Split('=')[1];
             argumentsList.RemoveAll(match: p => p.StartsWith(value: DictionaryParameterPrefix));
+            string dictionaryTextFile = dictionaryParameter?.Split('=')[1];
 
             bool isSourceTextFileParameterPresent = argumentsList.Any();
 
-            return new ArgumentsReaderResult()
+            return new ArgumentsReaderResult
             {
                 IsDictionaryParameterPresent = isDictionaryParameterPresent,
                 IsIndexParameterPresent = isIndexParameterPresent,

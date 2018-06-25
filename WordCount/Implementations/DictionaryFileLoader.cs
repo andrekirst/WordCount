@@ -22,7 +22,7 @@ namespace WordCount.Implementations
         {
             if (!_fileSystem.File.Exists(path: path))
             {
-                _displayOutput.WriteErrorLine($"File \"{path}\" not found.");
+                _displayOutput.WriteErrorLine(errorMessage: $"File \"{path}\" not found.");
                 return new List<string>();
             }
 

@@ -67,7 +67,7 @@ namespace WordCount.Tests
         }
 
         [Fact]
-        public void TextSplitTests_Humpty_Dumpty_Text_Expect_12_Words()
+        public void TextSplitTests_Humpty_Dumpty_Text_Expect_10_Words()
         {
             const string text = "Humpty-Dumpty sat on a wall. Humpty-Dumpty had a great fall.";
             TextSplitResult actual = _systemUnderTest.Split(text: text);
@@ -85,6 +85,48 @@ namespace WordCount.Tests
 
             List<string> expected = new List<string>()
                 { "Hello", "André" };
+
+            Assert.Equal(
+                expected: expected,
+                actual: actual.Values);
+        }
+
+        [Fact]
+        public void TextSplitTests_Text_with_MinusAtEnd_Expect_word_Without_Minus()
+        {
+            const string text = "pre- pre-condition";
+            TextSplitResult actual = _systemUnderTest.Split(text: text);
+
+            List<string> expected = new List<string>()
+                { "pre", "pre-condition" };
+
+            Assert.Equal(
+                expected: expected,
+                actual: actual.Values);
+        }
+
+        [Fact]
+        public void TextSplitTests_Text_with_Umlaute_Expect_Text_With_Umlaute()
+        {
+            const string text = "Draußen ist es schön";
+            TextSplitResult actual = _systemUnderTest.Split(text: text);
+
+            List<string> expected = new List<string>()
+                { "Draußen", "ist", "es", "schön" };
+
+            Assert.Equal(
+                expected: expected,
+                actual: actual.Values);
+        }
+
+        [Fact]
+        public void TextSplitTests_Text_with_Digit_Expect_without_Digit()
+        {
+            const string text = "Draußen ist es schön 1";
+            TextSplitResult actual = _systemUnderTest.Split(text: text);
+
+            List<string> expected = new List<string>()
+                { "Draußen", "ist", "es", "schön" };
 
             Assert.Equal(
                 expected: expected,

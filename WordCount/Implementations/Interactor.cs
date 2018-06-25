@@ -32,6 +32,7 @@ namespace WordCount.Implementations
         {
             try
             {
+                // TODO Refactoring - Untergliederung
                 ArgumentsReaderResult argumentsReaderResult = _argumentsReader.ReadArguments(args: args);
 
                 if (!argumentsReaderResult.IsSourceTextFileParameterPresent)

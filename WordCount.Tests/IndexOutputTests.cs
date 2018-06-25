@@ -102,17 +102,17 @@ namespace WordCount.Tests
 
             _mockDisplayOutput
                 .Verify(
-                    expression: v => v.WriteLine("bla*"),
+                    expression: v => v.WriteLine("bla"),
                     times: Times.Once);
 
             _mockDisplayOutput
                 .Verify(
-                    expression: v => v.WriteLine("Bla"),
+                    expression: v => v.WriteLine("Bla*"),
                     times: Times.Once);
 
             Assert.Equal(expected: "Index: (unknown: 1)", actual: verifyList[index: 0]);
-            Assert.Equal(expected: "bla*", actual: verifyList[index: 1]);
-            Assert.Equal(expected: "Bla", actual: verifyList[index: 2]);
+            Assert.Equal(expected: "bla", actual: verifyList[index: 1]);
+            Assert.Equal(expected: "Bla*", actual: verifyList[index: 2]);
         }
     }
 }

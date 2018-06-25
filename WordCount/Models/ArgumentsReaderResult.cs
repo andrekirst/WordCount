@@ -9,6 +9,7 @@
         public bool IsIndexParameterPresent { get; set; }
 
         public bool IsDictionaryParameterPresent { get; set; }
+
         public string DictionaryTextFile { get; set; }
     }
 }

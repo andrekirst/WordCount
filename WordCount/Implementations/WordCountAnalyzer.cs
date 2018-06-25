@@ -30,10 +30,14 @@ namespace WordCount.Implementations
             StopwordRemoverResult stopwordRemoverResult = _stopwordRemover.RemoveStopwords(values: textSplitResult.Values);
 
             List<string> words = stopwordRemoverResult.Values;
-            List<string> distinctWords = words.Distinct().ToList();
+            List<string> distinctWords = words
+                .Distinct()
+                .ToList();
+
             int numberOfWords = words.Count;
             int numberOfUniqueWords = distinctWords.Count;
             double averageWordLength = words.Average(selector: s => s.Length);
+
             return new WordCountAnalyzerResult()
             {
                 NumberOfWords = numberOfWords,
