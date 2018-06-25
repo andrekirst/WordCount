@@ -41,6 +41,7 @@ namespace WordCount
             containerBuilder.Register<IStopwordLoader, StopwordLoader>();
             containerBuilder.Register<IStopwordRemover, StopwordRemover>();
             containerBuilder.Register<IIndexOutput, IndexOutput>();
+            containerBuilder.Register<IDictionaryFileLoader, DictionaryFileLoader>();
 
             return containerBuilder
                 .Build()

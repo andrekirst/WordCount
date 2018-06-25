@@ -55,6 +55,7 @@
     <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
     <Compile Include="Implementations\ConsoleDisplayOutput.cs" />
     <Compile Include="Implementations\ConsoleParameterArgumentsReader.cs" />
+    <Compile Include="Implementations\DictionaryFileLoader.cs" />
     <Compile Include="Implementations\IndexOutput.cs" />
     <Compile Include="Implementations\StopwordRemover.cs" />
     <Compile Include="Implementations\TextFileLoader.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Implementations\WordCountAnalyzer.cs" />
     <Compile Include="Implementations\WordCountAnalyzerOutput.cs" />
     <Compile Include="Interfaces\IArgumentsReader.cs" />
+    <Compile Include="Interfaces\IDictionaryFileLoader.cs" />
     <Compile Include="Interfaces\IDisplayOutput.cs" />
     <Compile Include="Interfaces\IIndexOutput.cs" />
     <Compile Include="Interfaces\IInteractor.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Interfaces\IWordCountAnalyzer.cs" />
     <Compile Include="Interfaces\IWordCountAnalyzerOutput.cs" />
     <Compile Include="Models\ArgumentsReaderResult.cs" />
+    <Compile Include="Models\IndexOutputRequest.cs" />
     <Compile Include="Models\StopwordRemoverResult.cs" />
     <Compile Include="Models\TextSplitResult.cs" />
     <Compile Include="Models\WordCountAnalyzerResult.cs" />
@@ -87,6 +90,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="dict.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="sample.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

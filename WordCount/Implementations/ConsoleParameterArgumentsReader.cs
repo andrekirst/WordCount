@@ -8,6 +8,7 @@ namespace WordCount.Implementations
     public class ConsoleParameterArgumentsReader : IArgumentsReader
     {
         private const string IndexParameterName = "-index";
+        private const string DictionaryParameterPrefix = "-dictionary=";
 
         public ArgumentsReaderResult ReadArguments(string[] args)
         {
@@ -15,12 +16,23 @@ namespace WordCount.Implementations
             bool isIndexParameterPresent = argumentsList.Contains(item: IndexParameterName);
             argumentsList.Remove(item: IndexParameterName);
 
+            string dictionaryParameter = argumentsList
+                .FirstOrDefault(predicate: p => p.StartsWith(value: DictionaryParameterPrefix));
+
+            bool isDictionaryParameterPresent = !string.IsNullOrEmpty(value: dictionaryParameter);
+            string dictionaryTextFile = dictionaryParameter?.Split('=')[1];
+            argumentsList.RemoveAll(match: p => p.StartsWith(value: DictionaryParameterPrefix));
+
             bool isSourceTextFileParameterPresent = argumentsList.Any();
 
-            return new ArgumentsReaderResult(
-                sourceTextFile: isSourceTextFileParameterPresent ? argumentsList.First() : null,
-                isSourceTextFileParameterPresent: isSourceTextFileParameterPresent,
-                isIndexParameterPresent: isIndexParameterPresent);
+            return new ArgumentsReaderResult()
+            {
+                IsDictionaryParameterPresent = isDictionaryParameterPresent,
+                IsIndexParameterPresent = isIndexParameterPresent,
+                SourceTextFile = isSourceTextFileParameterPresent ? argumentsList.First() : null,
+                IsSourceTextFileParameterPresent = isSourceTextFileParameterPresent,
+                DictionaryTextFile = dictionaryTextFile
+            };
         }
     }
 }
