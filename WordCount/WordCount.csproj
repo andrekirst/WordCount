@@ -78,6 +78,7 @@
     <Compile Include="Interfaces\IWordCountAnalyzer.cs" />
     <Compile Include="Interfaces\IWordCountAnalyzerOutput.cs" />
     <Compile Include="Models\ArgumentsReaderResult.cs" />
+    <Compile Include="Models\IndexOutputRequest.cs" />
     <Compile Include="Models\StopwordRemoverResult.cs" />
     <Compile Include="Models\TextSplitResult.cs" />
     <Compile Include="Models\WordCountAnalyzerResult.cs" />
@@ -89,6 +90,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="dict.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="sample.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

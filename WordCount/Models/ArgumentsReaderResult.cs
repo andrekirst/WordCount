@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WordCount.Models
+﻿namespace WordCount.Models
 {
     public class ArgumentsReaderResult
     {

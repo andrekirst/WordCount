@@ -4,18 +4,21 @@ using System.IO.Abstractions;
 using Autofac;
 using Moq;
 using WordCount.Implementations;
+using WordCount.Interfaces;
 using Xunit;
 
 namespace WordCount.Tests
 {
     public class DictionaryFileLoaderTests
     {
-        private Mock<IFileSystem> _mockFileSystem;
+        private readonly Mock<IFileSystem> _mockFileSystem;
+        private readonly Mock<IDisplayOutput> _mockDisplayOutput;
         private readonly DictionaryFileLoader _systemUnderTest;
 
         public DictionaryFileLoaderTests()
         {
             _mockFileSystem = new Mock<IFileSystem>();
+            _mockDisplayOutput = new Mock<IDisplayOutput>();
 
             var containerBuilder = new ContainerBuilder();
 
@@ -24,11 +27,32 @@ namespace WordCount.Tests
                 .As<IFileSystem>();
 
             containerBuilder
+                .RegisterInstance(instance: _mockDisplayOutput.Object)
+                .As<IDisplayOutput>();
+
+            containerBuilder
                 .RegisterType<DictionaryFileLoader>();
 
             _systemUnderTest = containerBuilder
                 .Build()
                 .Resolve<DictionaryFileLoader>();
+        }
+
+        [Fact]
+        public void DictionaryFileLoaderTests_FileNotFound_Expect_Empty_List_And_DisplayOutput_WriteErrorLine()
+        {
+            _mockFileSystem
+                .Setup(expression: m => m.File.Exists("datei_gibt_es_nicht.txt"))
+                .Returns(value: false);
+
+            List<string> actual = _systemUnderTest.ReadWords(path: "datei_gibt_es_nicht.txt");
+
+            Assert.NotNull(@object: actual);
+            Assert.Empty(collection: actual);
+            _mockDisplayOutput
+                .Verify(
+                    expression: v => v.WriteErrorLine("File \"datei_gibt_es_nicht.txt\" not found."),
+                    times: Times.Once);
         }
 
         [Fact]

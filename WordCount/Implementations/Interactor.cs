@@ -47,9 +47,16 @@ namespace WordCount.Implementations
 
                 _displayOutput.WriteLine(text: displayResultAsString);
 
+                IndexOutputRequest indexOutputRequest = new IndexOutputRequest()
+                {
+                    DistinctWords = analyzeResult.DistinctWords,
+                    DictionaryTextFile = argumentsReaderResult.DictionaryTextFile,
+                    IsDictionaryParameterPresent = argumentsReaderResult.IsDictionaryParameterPresent
+                };
+
                 if (argumentsReaderResult.IsIndexParameterPresent)
                 {
-                    _indexOutput.OutputIndex(wordCountAnalyzerResult: analyzeResult); 
+                    _indexOutput.OutputIndex(indexOutputRequest: indexOutputRequest); 
                 }
             }
             catch (System.Exception)

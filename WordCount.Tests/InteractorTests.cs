@@ -109,8 +109,8 @@ namespace WordCount.Tests
         public void InteractorTests_ArgumentReader_no_file_is_present_expect_DisplayOutput_Enter_Text()
         {
             _mockArgumentsReader
-                .Setup(m => m.ReadArguments(It.IsAny<string[]>()))
-                .Returns(new ArgumentsReaderResult()
+                .Setup(expression: m => m.ReadArguments(It.IsAny<string[]>()))
+                .Returns(value: new ArgumentsReaderResult()
                 {
                     IsSourceTextFileParameterPresent = false
                 });
