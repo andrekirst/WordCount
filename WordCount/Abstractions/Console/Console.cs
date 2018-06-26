@@ -6,7 +6,11 @@ namespace WordCount.Abstractions.Console
     [ExcludeFromCodeCoverage]
     public class Console : IConsole
     {
-        public ConsoleColor ForegroundColor { get => System.Console.ForegroundColor; set => System.Console.ForegroundColor = value; }
+        public ConsoleColor ForegroundColor
+        {
+            get => System.Console.ForegroundColor;
+            set => System.Console.ForegroundColor = value;
+        }
 
         public string ReadLine()
         {

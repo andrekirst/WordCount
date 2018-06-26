@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WordCount.Helpers;
 using WordCount.Interfaces;
 using WordCount.Models;
 
@@ -21,7 +22,7 @@ namespace WordCount.Implementations
         public void OutputIndex(IndexOutputRequest indexOutputRequest)
         {
             List<string> dictionaryWords = ExtractDictionaryWords(indexOutputRequest: indexOutputRequest);
-            int unknwonWordsCount = CountUnknownWords(
+            int unknwonWordsCount = EnumerableHelpers.CountUnknownWords(
                 distinctWords: indexOutputRequest.DistinctWords,
                 dictionaryWords: dictionaryWords);
 
@@ -52,15 +53,6 @@ namespace WordCount.Implementations
                 }
                 _displayOutput.WriteLine(text: word);
             }
-        }
-
-        private static int CountUnknownWords(
-            IEnumerable<string> distinctWords,
-            IEnumerable<string> dictionaryWords)
-        {
-            return distinctWords
-                .Except(second: dictionaryWords)
-                .Count();
         }
 
         private List<string> ExtractDictionaryWords(IndexOutputRequest indexOutputRequest)

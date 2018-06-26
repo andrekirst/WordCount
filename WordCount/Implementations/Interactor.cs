@@ -12,6 +12,7 @@ namespace WordCount.Implementations
         private readonly IDisplayOutput _displayOutput;
         private readonly IIndexOutput _indexOutput;
 
+        // TODO Refactoring - Untergliederung
         public Interactor(
             ITextInput textInput,
             IWordCountAnalyzer wordCountAnalyzer,
@@ -62,6 +63,7 @@ namespace WordCount.Implementations
             }
             catch (System.Exception)
             {
+                // TODO Ohne Exception-Handling den Fehlercode zurückgeben. Eventuell durch die rückgabe von komplexen Datentypen mit einem ReturnCode.
                 return 1;
             }
 

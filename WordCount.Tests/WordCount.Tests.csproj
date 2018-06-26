@@ -91,6 +91,7 @@
     <Compile Include="ConsoleDisplayOutputTests.cs" />
     <Compile Include="ConsoleParameterArgumentsReaderTests.cs" />
     <Compile Include="DictionaryFileLoaderTests.cs" />
+    <Compile Include="EnumerableHelpersTests\CountUnknownWordsTests.cs" />
     <Compile Include="IndexOutputTests.cs" />
     <Compile Include="InteractorTests.cs" />
     <Compile Include="StopwordLoaderTests.cs" />

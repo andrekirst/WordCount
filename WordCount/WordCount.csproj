@@ -53,6 +53,7 @@
     <Compile Include="Abstractions\Console\IConsole.cs" />
     <Compile Include="AutofacModules\LogRequestsModule.cs" />
     <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
+    <Compile Include="Helpers\EnumerableHelpers.cs" />
     <Compile Include="Implementations\ConsoleDisplayOutput.cs" />
     <Compile Include="Implementations\ConsoleParameterArgumentsReader.cs" />
     <Compile Include="Implementations\DictionaryFileLoader.cs" />
