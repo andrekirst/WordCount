@@ -22,12 +22,12 @@ namespace WordCount.Implementations
         {
             TextSplitResult textSplitResult = _textSplit.Split(text: text);
 
-            if (!textSplitResult.ValuesAvailable)
+            if (!textSplitResult.WordsAvailable)
             {
                 return new WordCountAnalyzerResult();
             }
 
-            StopwordRemoverResult stopwordRemoverResult = _stopwordRemover.RemoveStopwords(values: textSplitResult.Values);
+            StopwordRemoverResult stopwordRemoverResult = _stopwordRemover.RemoveStopwords(values: textSplitResult.Words);
 
             List<string> words = stopwordRemoverResult.Values;
             List<string> distinctWords = words

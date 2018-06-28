@@ -94,8 +94,10 @@
     <Compile Include="EnumerableHelpersTests\CountUnknownWordsTests.cs" />
     <Compile Include="IndexOutputTests.cs" />
     <Compile Include="InteractorTests.cs" />
+    <Compile Include="RegexStringExtensionsTests\SplitByRegexTests.cs" />
     <Compile Include="StopwordLoaderTests.cs" />
     <Compile Include="StopwordRemoverTests.cs" />
+    <Compile Include="StringExtensionsTests\IsNullOrEmptyTests.cs" />
     <Compile Include="TextFileLoaderTests.cs" />
     <Compile Include="TextInputTests.cs" />
     <Compile Include="TextSplitTests.cs" />

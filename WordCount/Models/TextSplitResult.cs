@@ -5,13 +5,13 @@ namespace WordCount.Models
 {
     public class TextSplitResult
     {
-        public TextSplitResult(List<string> values)
+        public TextSplitResult(List<string> words)
         {
-            Values = values;
+            Words = words;
         }
 
-        public List<string> Values { get; }
+        public List<string> Words { get; }
 
-        public bool ValuesAvailable => Values != null && Values.Any();
+        public bool WordsAvailable => Words != null && Words.Any();
     }
 }

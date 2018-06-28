@@ -20,7 +20,7 @@ namespace WordCount.Tests
         {
             TextSplitResult actual = _systemUnderTest.Split(text: "Bla bla");
 
-            Assert.Equal(expected: 2, actual: actual.Values.Count);
+            Assert.Equal(expected: 2, actual: actual.Words.Count);
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace WordCount.Tests
             TextSplitResult actual = _systemUnderTest.Split(
                 text: "This is a Text");
 
-            Assert.Equal(expected: 4, actual: actual.Values.Count);
+            Assert.Equal(expected: 4, actual: actual.Words.Count);
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace WordCount.Tests
             TextSplitResult actual = _systemUnderTest.Split(
                 text: $"Mary had{Environment.NewLine}a little{Environment.NewLine}lamb");
 
-            Assert.Equal(expected: 5, actual: actual.Values.Count);
+            Assert.Equal(expected: 5, actual: actual.Words.Count);
         }
 
         [Theory]
@@ -51,8 +51,8 @@ namespace WordCount.Tests
             TextSplitResult actual = _systemUnderTest.Split(text: inputtext);
 
             Assert.NotNull(@object: actual);
-            Assert.NotNull(@object: actual.Values);
-            Assert.Empty(collection: actual.Values);
+            Assert.NotNull(@object: actual.Words);
+            Assert.Empty(collection: actual.Words);
         }
 
         [Theory]
@@ -63,7 +63,7 @@ namespace WordCount.Tests
         {
             TextSplitResult actual = _systemUnderTest.Split(text: inputtext);
 
-            Assert.False(condition: actual.ValuesAvailable);
+            Assert.False(condition: actual.WordsAvailable);
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace WordCount.Tests
 
             Assert.Equal(
                 expected: 10,
-                actual: actual.Values.Count);
+                actual: actual.Words.Count);
         }
 
         [Fact]
@@ -88,7 +88,7 @@ namespace WordCount.Tests
 
             Assert.Equal(
                 expected: expected,
-                actual: actual.Values);
+                actual: actual.Words);
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace WordCount.Tests
 
             Assert.Equal(
                 expected: expected,
-                actual: actual.Values);
+                actual: actual.Words);
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace WordCount.Tests
 
             Assert.Equal(
                 expected: expected,
-                actual: actual.Values);
+                actual: actual.Words);
         }
 
         [Fact]
@@ -130,7 +130,7 @@ namespace WordCount.Tests
 
             Assert.Equal(
                 expected: expected,
-                actual: actual.Values);
+                actual: actual.Words);
         }
     }
 }
