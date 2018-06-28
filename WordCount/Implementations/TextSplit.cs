@@ -11,10 +11,10 @@ namespace WordCount.Implementations
         {
             if (text.IsNullOrEmpty())
             {
-                return new TextSplitResult(words: new List<string>());
+                return new TextSplitResult();
             }
 
-            List<string> words = text.SplitByRegex(pattern: @"[a-zA-Z\-\u00D8-\u00F6]{0,}[^-\s\d]");
+            List<string> words = text.SplitByRegex(pattern: @"[a-zA-Z\-\u00D8-\u00F6]{0,}[^-\s\d\.]");
 
             return new TextSplitResult(words: words);
         }

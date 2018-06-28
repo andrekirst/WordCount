@@ -4,6 +4,6 @@ namespace WordCount.Models
 {
     public class StopwordRemoverResult
     {
-        public List<string> Values { get; set; }
+        public List<string> Values { get; set; } = new List<string>();
     }
 }

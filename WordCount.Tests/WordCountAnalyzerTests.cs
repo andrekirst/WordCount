@@ -179,5 +179,24 @@ namespace WordCount.Tests
 
             Assert.Equal(expected: expected, actual: actual.DistinctWords);
         }
+
+        [Fact]
+        public void WordCountAnalyzerTests_Text_a_Stopword_a_Expect_All_Values_in_Result_0()
+        {
+            _mockStopwordRemover
+                .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
+                .Returns(value: new StopwordRemoverResult());
+
+            _mockTextSplit
+                .Setup(m => m.Split("a."))
+                .Returns(value: new TextSplitResult(new List<string>() { "a" }));
+
+            WordCountAnalyzerResult actual = _systemUnderTest.Analyze("a.");
+
+            Assert.NotNull(@object: actual);
+            Assert.Equal(expected: 0.0, actual: actual.AverageWordLength);
+            Assert.Equal(expected: 0, actual: actual.NumberOfUniqueWords);
+            Assert.Equal(expected: 0, actual: actual.NumberOfWords);
+        }
     }
 }

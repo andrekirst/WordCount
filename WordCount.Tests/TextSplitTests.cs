@@ -24,6 +24,15 @@ namespace WordCount.Tests
         }
 
         [Fact]
+        public void TextSplitTests_Analyze_Text_a_with_dot_Expect_1_Word()
+        {
+            TextSplitResult actual = _systemUnderTest.Split(text: "a.");
+
+            Assert.Single(collection: actual.Words);
+            Assert.Equal(expected: "a", actual: actual.Words[0]);
+        }
+
+        [Fact]
         public void TextSplitTests_Analyze_Stopword_a_This_is_a_Text_Expect_4_Words()
         {
             TextSplitResult actual = _systemUnderTest.Split(

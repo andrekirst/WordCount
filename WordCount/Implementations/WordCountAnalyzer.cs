@@ -36,7 +36,7 @@ namespace WordCount.Implementations
 
             int numberOfWords = words.Count;
             int numberOfUniqueWords = distinctWords.Count;
-            double averageWordLength = words.Average(selector: s => s.Length);
+            double averageWordLength = words.Any() ? words.Average(selector: s => s.Length) : 0.0;
 
             return new WordCountAnalyzerResult()
             {

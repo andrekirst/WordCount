@@ -61,7 +61,7 @@ namespace WordCount.Implementations
                     _indexOutput.OutputIndex(indexOutputRequest: indexOutputRequest); 
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 // TODO Ohne Exception-Handling den Fehlercode zurückgeben. Eventuell durch die rückgabe von komplexen Datentypen mit einem ReturnCode.
                 return 1;
