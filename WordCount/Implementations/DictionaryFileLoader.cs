@@ -29,8 +29,10 @@ namespace WordCount.Implementations
             string[] result = _fileSystem
                 .File
                 .ReadAllLines(path: path);
-            
-            return result == null ? new List<string>() : result.ToList();
+
+            return result == null ?
+                new List<string>() :
+                result.ToList();
         }
     }
 }

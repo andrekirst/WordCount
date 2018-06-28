@@ -19,6 +19,7 @@ namespace WordCount.Implementations
 
         public string ReadTextFile(string path)
         {
+            // TODO richtige Behandlung, anstatt try..catch
             try
             {
                 return _fileSystem.File.ReadAllText(path: path);
