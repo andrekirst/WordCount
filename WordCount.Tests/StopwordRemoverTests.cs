@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Models;
+using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
 namespace WordCount.Tests
@@ -33,7 +34,7 @@ namespace WordCount.Tests
                 .Resolve<StopwordRemover>();
         }
 
-        [Fact]
+        [NamedFact]
         public void StopwordRemoverTests_Analyze_Stopword_a_Mary_has_a_little_lamb_Expect_4_Words_with_Stopword_a()
         {
             List<string> values = new List<string>() { "Mary", "had", "a", "little", "lamb" };
@@ -50,7 +51,7 @@ namespace WordCount.Tests
             Assert.Equal(expected: expected, actual: actual.Values);
         }
 
-        [Fact]
+        [NamedFact]
         public void StopwordRemoverTests_Analyze_Stopword_a_Mary_has_a_little_lamb_Expect_5_Words_without_Stopwords()
         {
             List<string> values = new List<string>() { "Mary", "had", "a", "little", "lamb" };

@@ -1,6 +1,6 @@
 ﻿using WordCount.Models;
 
-namespace WordCount.Interfaces
+namespace WordCount.Interfaces.ArgumentsHandling
 {
     public interface IArgumentsReader
     {

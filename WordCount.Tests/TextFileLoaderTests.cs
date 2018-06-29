@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Abstractions;
 using WordCount.Implementations;
 using WordCount.Interfaces;
+using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
 namespace WordCount.Tests
@@ -36,7 +37,7 @@ namespace WordCount.Tests
                 .Resolve<TextFileLoader>();
         }
 
-        [Fact]
+        [NamedFact]
         public void TextFileLoaderTests_FileNotFoundException_Thrown_Expect_DisplayOutput_WriteError()
         {
             _mockFileSystem
@@ -54,7 +55,7 @@ namespace WordCount.Tests
                     times: Times.Once);
         }
 
-        [Fact]
+        [NamedFact]
         public void TextFileLoaderTests_FileNotFoundException_Thrown_Expect_FileNotFoundException()
         {
             _mockFileSystem
@@ -68,7 +69,7 @@ namespace WordCount.Tests
                 });
         }
 
-        [Fact]
+        [NamedFact]
         public void TextFileLoaderTests_ReadAllText_Bla_Expect_Bla()
         {
             _mockFileSystem

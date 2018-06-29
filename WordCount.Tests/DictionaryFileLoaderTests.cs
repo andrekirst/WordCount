@@ -5,6 +5,7 @@ using Autofac;
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
+using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
 namespace WordCount.Tests
@@ -38,7 +39,7 @@ namespace WordCount.Tests
                 .Resolve<DictionaryFileLoader>();
         }
 
-        [Fact]
+        [NamedFact]
         public void DictionaryFileLoaderTests_FileNotFound_Expect_Empty_List_And_DisplayOutput_WriteErrorLine()
         {
             _mockFileSystem
@@ -55,7 +56,7 @@ namespace WordCount.Tests
                     times: Times.Once);
         }
 
-        [Fact]
+        [NamedFact]
         public void DictionaryFileLoaderTests_File_Content_WordA_WordB_Expect_WordA_WordB()
         {
             _mockFileSystem
@@ -72,7 +73,7 @@ namespace WordCount.Tests
             Assert.Equal(expected: expected, actual: actual);
         }
 
-        [Fact]
+        [NamedFact]
         public void DictionaryFileLoaderTests_File_Content_Null_Expect_Empty()
         {
             _mockFileSystem
@@ -88,7 +89,7 @@ namespace WordCount.Tests
             Assert.Empty(collection: actual);
         }
 
-        [Fact]
+        [NamedFact]
         public void DictionaryFileLoaderTests_File_Not_Exists_Expect_Empty()
         {
             _mockFileSystem

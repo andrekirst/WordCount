@@ -88,12 +88,15 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ArgumentsHandlingTests\DictionaryParameterParserTests.cs" />
+    <Compile Include="ArgumentsHandlingTests\IndexParameterParserTests.cs" />
     <Compile Include="ConsoleDisplayOutputTests.cs" />
-    <Compile Include="ConsoleParameterArgumentsReaderTests.cs" />
+    <Compile Include="ArgumentsHandlingTests\ConsoleParameterArgumentsReaderTests.cs" />
     <Compile Include="DictionaryFileLoaderTests.cs" />
     <Compile Include="EnumerableHelpersTests\CountUnknownWordsTests.cs" />
     <Compile Include="IndexOutputTests.cs" />
     <Compile Include="InteractorTests.cs" />
+    <Compile Include="RegexStringExtensionsTests\IsMatchingRegexTests.cs" />
     <Compile Include="RegexStringExtensionsTests\SplitByRegexTests.cs" />
     <Compile Include="StopwordLoaderTests.cs" />
     <Compile Include="StopwordRemoverTests.cs" />
@@ -104,6 +107,8 @@
     <Compile Include="WordCountAnalyzerOutputTests.cs" />
     <Compile Include="WordCountAnalyzerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XUnitHelpers\NamedTheory.cs" />
+    <Compile Include="XUnitHelpers\NamedFact.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

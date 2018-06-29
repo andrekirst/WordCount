@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using WordCount.Helpers;
+using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
 namespace WordCount.Tests.EnumerableHelpersTests
 {
     public class CountUnknownWordsTests
     {
-        [Fact]
+        [NamedFact]
         public void CountUnknownWordsTests_IEnumerables_null_Expect_0()
         {
             int actual = EnumerableHelpers.CountUnknownWords(
@@ -16,7 +17,7 @@ namespace WordCount.Tests.EnumerableHelpersTests
             Assert.Equal(expected: 0, actual: actual);
         }
 
-        [Fact]
+        [NamedFact]
         public void CountUnknownWordsTests_distinctWords_null_DictionaryWords_1_Entry_Expect_0()
         {
             int actual = EnumerableHelpers.CountUnknownWords(
@@ -26,7 +27,7 @@ namespace WordCount.Tests.EnumerableHelpersTests
             Assert.Equal(expected: 0, actual: actual);
         }
 
-        [Fact]
+        [NamedFact]
         public void CountUnknownWordsTests_distinctWords_1_Eintrag_DictionaryWords_null_Expect_1()
         {
             int actual = EnumerableHelpers.CountUnknownWords(
@@ -37,7 +38,7 @@ namespace WordCount.Tests.EnumerableHelpersTests
         }
 
 
-        [Fact]
+        [NamedFact]
         public void CountUnknownWordsTests_same_values_in_lists_Expect_0()
         {
             int actual = EnumerableHelpers.CountUnknownWords(
@@ -47,7 +48,7 @@ namespace WordCount.Tests.EnumerableHelpersTests
             Assert.Equal(expected: 0, actual: actual);
         }
 
-        [Fact]
+        [NamedFact]
         public void CountUnknownWordsTests_distinctWords_abc_dictionaryWords_def_Expect_1()
         {
             int actual = EnumerableHelpers.CountUnknownWords(

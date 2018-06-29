@@ -3,7 +3,9 @@ using Autofac;
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
+using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models;
+using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
 namespace WordCount.Tests
@@ -68,7 +70,7 @@ namespace WordCount.Tests
                 .Resolve<Interactor>();
         }
 
-        [Fact]
+        [NamedFact]
         public void InteractorTests_TextInput_Throws_Error_Expect_ReturnCode_1()
         {
             _mockTextInput
@@ -87,7 +89,7 @@ namespace WordCount.Tests
             Assert.Equal(expected: 1, actual: actual);
         }
 
-        [Fact]
+        [NamedFact]
         public void InteractorTests_Call_ReadArguments_Verify_1_Call()
         {
             string[] args = { "mytext.txt" };
@@ -105,7 +107,7 @@ namespace WordCount.Tests
                 .Verify(expression: v => v.ReadArguments(args), times: Times.Once);
         }
 
-        [Fact]
+        [NamedFact]
         public void InteractorTests_ArgumentReader_no_file_is_present_expect_DisplayOutput_Enter_Text()
         {
             _mockArgumentsReader
@@ -123,7 +125,7 @@ namespace WordCount.Tests
                     times: Times.Once);
         }
 
-        [Fact]
+        [NamedFact]
         public void InteractorTests_ArgumentReader_file_is_present_expect_not_DisplayOutput_Enter_Text()
         {
             _mockArgumentsReader

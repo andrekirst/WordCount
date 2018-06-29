@@ -1,11 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Autofac;
 using System.IO.Abstractions;
-using WordCount.Abstractions.Console;
+using System.Reflection;
 using WordCount.AutofacModules;
-using WordCount.Implementations;
 using WordCount.Interfaces;
-using WordCount.Extensions;
 
 namespace WordCount
 {
@@ -28,20 +26,13 @@ namespace WordCount
                     .RegisterModule<LogRequestsModule>(); 
 #endif
 
-            containerBuilder.Register<IInteractor, Interactor>();
-            containerBuilder.Register<ITextInput, TextInput>();
-            containerBuilder.Register<IWordCountAnalyzer, WordCountAnalyzer>();
-            containerBuilder.Register<IWordCountAnalyzerOutput, WordCountAnalyzerOutput>();
-            containerBuilder.Register<IFileSystem, FileSystem>();
-            containerBuilder.Register<ITextFileLoader, TextFileLoader>();
-            containerBuilder.Register<IConsole, Console>();
-            containerBuilder.Register<IDisplayOutput, ConsoleDisplayOutput>();
-            containerBuilder.Register<IArgumentsReader, ConsoleParameterArgumentsReader>();
-            containerBuilder.Register<ITextSplit, TextSplit>();
-            containerBuilder.Register<IStopwordLoader, StopwordLoader>();
-            containerBuilder.Register<IStopwordRemover, StopwordRemover>();
-            containerBuilder.Register<IIndexOutput, IndexOutput>();
-            containerBuilder.Register<IDictionaryFileLoader, DictionaryFileLoader>();
+            var executingAssembly = Assembly.GetExecutingAssembly();
+            var externalFileSystemAssembly = Assembly.GetAssembly(type: typeof(IFileSystem));
+
+            containerBuilder.RegisterAssemblyTypes(
+                    executingAssembly,
+                    externalFileSystemAssembly)
+                .AsImplementedInterfaces();
 
             return containerBuilder
                 .Build()

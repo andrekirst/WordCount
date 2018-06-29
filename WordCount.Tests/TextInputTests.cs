@@ -4,6 +4,7 @@ using WordCount.Abstractions.Console;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Models;
+using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
 namespace WordCount.Tests
@@ -37,7 +38,7 @@ namespace WordCount.Tests
                 .Resolve<TextInput>();
         }
 
-        [Fact]
+        [NamedFact]
         public void TextInputTests_Console_ReadLine_Bla_Expect_bla()
         {
             _mockConsole
@@ -49,7 +50,7 @@ namespace WordCount.Tests
             Assert.Equal(expected: "Bla", actual: actual);
         }
 
-        [Fact]
+        [NamedFact]
         public void TextInputTests_Parameter_argumentsReaderResult_Value_Blub_Expect_Blub()
         {
             _mockTextFileLoader

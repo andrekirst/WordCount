@@ -4,6 +4,7 @@ using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Models;
+using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
 namespace WordCount.Tests
@@ -37,7 +38,7 @@ namespace WordCount.Tests
                 .Resolve<IndexOutput>();
         }
 
-        [Fact]
+        [NamedFact]
         public void IndexOutputTests_DistinctWords_Bla_bla_Expect_Output_Index_bla_Bla()
         {
             List<string> verifyList = new List<string>();
@@ -73,7 +74,7 @@ namespace WordCount.Tests
             Assert.Equal(expected: "Bla", actual: verifyList[index: 2]);
         }
 
-        [Fact]
+        [NamedFact]
         public void IndexOutputTests_DistinctWords_Bla_bla_Expect_Output_Index_With_Dict_bla_Bla_star()
         {
             List<string> verifyList = new List<string>();
