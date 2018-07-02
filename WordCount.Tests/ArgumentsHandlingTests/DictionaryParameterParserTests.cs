@@ -88,5 +88,19 @@ namespace WordCount.Tests.ArgumentsHandlingTests
             Assert.NotNull(@object: actual);
             Assert.False(condition: actual.IsPresent);
         }
+
+        [NamedFact]
+        public void DictionaryParameterParserTests_Args_has_DictionaryParameter_With_File_bla_txt_Expect_FileName_bla_txt()
+        {
+            _mockEnvironment
+                .Setup(m => m.GetCommandLineArgs())
+                .Returns(new string[] { "-dictionary=bla.txt" });
+
+            DictionaryParameter actual = _systemUnderTest
+                .ParseDictionaryParameter();
+
+            Assert.NotNull(@object: actual);
+            Assert.Equal(expected: "bla.txt", actual: actual.FileName);
+        }
     }
 }

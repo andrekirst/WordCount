@@ -70,7 +70,7 @@ namespace WordCount.Tests
                 .Setup(m => m.GetInputText())
                 .Throws<Exception>();
 
-            int actual = _systemUnderTest.Execute(args: It.IsAny<string[]>());
+            int actual = _systemUnderTest.Execute();
 
             Assert.Equal(expected: 1, actual: actual);
         }

@@ -33,7 +33,11 @@ namespace WordCount.Implementations
 
             if (indexParameter.IsPresent)
             {
-                List<string> dictionaryWords = _dictionaryFileLoader.ReadWords();
+                List<string> dictionaryWords =
+                    dictionaryParameter.IsPresent ?
+                    _dictionaryFileLoader.ReadWords() :
+                    new List<string>();
+
                 int unknwonWordsCount = EnumerableHelpers.CountUnknownWords(
                     distinctWords: indexOutputRequest.DistinctWords,
                     dictionaryWords: dictionaryWords);
@@ -54,7 +58,7 @@ namespace WordCount.Implementations
             IEnumerable<string> distinctWords,
             List<string> dictionaryWords)
         {
-            bool checkAgainstDictionary = dictionaryWords.Any();
+            bool checkAgainstDictionary = dictionaryWords != null && dictionaryWords.Any();
 
             foreach (string distinctWord in distinctWords
                             .OrderBy(keySelector: s => s))

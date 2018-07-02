@@ -14,7 +14,7 @@ namespace WordCount
         {
             IInteractor interactor = CreateInteractor();
 
-            return interactor.Execute(args: args);
+            return interactor.Execute();
         }
 
         private static IInteractor CreateInteractor()

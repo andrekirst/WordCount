@@ -23,7 +23,7 @@ namespace WordCount.Implementations
             _indexOutput = indexOutput;
         }
 
-        public int Execute(string[] args)
+        public int Execute()
         {
             try
             {
