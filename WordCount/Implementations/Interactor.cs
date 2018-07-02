@@ -34,17 +34,12 @@ namespace WordCount.Implementations
                 _wordCountAnalyzerOutput.DisplayResult(wordCountAnalyzerResult: analyzeResult);
 
                 // TODO Refactoring - Untergliederung
-                //IndexOutputRequest indexOutputRequest = new IndexOutputRequest()
-                //{
-                //    DistinctWords = analyzeResult.DistinctWords,
-                //    DictionaryTextFile = argumentsReaderResult.DictionaryTextFile,
-                //    IsDictionaryParameterPresent = argumentsReaderResult.IsDictionaryParameterPresent
-                //};
+                IndexOutputRequest indexOutputRequest = new IndexOutputRequest()
+                {
+                    DistinctWords = analyzeResult.DistinctWords
+                };
 
-                //if (argumentsReaderResult.IsIndexParameterPresent)
-                //{
-                //    _indexOutput.OutputIndex(indexOutputRequest: indexOutputRequest); 
-                //}
+                _indexOutput.OutputIndex(indexOutputRequest: indexOutputRequest);
             }
             catch (System.Exception ex)
             {

@@ -86,5 +86,18 @@ namespace WordCount.Tests.ArgumentsHandlingTests
                 expected: "bla.txt",
                 actual: actual.FileName);
         }
+
+        [NamedFact]
+        public void SourceFileParameterParserTests_Args_has_IndexParameter_Expect_IsPresent_False()
+        {
+            _mockEnvironment
+                .Setup(expression: m => m.GetCommandLineArgs())
+                .Returns(value: new[] { "-index" });
+
+            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
+
+            Assert.NotNull(@object: actual);
+            Assert.False(condition: actual.IsPresent);
+        }
     }
 }

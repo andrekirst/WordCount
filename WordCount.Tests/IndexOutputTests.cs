@@ -89,9 +89,7 @@ namespace WordCount.Tests
 
             IndexOutputRequest indexOutputRequest = new IndexOutputRequest()
             {
-                DistinctWords = new List<string>() { "Bla", "bla" },
-                DictionaryTextFile = "datei.txt",
-                IsDictionaryParameterPresent = true
+                DistinctWords = new List<string>() { "Bla", "bla" }
             };
 
             _systemUnderTest.OutputIndex(indexOutputRequest: indexOutputRequest);

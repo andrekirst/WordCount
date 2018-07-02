@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Autofac;
+﻿using Autofac;
 using Moq;
 using WordCount.Abstractions.Console;
 using WordCount.Implementations.ArgumentsHandling;
@@ -12,9 +10,8 @@ namespace WordCount.Tests.ArgumentsHandlingTests
 {
     public class DictionaryParameterParserTests
     {
-        private Mock<IEnvironment> _mockEnvironment;
-
-        DictionaryParameterParser _systemUnderTest;
+        private readonly Mock<IEnvironment> _mockEnvironment;
+        private readonly DictionaryParameterParser _systemUnderTest;
 
         public DictionaryParameterParserTests()
         {
