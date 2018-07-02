@@ -11,7 +11,6 @@ namespace WordCount.Implementations
         private readonly IWordCountAnalyzerOutput _wordCountAnalyzerOutput;
         private readonly IIndexOutput _indexOutput;
 
-        // TODO Refactoring - Untergliederung
         public Interactor(
             ITextInput textInput,
             IWordCountAnalyzer wordCountAnalyzer,

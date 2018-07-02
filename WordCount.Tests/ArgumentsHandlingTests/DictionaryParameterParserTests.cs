@@ -67,6 +67,10 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         [NamedFact]
         public void DictionaryParameterParserTests_Args_has_DictionaryParameter_with_no_equal_sign_Expect_IsPresent_False()
         {
+            _mockEnvironment
+                .Setup(m => m.GetCommandLineArgs())
+                .Returns(new string[] {"-dictionary"});
+
             DictionaryParameter actual = _systemUnderTest
                 .ParseDictionaryParameter();
 
@@ -77,6 +81,10 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         [NamedFact]
         public void DictionaryParameterParserTests_Args_has_DictionaryParameter_Without_File_Expect_IsPresent_False()
         {
+            _mockEnvironment
+                .Setup(m => m.GetCommandLineArgs())
+                .Returns(new string[] { "-dictionary=" });
+
             DictionaryParameter actual = _systemUnderTest
                 .ParseDictionaryParameter();
 

@@ -17,10 +17,10 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public DictionaryParameter ParseDictionaryParameter()
         {
-            string[] commandLineArgs = _environment.GetCommandLineArgs();
+            string[] args = _environment.GetCommandLineArgs();
 
-            string dictionaryArgumentValue =
-                commandLineArgs.FirstOrDefault(predicate: p => p.IsMatchingRegex(pattern: @"-dictionary=[a-zA-z.]{1,}"));
+            // TODO Eventuell noch etwas lesbarer umbauen. Bsp.: als ExtensionMethod für IEnumerable
+            string dictionaryArgumentValue = args.FirstOrDefault(predicate: p => p.IsMatchingRegex(pattern: @"-dictionary=[a-zA-z.]{1,}"));
 
             return new DictionaryParameter()
             {
