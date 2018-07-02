@@ -4,6 +4,6 @@ namespace WordCount.Interfaces.ArgumentsHandling
 {
     public interface IIndexParameterParser
     {
-        IndexParameter ParseIndexParameter(string[] args);
+        IndexParameter ParseIndexParameter();
     }
 }

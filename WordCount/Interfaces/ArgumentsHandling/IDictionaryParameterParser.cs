@@ -4,6 +4,6 @@ namespace WordCount.Interfaces.ArgumentsHandling
 {
     public interface IDictionaryParameterParser
     {
-        DictionaryParameter ParseDictionaryParameter(string[] args);
+        DictionaryParameter ParseDictionaryParameter();
     }
 }

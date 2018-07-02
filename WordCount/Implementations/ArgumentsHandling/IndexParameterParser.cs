@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using WordCount.Abstractions.Console;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models;
 
@@ -7,12 +7,19 @@ namespace WordCount.Implementations.ArgumentsHandling
 {
     public class IndexParameterParser : IIndexParameterParser
     {
-        public IndexParameter ParseIndexParameter(string[] args)
+        private readonly IEnvironment _environment;
+
+        public IndexParameterParser(IEnvironment environment)
         {
-            args = args ?? new string[0];
+            _environment = environment;
+        }
+
+        public IndexParameter ParseIndexParameter()
+        {
+            string[] commandLineArgs = _environment.GetCommandLineArgs();
             return new IndexParameter()
             {
-                IsPresent = args.Contains(value: "-index")
+                IsPresent = commandLineArgs.Contains(value: "-index")
             };
         }
     }

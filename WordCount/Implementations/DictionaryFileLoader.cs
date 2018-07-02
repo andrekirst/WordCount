@@ -2,6 +2,8 @@
 using System.IO.Abstractions;
 using System.Linq;
 using WordCount.Interfaces;
+using WordCount.Interfaces.ArgumentsHandling;
+using WordCount.Models;
 
 namespace WordCount.Implementations
 {
@@ -9,17 +11,24 @@ namespace WordCount.Implementations
     {
         private readonly IFileSystem _fileSystem;
         private readonly IDisplayOutput _displayOutput;
+        private readonly IDictionaryParameterParser _dictionaryParameterParser;
 
         public DictionaryFileLoader(
             IFileSystem fileSystem,
-            IDisplayOutput displayOutput)
+            IDisplayOutput displayOutput,
+            IDictionaryParameterParser dictionaryParameterParser)
         {
             _fileSystem = fileSystem;
             _displayOutput = displayOutput;
+            _dictionaryParameterParser = dictionaryParameterParser;
         }
 
-        public List<string> ReadWords(string path)
+        public List<string> ReadWords()
         {
+            DictionaryParameter dictionaryParameter = _dictionaryParameterParser.ParseDictionaryParameter();
+
+            string path = dictionaryParameter.FileName;
+
             if (!_fileSystem.File.Exists(path: path))
             {
                 _displayOutput.WriteErrorLine(errorMessage: $"File \"{path}\" not found.");

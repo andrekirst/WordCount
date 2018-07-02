@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using WordCount.Abstractions.Console;
 using WordCount.Extensions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models;
@@ -7,12 +8,19 @@ namespace WordCount.Implementations.ArgumentsHandling
 {
     public class DictionaryParameterParser : IDictionaryParameterParser
     {
-        public DictionaryParameter ParseDictionaryParameter(string[] args)
+        private readonly IEnvironment _environment;
+
+        public DictionaryParameterParser(IEnvironment environment)
         {
-            args = args ?? new string[0];
+            _environment = environment;
+        }
+
+        public DictionaryParameter ParseDictionaryParameter()
+        {
+            string[] commandLineArgs = _environment.GetCommandLineArgs();
 
             string dictionaryArgumentValue =
-                args.FirstOrDefault(predicate: p => p.IsMatchingRegex(pattern: @"-dictionary=[a-zA-z.]{1,}"));
+                commandLineArgs.FirstOrDefault(predicate: p => p.IsMatchingRegex(pattern: @"-dictionary=[a-zA-z.]{1,}"));
 
             return new DictionaryParameter()
             {

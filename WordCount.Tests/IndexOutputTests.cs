@@ -84,7 +84,7 @@ namespace WordCount.Tests
                 .Callback<string>(action: (s) => verifyList.Add(item: s));
 
             _mockDictionaryFileLoader
-                .Setup(expression: m => m.ReadWords("datei.txt"))
+                .Setup(expression: m => m.ReadWords())
                 .Returns(value: new List<string>() { "bla" });
 
             IndexOutputRequest indexOutputRequest = new IndexOutputRequest()

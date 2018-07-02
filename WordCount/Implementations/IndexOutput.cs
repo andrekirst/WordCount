@@ -36,6 +36,7 @@ namespace WordCount.Implementations
                 dictionaryWords: dictionaryWords);
         }
 
+        // TODO Eventuell auch nochmal als Schnittstelle
         private void DisplayWords(
             IEnumerable<string> distinctWords,
             List<string> dictionaryWords)
@@ -55,13 +56,14 @@ namespace WordCount.Implementations
             }
         }
 
+        // TODO Eventuell auch nochmal als Schnittstelle
         private List<string> ExtractDictionaryWords(IndexOutputRequest indexOutputRequest)
         {
             List<string> dictionaryWords = new List<string>();
 
             if (indexOutputRequest.IsDictionaryParameterPresent)
             {
-                dictionaryWords.AddRange(collection: _dictionaryFileLoader.ReadWords(path: indexOutputRequest.DictionaryTextFile));
+                dictionaryWords.AddRange(collection: _dictionaryFileLoader.ReadWords());
             }
 
             return dictionaryWords;

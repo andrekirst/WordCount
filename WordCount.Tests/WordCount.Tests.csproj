@@ -90,8 +90,8 @@
   <ItemGroup>
     <Compile Include="ArgumentsHandlingTests\DictionaryParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\IndexParameterParserTests.cs" />
+    <Compile Include="ArgumentsHandlingTests\SourceFileParameterParserTests.cs" />
     <Compile Include="ConsoleDisplayOutputTests.cs" />
-    <Compile Include="ArgumentsHandlingTests\ConsoleParameterArgumentsReaderTests.cs" />
     <Compile Include="DictionaryFileLoaderTests.cs" />
     <Compile Include="EnumerableHelpersTests\CountUnknownWordsTests.cs" />
     <Compile Include="IndexOutputTests.cs" />

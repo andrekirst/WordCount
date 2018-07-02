@@ -5,6 +5,8 @@ using Autofac;
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
+using WordCount.Interfaces.ArgumentsHandling;
+using WordCount.Models;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
@@ -14,12 +16,14 @@ namespace WordCount.Tests
     {
         private readonly Mock<IFileSystem> _mockFileSystem;
         private readonly Mock<IDisplayOutput> _mockDisplayOutput;
+        private readonly Mock<IDictionaryParameterParser> _mockDictionaryParameterParser;
         private readonly DictionaryFileLoader _systemUnderTest;
 
         public DictionaryFileLoaderTests()
         {
             _mockFileSystem = new Mock<IFileSystem>();
             _mockDisplayOutput = new Mock<IDisplayOutput>();
+            _mockDictionaryParameterParser = new Mock<IDictionaryParameterParser>();
 
             var containerBuilder = new ContainerBuilder();
 
@@ -32,6 +36,10 @@ namespace WordCount.Tests
                 .As<IDisplayOutput>();
 
             containerBuilder
+                .RegisterInstance(instance: _mockDictionaryParameterParser.Object)
+                .As<IDictionaryParameterParser>();
+
+            containerBuilder
                 .RegisterType<DictionaryFileLoader>();
 
             _systemUnderTest = containerBuilder
@@ -42,11 +50,19 @@ namespace WordCount.Tests
         [NamedFact]
         public void DictionaryFileLoaderTests_FileNotFound_Expect_Empty_List_And_DisplayOutput_WriteErrorLine()
         {
+            _mockDictionaryParameterParser
+                .Setup(m => m.ParseDictionaryParameter())
+                .Returns(new DictionaryParameter()
+                {
+                    IsPresent = true,
+                    FileName = "datei_gibt_es_nicht.txt"
+                });
+
             _mockFileSystem
                 .Setup(expression: m => m.File.Exists("datei_gibt_es_nicht.txt"))
                 .Returns(value: false);
 
-            List<string> actual = _systemUnderTest.ReadWords(path: "datei_gibt_es_nicht.txt");
+            List<string> actual = _systemUnderTest.ReadWords();
 
             Assert.NotNull(@object: actual);
             Assert.Empty(collection: actual);
@@ -59,6 +75,14 @@ namespace WordCount.Tests
         [NamedFact]
         public void DictionaryFileLoaderTests_File_Content_WordA_WordB_Expect_WordA_WordB()
         {
+            _mockDictionaryParameterParser
+                .Setup(m => m.ParseDictionaryParameter())
+                .Returns(new DictionaryParameter()
+                {
+                    IsPresent = true,
+                    FileName = It.IsAny<string>()
+                });
+
             _mockFileSystem
                 .Setup(expression: m => m.File.Exists(It.IsAny<string>()))
                 .Returns(value: true);
@@ -68,7 +92,7 @@ namespace WordCount.Tests
                 .Returns(value: new[] {"WordA", "WordB"});
 
             List<string> expected = new List<string>() { "WordA", "WordB" };
-            List<string> actual = _systemUnderTest.ReadWords(path: It.IsAny<string>());
+            List<string> actual = _systemUnderTest.ReadWords();
 
             Assert.Equal(expected: expected, actual: actual);
         }
@@ -76,6 +100,14 @@ namespace WordCount.Tests
         [NamedFact]
         public void DictionaryFileLoaderTests_File_Content_Null_Expect_Empty()
         {
+            _mockDictionaryParameterParser
+                .Setup(m => m.ParseDictionaryParameter())
+                .Returns(new Models.DictionaryParameter()
+                {
+                    IsPresent = true,
+                    FileName = It.IsAny<string>()
+                });
+
             _mockFileSystem
                 .Setup(expression: m => m.File.Exists(It.IsAny<string>()))
                 .Returns(value: true);
@@ -83,7 +115,8 @@ namespace WordCount.Tests
             _mockFileSystem
                 .Setup(expression: m => m.File.ReadAllLines(It.IsAny<string>()))
                 .Returns(value: null);
-            List<string> actual = _systemUnderTest.ReadWords(path: It.IsAny<string>());
+
+            List<string> actual = _systemUnderTest.ReadWords();
 
             Assert.NotNull(@object: actual);
             Assert.Empty(collection: actual);
@@ -92,6 +125,14 @@ namespace WordCount.Tests
         [NamedFact]
         public void DictionaryFileLoaderTests_File_Not_Exists_Expect_Empty()
         {
+            _mockDictionaryParameterParser
+                .Setup(m => m.ParseDictionaryParameter())
+                .Returns(new DictionaryParameter()
+                {
+                    IsPresent = true,
+                    FileName = It.IsAny<string>()
+                });
+
             _mockFileSystem
                 .Setup(expression: m => m.File.Exists(It.IsAny<string>()))
                 .Returns(value: false);
@@ -99,7 +140,7 @@ namespace WordCount.Tests
             _mockFileSystem
                 .Setup(expression: m => m.File.ReadAllLines(It.IsAny<string>()))
                 .Throws<FileNotFoundException>();
-            List<string> actual = _systemUnderTest.ReadWords(path: It.IsAny<string>());
+            List<string> actual = _systemUnderTest.ReadWords();
 
             Assert.NotNull(@object: actual);
             Assert.Empty(collection: actual);
