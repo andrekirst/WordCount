@@ -105,6 +105,18 @@ namespace WordCount.Tests
         {
             List<string> verifyList = new List<string>();
 
+            _mockDictionaryParameterParser
+                .Setup(m => m.ParseDictionaryParameter())
+                .Returns(new DictionaryParameter()
+                {
+                    IsPresent = true,
+                    FileName = It.IsAny<string>()
+                });
+
+            _mockIndexParameterParser
+                .Setup(m => m.ParseIndexParameter())
+                .Returns(new IndexParameter() {IsPresent = true});
+
             _mockDisplayOutput
                 .Setup(expression: m => m.WriteLine(It.IsAny<string>()))
                 .Callback<string>(action: (s) => verifyList.Add(item: s));
