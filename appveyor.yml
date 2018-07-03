@@ -51,8 +51,8 @@ build_script:
   - ps: codecov -f "c:\projects\WordCount\opencovertests.xml" -t $env:CODECOV_TOKEN
   - ps: >-
       $coveralls = (Resolve-Path "$env:APPVEYOR_BUILD_FOLDER\packages\coveralls.net.*\tools\csmacnz.Coveralls.exe").ToString()
-      
-      & $coveralls --opencover -i ."c:\projects\WordCount\opencovertests.xml" --repoToken $env:COVERALLS_REPO_TOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --serviceName appveyor
+
+      & $coveralls --opencover -i "c:\projects\WordCount\opencovertests.xml" --repoToken $env:COVERALLS_REPO_TOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --serviceName appveyor
 
 on_success:
   - curl -s -o copilot https://copilot.blackducksoftware.com/ci/appveyor/scripts/upload
