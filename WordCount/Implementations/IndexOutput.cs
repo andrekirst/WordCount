@@ -7,6 +7,7 @@ using WordCount.Models;
 
 namespace WordCount.Implementations
 {
+    // TODO Leserlicher schreiben
     public class IndexOutput : IIndexOutput
     {
         private readonly IDisplayOutput _displayOutput;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO.Abstractions;
-using System.Linq;
+using WordCount.Extensions;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models;
@@ -36,13 +36,10 @@ namespace WordCount.Implementations
                 return new List<string>();
             }
 
-            string[] result = _fileSystem
+            return _fileSystem
                 .File
-                .ReadAllLines(path: path);
-
-            return result == null ?
-                new List<string>() :
-                result.ToList();
+                .ReadAllLines(path: path)
+                .ToEmptyIfNullList();
         }
     }
 }

@@ -5,6 +5,7 @@ using WordCount.Models;
 
 namespace WordCount.Implementations
 {
+    // TODO Leserlicher schreiben
     public class WordCountAnalyzer : IWordCountAnalyzer
     {
         private readonly ITextSplit _textSplit;

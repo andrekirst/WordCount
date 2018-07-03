@@ -94,9 +94,10 @@
     <Compile Include="ConsoleDisplayOutputTests.cs" />
     <Compile Include="DictionaryFileLoaderTests.cs" />
     <Compile Include="EnumerableHelpersTests\CountUnknownWordsTests.cs" />
-    <Compile Include="EnumerableStringExtensions\FirstOfMatchingRegexTests.cs" />
+    <Compile Include="EnumerableStringExtensionsTests\FirstOfMatchingRegexTests.cs" />
     <Compile Include="IndexOutputTests.cs" />
     <Compile Include="InteractorTests.cs" />
+    <Compile Include="ListExtensionsTests\ToEmptyIfNullListTests.cs" />
     <Compile Include="RegexStringExtensionsTests\IsMatchingRegexTests.cs" />
     <Compile Include="RegexStringExtensionsTests\SplitByRegexTests.cs" />
     <Compile Include="StopwordLoaderTests.cs" />

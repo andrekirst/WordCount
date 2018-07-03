@@ -5,7 +5,7 @@ using System.Linq;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests.EnumerableStringExtensions
+namespace WordCount.Tests.EnumerableStringExtensionsTests
 {
     public class FirstOfMatchingRegexTests
     {
