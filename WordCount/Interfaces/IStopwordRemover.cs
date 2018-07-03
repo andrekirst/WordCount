@@ -5,6 +5,6 @@ namespace WordCount.Interfaces
 {
     public interface IStopwordRemover
     {
-        StopwordRemoverResult RemoveStopwords(List<string> values);
+        StopwordRemoverResult RemoveStopwords(List<string> words);
     }
 }

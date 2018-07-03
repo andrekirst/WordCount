@@ -2,7 +2,7 @@
 using Moq;
 using WordCount.Abstractions.Console;
 using WordCount.Implementations;
-using Xunit;
+using WordCount.Tests.XUnitHelpers;
 
 namespace WordCount.Tests
 {
@@ -31,7 +31,7 @@ namespace WordCount.Tests
                 .Resolve<ConsoleDisplayOutput>();
         }
 
-        [Fact]
+        [NamedFact]
         public void ConsoleDisplayOutputTests_Write_A()
         {
             _systemUnderTest.Write(text: "A");
@@ -40,7 +40,7 @@ namespace WordCount.Tests
                 .Verify(expression: v => v.Write("A"), times: Times.Once);
         }
 
-        [Fact]
+        [NamedFact]
         public void ConsoleDisplayOutputTests_WriteLine_A()
         {
             _systemUnderTest.WriteLine(text: "A");
@@ -49,7 +49,7 @@ namespace WordCount.Tests
                 .Verify(expression: v => v.WriteLine("A"), times: Times.Once);
         }
 
-        [Fact]
+        [NamedFact]
         public void ConsoleDisplayOutputTests_WriteErrorLine_FEHLER_Color_Red()
         {
             _systemUnderTest.WriteErrorLine("FEHLER");

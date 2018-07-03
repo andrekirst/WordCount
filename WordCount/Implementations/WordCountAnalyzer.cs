@@ -22,18 +22,20 @@ namespace WordCount.Implementations
         {
             TextSplitResult textSplitResult = _textSplit.Split(text: text);
 
-            if (!textSplitResult.ValuesAvailable)
+            if (!textSplitResult.WordsAvailable)
             {
                 return new WordCountAnalyzerResult();
             }
 
-            StopwordRemoverResult stopwordRemoverResult = _stopwordRemover.RemoveStopwords(values: textSplitResult.Values);
+            StopwordRemoverResult stopwordRemoverResult = _stopwordRemover.RemoveStopwords(words: textSplitResult.Words);
 
-            List<string> words = stopwordRemoverResult.Values;
+            List<string> words = stopwordRemoverResult.Words;
             List<string> distinctWords = words.Distinct().ToList();
+
             int numberOfWords = words.Count;
             int numberOfUniqueWords = distinctWords.Count;
-            double averageWordLength = words.Average(selector: s => s.Length);
+            double averageWordLength = words.Any() ? words.Average(selector: s => s.Length) : 0.0;
+
             return new WordCountAnalyzerResult()
             {
                 NumberOfWords = numberOfWords,

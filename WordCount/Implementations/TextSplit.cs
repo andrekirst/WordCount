@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
 using WordCount.Interfaces;
 using WordCount.Models;
+using WordCount.Extensions;
 
 namespace WordCount.Implementations
 {
@@ -10,22 +9,14 @@ namespace WordCount.Implementations
     {
         public TextSplitResult Split(string text)
         {
-            if (string.IsNullOrWhiteSpace(value: text))
+            if (text.IsNullOrEmpty())
             {
-                return new TextSplitResult(new List<string>());
+                return new TextSplitResult();
             }
 
-            MatchCollection regexMatches = Regex.Matches(
-                input: text,
-                pattern: @"[a-zA-Z\-\u00D8-\u00F6]{1,}",
-                options: RegexOptions.Compiled);
+            List<string> words = text.SplitByRegex(pattern: @"[a-zA-Z\-\u00D8-\u00F6]{0,}[^-\s\d\.]");
 
-            List<string> splitByRegex = regexMatches
-                .OfType<Match>()
-                .Select(m => m.Value)
-                .ToList();
-
-            return new TextSplitResult(values: splitByRegex);
+            return new TextSplitResult(words: words);
         }
     }
 }

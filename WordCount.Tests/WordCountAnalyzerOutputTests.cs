@@ -1,15 +1,38 @@
-﻿using WordCount.Implementations;
-using Xunit;
+﻿using Autofac;
+using Moq;
+using WordCount.Implementations;
+using WordCount.Interfaces;
+using WordCount.Tests.XUnitHelpers;
 
 namespace WordCount.Tests
 {
     public class WordCountAnalyzerOutputTests
     {
-        [Fact]
-        public void WordCountAnalyzerOutputTests_DisplayResultAsString_Result_NumberOfWords_2_Expect_Number_of_Words_2_Number_of_unique_Words_1()
+        private readonly Mock<IDisplayOutput> _mockDisplayOutput;
+        private readonly WordCountAnalyzerOutput _systemUnderTest;
+
+        public WordCountAnalyzerOutputTests()
         {
-            WordCountAnalyzerOutput systemUnderTest = new WordCountAnalyzerOutput();
-            string actual = systemUnderTest.DisplayResultAsString(wordCountAnalyzerResult: new Models.WordCountAnalyzerResult()
+            _mockDisplayOutput = new Mock<IDisplayOutput>();
+
+            ContainerBuilder containerBuilder = new ContainerBuilder();
+
+            containerBuilder
+                .RegisterInstance(instance: _mockDisplayOutput.Object)
+                .As<IDisplayOutput>();
+
+            containerBuilder
+                .RegisterType<WordCountAnalyzerOutput>();
+
+            _systemUnderTest = containerBuilder
+                .Build()
+                .Resolve<WordCountAnalyzerOutput>();
+        }
+
+        [NamedFact]
+        public void WordCountAnalyzerOutputTests_DisplayResult_Result_NumberOfWords_2_Expect_Number_of_Words_2_Number_of_unique_Words_1()
+        {
+            _systemUnderTest.DisplayResult(wordCountAnalyzerResult: new Models.WordCountAnalyzerResult()
             {
                 NumberOfWords = 2,
                 NumberOfUniqueWords = 1,
@@ -17,7 +40,10 @@ namespace WordCount.Tests
             });
             const string expected = "Number of words: 2, unique: 1; average word length: 5.63 characters";
 
-            Assert.Equal(expected: expected, actual: actual);
+            _mockDisplayOutput
+                .Verify(
+                    expression: v => v.WriteLine(expected),
+                    times: Times.Once);
         }
     }
 }

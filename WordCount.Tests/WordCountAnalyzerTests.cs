@@ -4,6 +4,7 @@ using Autofac;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Models;
+using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
 namespace WordCount.Tests
@@ -40,7 +41,7 @@ namespace WordCount.Tests
                 .Resolve<WordCountAnalyzer>();
         }
 
-        [Fact]
+        [NamedFact]
         public void WordCountAnalyzerTests_Analyze_Text_Bla_bla_Expect_2_Words()
         {
             string text = "Bla bla";
@@ -48,7 +49,7 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
-                .Returns(value: new StopwordRemoverResult() { Values = mockTextSplitResulValues });
+                .Returns(value: new StopwordRemoverResult() { Words = mockTextSplitResulValues });
 
             _mockTextSplit
                 .Setup(m => m.Split(text))
@@ -59,7 +60,7 @@ namespace WordCount.Tests
             Assert.Equal(expected: 2, actual: actual.NumberOfWords);
         }
 
-        [Fact]
+        [NamedFact]
         public void WordCountAnalyzerTests_Analyze_Stopword_a_This_is_a_Text_Expect_3_Words()
         {
             const string text = "This is a Text";
@@ -74,7 +75,7 @@ namespace WordCount.Tests
                 .Setup(m => m.RemoveStopwords(values))
                 .Returns(new StopwordRemoverResult()
                 {
-                    Values = new List<string>() { "This", "is", "Text" }
+                    Words = new List<string>() { "This", "is", "Text" }
                 });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
@@ -98,7 +99,7 @@ namespace WordCount.Tests
             Assert.Equal(expected: 0, actual: actual.NumberOfWords);
         }
 
-        [Fact]
+        [NamedFact]
         public void WordCountAnalyzerTests_Long_text_Bla_bla_bla_Expect_Number_of_Words_3()
         {
             const string text = "Bla bla bla";
@@ -111,14 +112,14 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(m => m.RemoveStopwords(mockValues))
-                .Returns(new StopwordRemoverResult() { Values = mockValuesStopwordsRemoved });
+                .Returns(new StopwordRemoverResult() { Words = mockValuesStopwordsRemoved });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
             Assert.Equal(expected: 3, actual: actual.NumberOfWords);
         }
 
-        [Fact]
+        [NamedFact]
         public void WordCountAnalyzerTests_Long_text_Bla_bla_bla_Expect_Number_of_unique_Words_2()
         {
             const string text = "Bla bla bla";
@@ -131,14 +132,14 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult() { Values = mockValues });
+                .Returns(value: new StopwordRemoverResult() { Words = mockValues });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
             Assert.Equal(expected: 2, actual: actual.NumberOfUniqueWords);
         }
 
-        [Fact]
+        [NamedFact]
         public void WordCountAnalyzerTests_Text_Bla_bla_bla_Expect_Average_word_Length_3()
         {
             string text = "Bla bla bla";
@@ -151,14 +152,14 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult() { Values = mockValues });
+                .Returns(value: new StopwordRemoverResult() { Words = mockValues });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
             Assert.Equal(expected: 3.0, actual: actual.AverageWordLength);
         }
 
-        [Fact]
+        [NamedFact]
         public void WordCountAnalyzerTests_Text_Bla_bla_bla_Expect_distinct_Words_Bla_bla()
         {
             const string text = "Bla bla bla";
@@ -171,13 +172,32 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult() { Values = mockValues });
+                .Returns(value: new StopwordRemoverResult() { Words = mockValues });
 
             List<string> expected = new List<string>() { "Bla", "bla" };
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
             Assert.Equal(expected: expected, actual: actual.DistinctWords);
+        }
+
+        [NamedFact]
+        public void WordCountAnalyzerTests_Text_a_Stopword_a_Expect_All_Values_in_Result_0()
+        {
+            _mockStopwordRemover
+                .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
+                .Returns(value: new StopwordRemoverResult());
+
+            _mockTextSplit
+                .Setup(m => m.Split("a."))
+                .Returns(value: new TextSplitResult(new List<string>() { "a" }));
+
+            WordCountAnalyzerResult actual = _systemUnderTest.Analyze("a.");
+
+            Assert.NotNull(@object: actual);
+            Assert.Equal(expected: 0.0, actual: actual.AverageWordLength);
+            Assert.Equal(expected: 0, actual: actual.NumberOfUniqueWords);
+            Assert.Equal(expected: 0, actual: actual.NumberOfWords);
         }
     }
 }

@@ -4,6 +4,6 @@ namespace WordCount.Interfaces
 {
     public interface IDictionaryFileLoader
     {
-        List<string> ReadWords(string path);
+        List<string> ReadWords();
     }
 }

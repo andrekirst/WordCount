@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using WordCount.Implementations;
+using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
 namespace WordCount.Tests
@@ -30,7 +31,7 @@ namespace WordCount.Tests
                 .Resolve<StopwordLoader>();
         }
 
-        [Fact]
+        [NamedFact]
         public void StopwordLoaderTests_GetStopwords_FileNotExist_Return_EmptyList()
         {
             _mockFileSystem
@@ -43,7 +44,7 @@ namespace WordCount.Tests
             Assert.Empty(collection: actual);
         }
 
-        [Fact]
+        [NamedFact]
         public void StopwordLoaderTests_GetStopwords_FileEmpty_Return_EmptyList()
         {
             _mockFileSystem
@@ -56,7 +57,7 @@ namespace WordCount.Tests
             Assert.Empty(collection: actual);
         }
 
-        [Fact]
+        [NamedFact]
         public void StopwordLoaderTests_GetStopwords_Contains_1_Row_With_word_a_Return_List_with_one_Entry_a()
         {
             _mockFileSystem

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WordCount.Helpers;
 using WordCount.Interfaces;
+using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models;
 
 namespace WordCount.Implementations
@@ -9,41 +11,56 @@ namespace WordCount.Implementations
     {
         private readonly IDisplayOutput _displayOutput;
         private readonly IDictionaryFileLoader _dictionaryFileLoader;
+        private readonly IIndexParameterParser _indexParameterParser;
+        private readonly IDictionaryParameterParser _dictionaryParameterParser;
 
         public IndexOutput(
             IDisplayOutput displayOutput,
-            IDictionaryFileLoader dictionaryFileLoader)
+            IDictionaryFileLoader dictionaryFileLoader,
+            IIndexParameterParser indexParameterParser,
+            IDictionaryParameterParser dictionaryParameterParser)
         {
             _displayOutput = displayOutput;
             _dictionaryFileLoader = dictionaryFileLoader;
+            _indexParameterParser = indexParameterParser;
+            _dictionaryParameterParser = dictionaryParameterParser;
         }
 
         public void OutputIndex(IndexOutputRequest indexOutputRequest)
         {
-            List<string> dictionaryWords = new List<string>();
+            IndexParameter indexParameter = _indexParameterParser.ParseIndexParameter();
+            DictionaryParameter dictionaryParameter = _dictionaryParameterParser.ParseDictionaryParameter();
 
-            if (indexOutputRequest.IsDictionaryParameterPresent)
+            if (indexParameter.IsPresent)
             {
-                dictionaryWords.AddRange(collection: _dictionaryFileLoader.ReadWords(path: indexOutputRequest.DictionaryTextFile));
+                List<string> dictionaryWords = _dictionaryFileLoader.ReadWords();
+
+                int unknwonWordsCount = EnumerableHelpers.CountUnknownWords(
+                    distinctWords: indexOutputRequest.DistinctWords,
+                    dictionaryWords: dictionaryWords);
+
+                string indexOutputText = dictionaryParameter.IsPresent
+                    ? $"Index: (unknown: {unknwonWordsCount})"
+                    : "Index:";
+                _displayOutput.WriteLine(text: indexOutputText);
+
+                DisplayWords(
+                    distinctWords: indexOutputRequest.DistinctWords,
+                    dictionaryWords: dictionaryWords);
             }
+        }
 
-            var unknwonWordsCount = indexOutputRequest
-                .DistinctWords
-                .Except(second: dictionaryWords)
-                .Count();
+        private void DisplayWords(
+            List<string> distinctWords,
+            List<string> dictionaryWords)
+        {
+            bool checkAgainstDictionary = dictionaryWords != null && dictionaryWords.Any();
+            IEnumerable<string> sortedListOfDistinctWords = distinctWords.OrderBy(keySelector: s => s);
 
-            string indexOutputText = indexOutputRequest.IsDictionaryParameterPresent
-                ? $"Index: (unknown: {unknwonWordsCount})"
-                : "Index:";
-
-            _displayOutput.WriteLine(text: indexOutputText);
-
-            foreach (string distinctWord in indexOutputRequest
-                .DistinctWords
-                .OrderBy(keySelector: s => s))
+            foreach (string distinctWord in sortedListOfDistinctWords)
             {
                 string word = distinctWord;
-                if (dictionaryWords.Contains(item: distinctWord))
+                if (checkAgainstDictionary && !dictionaryWords.Contains(item: distinctWord))
                 {
                     word += "*";
                 }

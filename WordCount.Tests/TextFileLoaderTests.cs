@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Abstractions;
 using WordCount.Implementations;
 using WordCount.Interfaces;
+using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
 namespace WordCount.Tests
@@ -36,17 +37,18 @@ namespace WordCount.Tests
                 .Resolve<TextFileLoader>();
         }
 
-        [Fact]
-        public void TextFileLoaderTests_FileNotFoundException_Thrown_Expect_DisplayOutput_WriteError()
+        [NamedFact]
+        public void TextFileLoaderTests_FileNotExist_True_Expect_Output_and_return_empty_string()
         {
             _mockFileSystem
-                .Setup(m => m.File.ReadAllText("datei1.txt"))
-                .Throws(new FileNotFoundException("Error-Message", "datei1.txt"));
+                .Setup(m => m.File.Exists(It.IsAny<string>()))
+                .Returns(false);
 
-            Assert.Throws<FileNotFoundException>(testCode: () =>
-            {
-                _systemUnderTest.ReadTextFile("datei1.txt");
-            });
+            string actual = _systemUnderTest.ReadTextFile("datei1.txt");
+
+            Assert.Equal(
+                expected: string.Empty,
+                actual: actual);
 
             _mockDisplayOutput
                 .Verify(
@@ -54,26 +56,16 @@ namespace WordCount.Tests
                     times: Times.Once);
         }
 
-        [Fact]
-        public void TextFileLoaderTests_FileNotFoundException_Thrown_Expect_FileNotFoundException()
-        {
-            _mockFileSystem
-                .Setup(m => m.File.ReadAllText(It.IsAny<string>()))
-                .Throws(new FileNotFoundException(It.IsAny<string>(), "datei1.txt"));
-
-            Assert.Throws<FileNotFoundException>(
-                testCode: () =>
-                {
-                    _systemUnderTest.ReadTextFile("datei1.txt");
-                });
-        }
-
-        [Fact]
+        [NamedFact]
         public void TextFileLoaderTests_ReadAllText_Bla_Expect_Bla()
         {
             _mockFileSystem
                 .Setup(expression: m => m.File.ReadAllText(It.IsAny<string>()))
                 .Returns(value: "Bla");
+
+            _mockFileSystem
+                .Setup(m => m.File.Exists(It.IsAny<string>()))
+                .Returns(true);
 
             string actual = _systemUnderTest.ReadTextFile(path: It.IsAny<string>());
 
