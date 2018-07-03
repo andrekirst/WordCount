@@ -34,6 +34,10 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         [NamedFact]
         public void DictionaryParameterParserTests_Args_have_no_Dictionary_Parameter_Expect_IsPresent_False()
         {
+            _mockEnvironment
+                .Setup(expression: m => m.GetCommandLineArgs())
+                .Returns(value: new[] {"bla.txt"});
+
             DictionaryParameter actual = _systemUnderTest
                 .ParseDictionaryParameter();
 
@@ -44,6 +48,10 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         [NamedFact]
         public void DictionaryParameterParserTests_Args_is_null_Expect_IsPresent_False()
         {
+            _mockEnvironment
+                .Setup(expression: m => m.GetCommandLineArgs())
+                .Returns(value: null);
+
             DictionaryParameter actual = _systemUnderTest
                 .ParseDictionaryParameter();
 
@@ -54,6 +62,10 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         [NamedFact]
         public void DictionaryParameterParserTests_Args_is_empty_Expect_IsPresent_False()
         {
+            _mockEnvironment
+                .Setup(expression: m => m.GetCommandLineArgs())
+                .Returns(value: new string[0]);
+
             DictionaryParameter actual = _systemUnderTest
                 .ParseDictionaryParameter();
 
