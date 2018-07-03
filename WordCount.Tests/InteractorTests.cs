@@ -53,17 +53,5 @@ namespace WordCount.Tests
                 .Build()
                 .Resolve<Interactor>();
         }
-
-        [NamedFact]
-        public void InteractorTests_TextInput_Throws_Error_Expect_ReturnCode_1()
-        {
-            _mockTextInput
-                .Setup(m => m.GetInputText())
-                .Throws<Exception>();
-
-            int actual = _systemUnderTest.Execute();
-
-            Assert.Equal(expected: 1, actual: actual);
-        }
     }
 }

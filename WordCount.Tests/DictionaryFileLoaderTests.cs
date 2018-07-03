@@ -145,5 +145,20 @@ namespace WordCount.Tests
             Assert.NotNull(@object: actual);
             Assert.Empty(collection: actual);
         }
+
+        [NamedFact]
+        public void DictionaryFileLoaderTests_DictionaryParameter_is_not_present_do_not_call_File_ReadAllLines()
+        {
+            _mockDictionaryParameterParser
+                .Setup(m => m.ParseDictionaryParameter())
+                .Returns(new DictionaryParameter() { IsPresent = false });
+
+            _systemUnderTest.ReadWords();
+
+            _mockFileSystem
+                .Verify(
+                    expression: v => v.File.ReadAllLines(null),
+                    times: Times.Never);
+        }
     }
 }

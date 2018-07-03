@@ -24,26 +24,18 @@ namespace WordCount.Implementations
 
         public int Execute()
         {
-            try
+            string text = _textInput.GetInputText();
+
+            WordCountAnalyzerResult analyzeResult = _wordCountAnalyzer.Analyze(text: text);
+
+            _wordCountAnalyzerOutput.DisplayResult(wordCountAnalyzerResult: analyzeResult);
+
+            IndexOutputRequest indexOutputRequest = new IndexOutputRequest()
             {
-                string text = _textInput.GetInputText();
+                DistinctWords = analyzeResult.DistinctWords
+            };
 
-                WordCountAnalyzerResult analyzeResult = _wordCountAnalyzer.Analyze(text: text);
-
-                _wordCountAnalyzerOutput.DisplayResult(wordCountAnalyzerResult: analyzeResult);
-
-                IndexOutputRequest indexOutputRequest = new IndexOutputRequest()
-                {
-                    DistinctWords = analyzeResult.DistinctWords
-                };
-
-                _indexOutput.OutputIndex(indexOutputRequest: indexOutputRequest);
-            }
-            catch (System.Exception ex)
-            {
-                // TODO Ohne Exception-Handling den Fehlercode zurückgeben. Eventuell durch die rückgabe von komplexen Datentypen mit einem ReturnCode.
-                return 1;
-            }
+            _indexOutput.OutputIndex(indexOutputRequest: indexOutputRequest);
 
             return 0;
         }

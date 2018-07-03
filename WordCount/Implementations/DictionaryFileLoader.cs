@@ -36,6 +36,11 @@ namespace WordCount.Implementations
                 return new List<string>();
             }
 
+            if (!dictionaryParameter.IsPresent)
+            {
+                return new List<string>();
+            }
+
             return _fileSystem
                 .File
                 .ReadAllLines(path: path)

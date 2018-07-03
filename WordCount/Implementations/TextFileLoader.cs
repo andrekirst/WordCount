@@ -19,15 +19,14 @@ namespace WordCount.Implementations
 
         public string ReadTextFile(string path)
         {
-            // TODO richtige Behandlung, anstatt try..catch
-            try
+            if (_fileSystem.File.Exists(path: path))
             {
                 return _fileSystem.File.ReadAllText(path: path);
             }
-            catch (FileNotFoundException)
+            else
             {
                 _displayOutput.WriteErrorLine(errorMessage: $"File \"{path}\" not found.");
-                throw;
+                return string.Empty;
             }
         }
     }
