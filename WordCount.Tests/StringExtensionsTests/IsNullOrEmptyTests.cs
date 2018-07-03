@@ -1,11 +1,12 @@
 ﻿using WordCount.Extensions;
+using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
 namespace WordCount.Tests.StringExtensionsTests
 {
     public class IsNullOrEmptyTests
     {
-        [Theory]
+        [NamedTheory]
         [InlineData("", true)]
         [InlineData(" ", true)]
         [InlineData(null, true)]

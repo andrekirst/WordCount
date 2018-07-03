@@ -19,14 +19,13 @@ namespace WordCount.Implementations.ArgumentsHandling
         {
             string[] args = _environment.GetCommandLineArgs();
 
-            // TODO Eventuell noch etwas lesbarer umbauen. Bsp.: als ExtensionMethod für IEnumerable
-            string dictionaryArgumentValue = args?.FirstOrDefault(predicate: p => p.IsMatchingRegex(pattern: @"-dictionary=[a-zA-z.]{1,}"));
-            string[] parametersplitByEqualSign = dictionaryArgumentValue?.Split('=');
+            string dictionaryParameter = args?.FirstOfMatchingRegex(pattern: @"-dictionary=[a-zA-z.]{1,}");
+            string[] parameterSplitByEqualSign = dictionaryParameter?.Split('=');
 
             return new DictionaryParameter()
             {
-                IsPresent = !dictionaryArgumentValue.IsNullOrEmpty(),
-                FileName = parametersplitByEqualSign?.LastOrDefault()
+                IsPresent = dictionaryParameter.IsFilled(),
+                FileName = parameterSplitByEqualSign?.LastOrDefault()
             };
         }
     }

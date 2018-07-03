@@ -55,6 +55,7 @@
     <Compile Include="Abstractions\Console\IEnvironment.cs" />
     <Compile Include="AutofacModules\LogRequestsModule.cs" />
     <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
+    <Compile Include="Extensions\EnumerableStringExtensions.cs" />
     <Compile Include="Extensions\RegexStringExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\EnumerableHelpers.cs" />
