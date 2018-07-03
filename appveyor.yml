@@ -49,6 +49,10 @@ build_script:
   - ps: OpenCover.Console.exe -register -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"c:\projects\WordCount\WordCount.Tests\bin\Release\WordCount.Tests.dll -noshadow" -excludebyattribute:*ExcludeFromCodeCoverage* -filter:"+[WordCount*]* -[*Tests*]*" -output:"c:\projects\WordCount\opencovertests.xml"
   - ps: MSBuild.SonarQube.Runner.exe end /d:"sonar.login=$($env:SONARQUBE_TOKEN)"
   - ps: codecov -f "c:\projects\WordCount\opencovertests.xml" -t $env:CODECOV_TOKEN
+  - ps: >-
+      $coveralls = (Resolve-Path "$env:APPVEYOR_BUILD_FOLDER\packages\coveralls.net.*\tools\csmacnz.Coveralls.exe").ToString()
+
+      & $coveralls --opencover -i c:\projects\WordCount\opencovertests.xml --repoToken $env:COVERALLS_REPO_TOKEN --useRelativePaths
 
 on_success:
   - curl -s -o copilot https://copilot.blackducksoftware.com/ci/appveyor/scripts/upload
