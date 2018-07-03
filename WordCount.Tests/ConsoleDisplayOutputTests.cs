@@ -3,7 +3,6 @@ using Moq;
 using WordCount.Abstractions.Console;
 using WordCount.Implementations;
 using WordCount.Tests.XUnitHelpers;
-using Xunit;
 
 namespace WordCount.Tests
 {

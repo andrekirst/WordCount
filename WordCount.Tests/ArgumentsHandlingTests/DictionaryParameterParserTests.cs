@@ -66,7 +66,7 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         {
             _mockEnvironment
                 .Setup(m => m.GetCommandLineArgs())
-                .Returns(new string[] {"-dictionary"});
+                .Returns(new[] {"-dictionary"});
 
             DictionaryParameter actual = _systemUnderTest
                 .ParseDictionaryParameter();
@@ -80,7 +80,7 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         {
             _mockEnvironment
                 .Setup(m => m.GetCommandLineArgs())
-                .Returns(new string[] { "-dictionary=" });
+                .Returns(new[] { "-dictionary=" });
 
             DictionaryParameter actual = _systemUnderTest
                 .ParseDictionaryParameter();
@@ -94,7 +94,7 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         {
             _mockEnvironment
                 .Setup(m => m.GetCommandLineArgs())
-                .Returns(new string[] { "-dictionary=bla.txt" });
+                .Returns(new[] { "-dictionary=bla.txt" });
 
             DictionaryParameter actual = _systemUnderTest
                 .ParseDictionaryParameter();

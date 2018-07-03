@@ -1,6 +1,4 @@
-﻿using WordCount.Models;
-
-namespace WordCount.Interfaces
+﻿namespace WordCount.Interfaces
 {
     public interface ITextInput
     {

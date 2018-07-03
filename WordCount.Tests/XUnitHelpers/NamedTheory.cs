@@ -3,11 +3,11 @@ using Xunit;
 
 namespace WordCount.Tests.XUnitHelpers
 {
-    public class NamedTheoryAttribute : TheoryAttribute
+    public sealed class NamedTheoryAttribute : TheoryAttribute
     {
         public NamedTheoryAttribute([CallerMemberName]string name = "")
         {
-            base.DisplayName = name;
+            DisplayName = name;
         }
     }
 }

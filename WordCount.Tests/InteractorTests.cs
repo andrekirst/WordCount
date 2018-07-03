@@ -3,8 +3,6 @@ using Autofac;
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
-using WordCount.Interfaces.ArgumentsHandling;
-using WordCount.Models;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
@@ -15,7 +13,6 @@ namespace WordCount.Tests
         private readonly Mock<ITextInput> _mockTextInput;
         private readonly Mock<IWordCountAnalyzer> _mockWordCountAnalyzer;
         private readonly Mock<IWordCountAnalyzerOutput> _mockWordCountAnalyzerOutput;
-        private readonly Mock<IDisplayOutput> _mockDisplayOutput;
         private readonly Mock<IIndexOutput> _mockIndexOutput;
         private readonly Interactor _systemUnderTest;
 
@@ -24,7 +21,6 @@ namespace WordCount.Tests
             _mockTextInput = new Mock<ITextInput>();
             _mockWordCountAnalyzer = new Mock<IWordCountAnalyzer>();
             _mockWordCountAnalyzerOutput = new Mock<IWordCountAnalyzerOutput>();
-            _mockDisplayOutput = new Mock<IDisplayOutput>();
             _mockIndexOutput = new Mock<IIndexOutput>();
 
             var containerBuilder = new ContainerBuilder();
@@ -47,11 +43,6 @@ namespace WordCount.Tests
             containerBuilder
                 .RegisterInstance(instance: _mockWordCountAnalyzerOutput.Object)
                 .As<IWordCountAnalyzerOutput>()
-                .SingleInstance();
-
-            containerBuilder
-                .RegisterInstance(instance: _mockDisplayOutput.Object)
-                .As<IDisplayOutput>()
                 .SingleInstance();
 
             containerBuilder
