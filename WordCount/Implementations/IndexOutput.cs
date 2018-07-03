@@ -7,7 +7,6 @@ using WordCount.Models;
 
 namespace WordCount.Implementations
 {
-    // TODO Leserlicher schreiben
     public class IndexOutput : IIndexOutput
     {
         private readonly IDisplayOutput _displayOutput;
@@ -34,10 +33,7 @@ namespace WordCount.Implementations
 
             if (indexParameter.IsPresent)
             {
-                List<string> dictionaryWords =
-                    dictionaryParameter.IsPresent ?
-                    _dictionaryFileLoader.ReadWords() :
-                    new List<string>();
+                List<string> dictionaryWords = _dictionaryFileLoader.ReadWords();
 
                 int unknwonWordsCount = EnumerableHelpers.CountUnknownWords(
                     distinctWords: indexOutputRequest.DistinctWords,
@@ -50,23 +46,21 @@ namespace WordCount.Implementations
 
                 DisplayWords(
                     distinctWords: indexOutputRequest.DistinctWords,
-                    dictionaryWords: dictionaryWords); 
+                    dictionaryWords: dictionaryWords);
             }
         }
 
-        // TODO Eventuell auch nochmal als Schnittstelle
         private void DisplayWords(
-            IEnumerable<string> distinctWords,
+            List<string> distinctWords,
             List<string> dictionaryWords)
         {
             bool checkAgainstDictionary = dictionaryWords != null && dictionaryWords.Any();
+            IEnumerable<string> sortedListOfDistinctWords = distinctWords.OrderBy(keySelector: s => s);
 
-            foreach (string distinctWord in distinctWords
-                            .OrderBy(keySelector: s => s))
+            foreach (string distinctWord in sortedListOfDistinctWords)
             {
                 string word = distinctWord;
-                if (checkAgainstDictionary &&
-                    !dictionaryWords.Contains(item: distinctWord))
+                if (checkAgainstDictionary && !dictionaryWords.Contains(item: distinctWord))
                 {
                     word += "*";
                 }

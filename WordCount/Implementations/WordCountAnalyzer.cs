@@ -5,7 +5,6 @@ using WordCount.Models;
 
 namespace WordCount.Implementations
 {
-    // TODO Leserlicher schreiben
     public class WordCountAnalyzer : IWordCountAnalyzer
     {
         private readonly ITextSplit _textSplit;
@@ -28,12 +27,10 @@ namespace WordCount.Implementations
                 return new WordCountAnalyzerResult();
             }
 
-            StopwordRemoverResult stopwordRemoverResult = _stopwordRemover.RemoveStopwords(values: textSplitResult.Words);
+            StopwordRemoverResult stopwordRemoverResult = _stopwordRemover.RemoveStopwords(words: textSplitResult.Words);
 
-            List<string> words = stopwordRemoverResult.Values;
-            List<string> distinctWords = words
-                .Distinct()
-                .ToList();
+            List<string> words = stopwordRemoverResult.Words;
+            List<string> distinctWords = words.Distinct().ToList();
 
             int numberOfWords = words.Count;
             int numberOfUniqueWords = distinctWords.Count;

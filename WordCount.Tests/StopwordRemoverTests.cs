@@ -43,12 +43,12 @@ namespace WordCount.Tests
                 .Setup(m => m.GetStopwords())
                 .Returns(value: new List<string>() { "a" });
 
-            StopwordRemoverResult actual = _systemUnderTest.RemoveStopwords(values: values);
+            StopwordRemoverResult actual = _systemUnderTest.RemoveStopwords(words: values);
 
             List<string> expected = new List<string>() { "Mary", "had", "little", "lamb" };
 
             Assert.NotNull(@object: actual);
-            Assert.Equal(expected: expected, actual: actual.Values);
+            Assert.Equal(expected: expected, actual: actual.Words);
         }
 
         [NamedFact]
@@ -62,12 +62,12 @@ namespace WordCount.Tests
 
             List<string> expected = new List<string>() { "Mary", "had", "a", "little", "lamb" };
 
-            StopwordRemoverResult actual = _systemUnderTest.RemoveStopwords(values: values);
+            StopwordRemoverResult actual = _systemUnderTest.RemoveStopwords(words: values);
 
             Assert.NotNull(actual);
-            Assert.NotNull(@object: actual.Values);
-            Assert.NotEmpty(collection: actual.Values);
-            Assert.Equal(expected: expected, actual: actual.Values);
+            Assert.NotNull(@object: actual.Words);
+            Assert.NotEmpty(collection: actual.Words);
+            Assert.Equal(expected: expected, actual: actual.Words);
         }
     }
 }

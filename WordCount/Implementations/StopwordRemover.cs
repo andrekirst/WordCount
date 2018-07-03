@@ -13,15 +13,15 @@ namespace WordCount.Implementations
             _stopwordLoader = stopwordLoader;
         }
 
-        public StopwordRemoverResult RemoveStopwords(List<string> values)
+        public StopwordRemoverResult RemoveStopwords(List<string> words)
         {
             List<string> stopwords = _stopwordLoader.GetStopwords();
 
-            values.RemoveAll(match: stopwords.Contains);
+            words.RemoveAll(match: stopwords.Contains);
             
             return new StopwordRemoverResult()
             {
-                Values = values
+                Words = words
             };
         }
     }

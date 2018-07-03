@@ -32,7 +32,6 @@ namespace WordCount.Implementations
 
                 _wordCountAnalyzerOutput.DisplayResult(wordCountAnalyzerResult: analyzeResult);
 
-                // TODO Refactoring - Untergliederung
                 IndexOutputRequest indexOutputRequest = new IndexOutputRequest()
                 {
                     DistinctWords = analyzeResult.DistinctWords

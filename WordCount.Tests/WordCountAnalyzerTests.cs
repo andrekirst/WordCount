@@ -49,7 +49,7 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
-                .Returns(value: new StopwordRemoverResult() { Values = mockTextSplitResulValues });
+                .Returns(value: new StopwordRemoverResult() { Words = mockTextSplitResulValues });
 
             _mockTextSplit
                 .Setup(m => m.Split(text))
@@ -75,7 +75,7 @@ namespace WordCount.Tests
                 .Setup(m => m.RemoveStopwords(values))
                 .Returns(new StopwordRemoverResult()
                 {
-                    Values = new List<string>() { "This", "is", "Text" }
+                    Words = new List<string>() { "This", "is", "Text" }
                 });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
@@ -112,7 +112,7 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(m => m.RemoveStopwords(mockValues))
-                .Returns(new StopwordRemoverResult() { Values = mockValuesStopwordsRemoved });
+                .Returns(new StopwordRemoverResult() { Words = mockValuesStopwordsRemoved });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
@@ -132,7 +132,7 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult() { Values = mockValues });
+                .Returns(value: new StopwordRemoverResult() { Words = mockValues });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
@@ -152,7 +152,7 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult() { Values = mockValues });
+                .Returns(value: new StopwordRemoverResult() { Words = mockValues });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
@@ -172,7 +172,7 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult() { Values = mockValues });
+                .Returns(value: new StopwordRemoverResult() { Words = mockValues });
 
             List<string> expected = new List<string>() { "Bla", "bla" };
 
