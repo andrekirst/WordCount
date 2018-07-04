@@ -2,6 +2,8 @@
 using System.IO.Abstractions;
 using System.Linq;
 using WordCount.Interfaces;
+using WordCount.Interfaces.ArgumentsHandling;
+using WordCount.Models;
 
 namespace WordCount.Implementations
 {
@@ -9,22 +11,40 @@ namespace WordCount.Implementations
     {
         private const string StopwordFileName = "stopwords.txt";
         private readonly IFileSystem _fileSystem;
+        private readonly IStopwordListParameterParser _stopwordListParameterParser;
+        private readonly IDisplayOutput _displayOutput;
 
-        public StopwordLoader(IFileSystem fileSystem)
+        public StopwordLoader(
+            IFileSystem fileSystem,
+            IStopwordListParameterParser stopwordListParameterParser,
+            IDisplayOutput displayOutput)
         {
             _fileSystem = fileSystem;
+            _stopwordListParameterParser = stopwordListParameterParser;
+            _displayOutput = displayOutput;
         }
 
         public List<string> GetStopwords()
         {
-            if (!_fileSystem.File.Exists(path: StopwordFileName))
+            StopwordListParameter stopwordListParameter = _stopwordListParameterParser.ParseStopwordListParameter();
+
+            bool isParameterPresent = stopwordListParameter.IsPresent;
+
+            string fileName = isParameterPresent ? stopwordListParameter.FileName : StopwordFileName;
+
+            if (!_fileSystem.File.Exists(path: fileName))
             {
                 return new List<string>();
             }
 
+            if (isParameterPresent)
+            {
+                _displayOutput.WriteLine(text: $"Used Stopwordlist: {fileName}"); 
+            }
+
             return _fileSystem
                 .File
-                .ReadAllLines(path: StopwordFileName)
+                .ReadAllLines(path: fileName)
                 .ToList();
         }
     }

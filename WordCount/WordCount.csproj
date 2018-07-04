@@ -63,6 +63,7 @@
     <Compile Include="Implementations\ArgumentsHandling\DictionaryParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\IndexParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\SourceFileParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\StopwordListParameterParser.cs" />
     <Compile Include="Implementations\ConsoleDisplayOutput.cs" />
     <Compile Include="Implementations\DictionaryFileLoader.cs" />
     <Compile Include="Implementations\IndexOutput.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Implementations\TextSplit.cs" />
     <Compile Include="Implementations\WordCountAnalyzer.cs" />
     <Compile Include="Implementations\WordCountAnalyzerOutput.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\IStopwordListParameterParser.cs" />
     <Compile Include="Interfaces\IDictionaryFileLoader.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IDictionaryParameterParser.cs" />
     <Compile Include="Interfaces\IDisplayOutput.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Models\IndexParameter.cs" />
     <Compile Include="Models\InputTextResult.cs" />
     <Compile Include="Models\SourceFileParameter.cs" />
+    <Compile Include="Models\StopwordListParameter.cs" />
     <Compile Include="Models\StopwordRemoverResult.cs" />
     <Compile Include="Models\TextSplitResult.cs" />
     <Compile Include="Models\WordCountAnalyzerResult.cs" />
@@ -115,6 +118,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="sample.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="stopwords2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="stopwords.txt">
