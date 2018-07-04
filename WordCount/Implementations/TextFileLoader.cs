@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System;
+using System.IO.Abstractions;
 using WordCount.Interfaces;
 
 namespace WordCount.Implementations
@@ -20,7 +21,11 @@ namespace WordCount.Implementations
         {
             if (_fileSystem.File.Exists(path: path))
             {
-                return _fileSystem.File.ReadAllText(path: path);
+                string text = _fileSystem.File.ReadAllText(path: path);
+                text = text.Replace(
+                    oldValue: $"-{Environment.NewLine}",
+                    newValue: string.Empty);
+                return text;
             }
             else
             {

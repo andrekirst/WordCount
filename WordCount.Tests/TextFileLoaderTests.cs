@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Moq;
 using System.IO.Abstractions;
 using WordCount.Implementations;
@@ -69,6 +70,28 @@ namespace WordCount.Tests
             string actual = _systemUnderTest.ReadTextFile(path: It.IsAny<string>());
 
             Assert.Equal(expected: "Bla", actual: actual);
+        }
+
+        [NamedFact]
+        public void TextFileLoaderTests_Text_mit_neuer_Zeile_und_Bindestrich_zu_Text_ohne_Bindestrich_und_vollem_Wort()
+        {
+            string inputText = $"Das ist ein lan-{Environment.NewLine}ger Text";
+
+            _mockFileSystem
+                .Setup(m => m.File.Exists(It.IsAny<string>()))
+                .Returns(true);
+
+            _mockFileSystem
+                .Setup(m => m.File.ReadAllText(It.IsAny<string>()))
+                .Returns(inputText);
+
+            string actual = _systemUnderTest.ReadTextFile(It.IsAny<string>());
+
+            string expected = "Das ist ein langer Text";
+
+            Assert.Equal(
+                expected: expected,
+                actual: actual);
         }
     }
 }

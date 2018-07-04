@@ -76,7 +76,7 @@ namespace WordCount.Tests
                 .Setup(m => m.GetInputText())
                 .Returns(value: new InputTextResult() { HasEnteredText = false, Text = ""});
 
-        int actual = _systemUnderTest.Execute();
+            int actual = _systemUnderTest.Execute();
 
             Assert.Equal(
                 expected: 0,

@@ -40,7 +40,7 @@ namespace WordCount.Implementations
 
             return new InputTextResult
             {
-                HasEnteredText = text.IsFilled(),
+                HasEnteredText = !sourceFileParameter.IsPresent && text.IsFilled(),
                 Text = text
             };
         }
