@@ -92,6 +92,7 @@
     <Compile Include="Models\DictionaryParameter.cs" />
     <Compile Include="Models\IndexOutputRequest.cs" />
     <Compile Include="Models\IndexParameter.cs" />
+    <Compile Include="Models\InputTextResult.cs" />
     <Compile Include="Models\SourceFileParameter.cs" />
     <Compile Include="Models\StopwordRemoverResult.cs" />
     <Compile Include="Models\TextSplitResult.cs" />
