@@ -1,7 +1,5 @@
 ﻿using WordCount.Extensions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
@@ -12,7 +10,7 @@ namespace WordCount.Tests.EnumerableStringExtensionsTests
         [NamedFact]
         public void FirstOfMatchingRegexTests_Two_Values_Matching_Only_one_Expect_one()
         {
-            List<string> list = new List<string>()
+            List<string> list = new List<string>
             {
                 "abc",
                 "def"

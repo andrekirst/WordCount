@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Moq;
-using System.IO;
 using System.IO.Abstractions;
 using WordCount.Implementations;
 using WordCount.Interfaces;

@@ -1,4 +1,5 @@
-﻿using WordCount.Interfaces;
+﻿using WordCount.Extensions;
+using WordCount.Interfaces;
 using WordCount.Models;
 
 namespace WordCount.Implementations
@@ -24,18 +25,22 @@ namespace WordCount.Implementations
 
         public int Execute()
         {
-            string text = _textInput.GetInputText();
-
-            WordCountAnalyzerResult analyzeResult = _wordCountAnalyzer.Analyze(text: text);
-
-            _wordCountAnalyzerOutput.DisplayResult(wordCountAnalyzerResult: analyzeResult);
-
-            IndexOutputRequest indexOutputRequest = new IndexOutputRequest
+            InputTextResult inputTextResult = _textInput.GetInputText();
+            do
             {
-                DistinctWords = analyzeResult.DistinctWords
-            };
+                WordCountAnalyzerResult analyzeResult = _wordCountAnalyzer.Analyze(text: inputTextResult.Text);
 
-            _indexOutput.OutputIndex(indexOutputRequest: indexOutputRequest);
+                _wordCountAnalyzerOutput.DisplayResult(wordCountAnalyzerResult: analyzeResult);
+
+                IndexOutputRequest indexOutputRequest = new IndexOutputRequest
+                {
+                    DistinctWords = analyzeResult.DistinctWords
+                };
+
+                _indexOutput.OutputIndex(indexOutputRequest: indexOutputRequest);
+
+                inputTextResult = _textInput.GetInputText();
+            } while (inputTextResult.IsConsoleInput && inputTextResult.Text.IsFilled());
 
             return 0;
         }

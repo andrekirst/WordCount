@@ -62,9 +62,9 @@ namespace WordCount.Tests
                 .Setup(expression: m => m.ReadLine())
                 .Returns(value: "Bla");
 
-            string actual = _systemUnderTest.GetInputText();
+            InputTextResult actual = _systemUnderTest.GetInputText();
 
-            Assert.Equal(expected: "Bla", actual: actual);
+            Assert.Equal(expected: "Bla", actual: actual.Text);
         }
 
         [NamedFact]
@@ -72,7 +72,7 @@ namespace WordCount.Tests
         {
             _mockSourceFileParameterParser
                 .Setup(m => m.ParseSourceFileParameter())
-                .Returns(new SourceFileParameter()
+                .Returns(new SourceFileParameter
                 {
                     IsPresent = true,
                     FileName = It.IsAny<string>()
@@ -82,9 +82,9 @@ namespace WordCount.Tests
                 .Setup(m => m.ReadTextFile(It.IsAny<string>()))
                 .Returns(value: "Blub");
 
-            string actual = _systemUnderTest.GetInputText();
+            InputTextResult actual = _systemUnderTest.GetInputText();
 
-            Assert.Equal(expected: "Blub", actual: actual);
+            Assert.Equal(expected: "Blub", actual: actual.Text);
         }
 
         [NamedFact]
@@ -92,7 +92,7 @@ namespace WordCount.Tests
         {
             _mockSourceFileParameterParser
                 .Setup(expression: m => m.ParseSourceFileParameter())
-                .Returns(value: new SourceFileParameter() {IsPresent = false});
+                .Returns(value: new SourceFileParameter {IsPresent = false});
 
             _systemUnderTest.GetInputText();
 
@@ -100,6 +100,18 @@ namespace WordCount.Tests
                 .Verify(
                     expression: v => v.Write("Enter text: "),
                     times: Times.Once);
+        }
+
+        [NamedFact]
+        public void TextInputTests_SourceFileParameter_not_present_Expect_IsconsoleOutput_True()
+        {
+            _mockSourceFileParameterParser
+                .Setup(m => m.ParseSourceFileParameter())
+                .Returns(new SourceFileParameter { IsPresent = false });
+
+            InputTextResult actual = _systemUnderTest.GetInputText();
+
+            Assert.True(condition: actual.IsConsoleInput);
         }
     }
 }

@@ -70,7 +70,7 @@ namespace WordCount.Tests
 
             List<string> actual = _systemUnderTest.GetStopwords();
 
-            List<string> expected = new List<string>()
+            List<string> expected = new List<string>
             {
                 "a"
             };

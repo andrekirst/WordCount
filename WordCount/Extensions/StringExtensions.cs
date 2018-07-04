@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WordCount.Extensions
+﻿namespace WordCount.Extensions
 {
     public static class StringExtensions
     {

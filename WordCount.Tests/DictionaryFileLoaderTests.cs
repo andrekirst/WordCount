@@ -52,7 +52,7 @@ namespace WordCount.Tests
         {
             _mockDictionaryParameterParser
                 .Setup(m => m.ParseDictionaryParameter())
-                .Returns(new DictionaryParameter()
+                .Returns(new DictionaryParameter
                 {
                     IsPresent = true,
                     FileName = "datei_gibt_es_nicht.txt"
@@ -77,7 +77,7 @@ namespace WordCount.Tests
         {
             _mockDictionaryParameterParser
                 .Setup(m => m.ParseDictionaryParameter())
-                .Returns(new DictionaryParameter()
+                .Returns(new DictionaryParameter
                 {
                     IsPresent = true,
                     FileName = It.IsAny<string>()
@@ -91,7 +91,7 @@ namespace WordCount.Tests
                 .Setup(expression: m => m.File.ReadAllLines(It.IsAny<string>()))
                 .Returns(value: new[] {"WordA", "WordB"});
 
-            List<string> expected = new List<string>() { "WordA", "WordB" };
+            List<string> expected = new List<string> { "WordA", "WordB" };
             List<string> actual = _systemUnderTest.ReadWords();
 
             Assert.Equal(expected: expected, actual: actual);
@@ -102,7 +102,7 @@ namespace WordCount.Tests
         {
             _mockDictionaryParameterParser
                 .Setup(m => m.ParseDictionaryParameter())
-                .Returns(new Models.DictionaryParameter()
+                .Returns(new Models.DictionaryParameter
                 {
                     IsPresent = true,
                     FileName = It.IsAny<string>()
@@ -127,7 +127,7 @@ namespace WordCount.Tests
         {
             _mockDictionaryParameterParser
                 .Setup(m => m.ParseDictionaryParameter())
-                .Returns(new DictionaryParameter()
+                .Returns(new DictionaryParameter
                 {
                     IsPresent = true,
                     FileName = It.IsAny<string>()
@@ -151,7 +151,7 @@ namespace WordCount.Tests
         {
             _mockDictionaryParameterParser
                 .Setup(m => m.ParseDictionaryParameter())
-                .Returns(new DictionaryParameter() { IsPresent = false });
+                .Returns(new DictionaryParameter { IsPresent = false });
 
             _systemUnderTest.ReadWords();
 

@@ -32,7 +32,7 @@ namespace WordCount.Tests
         [NamedFact]
         public void WordCountAnalyzerOutputTests_DisplayResult_Result_NumberOfWords_2_Expect_Number_of_Words_2_Number_of_unique_Words_1()
         {
-            _systemUnderTest.DisplayResult(wordCountAnalyzerResult: new Models.WordCountAnalyzerResult()
+            _systemUnderTest.DisplayResult(wordCountAnalyzerResult: new Models.WordCountAnalyzerResult
             {
                 NumberOfWords = 2,
                 NumberOfUniqueWords = 1,

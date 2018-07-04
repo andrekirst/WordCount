@@ -19,7 +19,7 @@ namespace WordCount.Implementations.ArgumentsHandling
             string[] commandLineArgs = _environment.GetCommandLineArgs() ?? new string[0];
 
             bool isPresent = commandLineArgs.Any(predicate: s => !s.StartsWith(value: "-"));
-            string fileName = commandLineArgs?.FirstOrDefault();
+            string fileName = commandLineArgs.FirstOrDefault() ?? string.Empty;
 
             return new SourceFileParameter
             {

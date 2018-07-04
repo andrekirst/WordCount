@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.IO.Abstractions;
+﻿using System.IO.Abstractions;
 using WordCount.Interfaces;
 
 namespace WordCount.Implementations

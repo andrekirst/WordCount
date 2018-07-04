@@ -63,19 +63,19 @@ namespace WordCount.Tests
 
             _mockIndexParameterParser
                 .Setup(m => m.ParseIndexParameter())
-                .Returns(new IndexParameter() {IsPresent = true});
+                .Returns(new IndexParameter {IsPresent = true});
 
             _mockDictionaryParameterParser
                 .Setup(m => m.ParseDictionaryParameter())
-                .Returns(new DictionaryParameter() {IsPresent = false});
+                .Returns(new DictionaryParameter {IsPresent = false});
 
             _mockDisplayOutput
                 .Setup(expression: m => m.WriteLine(It.IsAny<string>()))
                 .Callback<string>(action: (s) => verifyList.Add(item: s));
 
-            IndexOutputRequest indexOutputRequest = new IndexOutputRequest()
+            IndexOutputRequest indexOutputRequest = new IndexOutputRequest
             {
-                DistinctWords = new List<string>() { "Bla", "bla" }
+                DistinctWords = new List<string> { "Bla", "bla" }
             };
 
             _systemUnderTest.OutputIndex(indexOutputRequest: indexOutputRequest);
@@ -107,7 +107,7 @@ namespace WordCount.Tests
 
             _mockDictionaryParameterParser
                 .Setup(m => m.ParseDictionaryParameter())
-                .Returns(new DictionaryParameter()
+                .Returns(new DictionaryParameter
                 {
                     IsPresent = true,
                     FileName = It.IsAny<string>()
@@ -115,7 +115,7 @@ namespace WordCount.Tests
 
             _mockIndexParameterParser
                 .Setup(m => m.ParseIndexParameter())
-                .Returns(new IndexParameter() {IsPresent = true});
+                .Returns(new IndexParameter {IsPresent = true});
 
             _mockDisplayOutput
                 .Setup(expression: m => m.WriteLine(It.IsAny<string>()))
@@ -123,11 +123,11 @@ namespace WordCount.Tests
 
             _mockDictionaryFileLoader
                 .Setup(expression: m => m.ReadWords())
-                .Returns(value: new List<string>() { "bla" });
+                .Returns(value: new List<string> { "bla" });
 
-            IndexOutputRequest indexOutputRequest = new IndexOutputRequest()
+            IndexOutputRequest indexOutputRequest = new IndexOutputRequest
             {
-                DistinctWords = new List<string>() { "Bla", "bla" }
+                DistinctWords = new List<string> { "Bla", "bla" }
             };
 
             _systemUnderTest.OutputIndex(indexOutputRequest: indexOutputRequest);

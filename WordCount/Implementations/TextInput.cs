@@ -24,7 +24,7 @@ namespace WordCount.Implementations
             _displayOutput = displayOutput;
         }
 
-        public string GetInputText()
+        public InputTextResult GetInputText()
         {
             SourceFileParameter sourceFileParameter = _sourceFileParameterParser.ParseSourceFileParameter();
 
@@ -33,9 +33,15 @@ namespace WordCount.Implementations
                 _displayOutput.Write(text: "Enter text: ");
             }
 
-            return sourceFileParameter.IsPresent ?
-                _textFileLoader.ReadTextFile(path: sourceFileParameter.FileName) :
-                _console.ReadLine();
+            string text = sourceFileParameter.IsPresent
+                ? _textFileLoader.ReadTextFile(path: sourceFileParameter.FileName)
+                : _console.ReadLine();
+
+            return new InputTextResult
+            {
+                IsConsoleInput = !sourceFileParameter.IsPresent,
+                Text = text
+            };
         }
     }
 }
