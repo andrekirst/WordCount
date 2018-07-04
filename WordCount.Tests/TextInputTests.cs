@@ -133,5 +133,21 @@ namespace WordCount.Tests
 
             Assert.False(condition: actual.HasEnteredText);
         }
+
+        [NamedFact]
+        public void TextInputTests_SourceFileParameter_is_present_and_Text_is_not_empty_Expect_HasEnteredText_False()
+        {
+            _mockSourceFileParameterParser
+                .Setup(expression: m => m.ParseSourceFileParameter())
+                .Returns(value: new SourceFileParameter { IsPresent = true });
+
+            _mockTextFileLoader
+                .Setup(m => m.ReadTextFile(It.IsAny<string>()))
+                .Returns("Bla");
+
+            InputTextResult actual = _systemUnderTest.GetInputText();
+
+            Assert.False(condition: actual.HasEnteredText);
+        }
     }
 }
