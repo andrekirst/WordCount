@@ -1,3 +1,10 @@
 component_depth: 2
 languages:
-- csharp
+  - csharp
+- name: csharp
+  production:
+    include:
+      - .*/WordCount/.*\.cs
+  test:
+    include:
+      - .*/WordCount.Tests/.*\.cs
