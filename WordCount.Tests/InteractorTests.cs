@@ -1,10 +1,7 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
-using WordCount.Tests.XUnitHelpers;
-using Xunit;
 
 namespace WordCount.Tests
 {

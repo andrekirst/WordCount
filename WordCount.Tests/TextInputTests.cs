@@ -72,7 +72,7 @@ namespace WordCount.Tests
         {
             _mockSourceFileParameterParser
                 .Setup(m => m.ParseSourceFileParameter())
-                .Returns(new SourceFileParameter()
+                .Returns(new SourceFileParameter
                 {
                     IsPresent = true,
                     FileName = It.IsAny<string>()
@@ -92,7 +92,7 @@ namespace WordCount.Tests
         {
             _mockSourceFileParameterParser
                 .Setup(expression: m => m.ParseSourceFileParameter())
-                .Returns(value: new SourceFileParameter() {IsPresent = false});
+                .Returns(value: new SourceFileParameter {IsPresent = false});
 
             _systemUnderTest.GetInputText();
 

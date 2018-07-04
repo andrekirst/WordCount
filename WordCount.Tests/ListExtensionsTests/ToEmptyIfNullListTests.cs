@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using WordCount.Extensions;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
@@ -14,6 +12,7 @@ namespace WordCount.Tests.ListExtensionsTests
         {
             string[] array = null;
 
+            // ReSharper disable once ExpressionIsAlwaysNull
             List<string> actual = array.ToEmptyIfNullList();
 
             Assert.NotNull(@object: actual);

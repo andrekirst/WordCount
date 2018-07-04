@@ -16,7 +16,7 @@ namespace WordCount.Tests.RegexStringExtensionsTests
 
             List<string> actual = text.SplitByRegex(pattern: regexPattern);
 
-            List<string> expected = new List<string>() {"Hello", "World"};
+            List<string> expected = new List<string> {"Hello", "World"};
 
             Assert.Equal(expected: expected, actual: actual);
         }

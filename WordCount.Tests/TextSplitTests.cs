@@ -93,8 +93,7 @@ namespace WordCount.Tests
             const string text = "Hello André";
             TextSplitResult actual = _systemUnderTest.Split(text: text);
 
-            List<string> expected = new List<string>()
-                { "Hello", "André" };
+            List<string> expected = new List<string> { "Hello", "André" };
 
             Assert.Equal(
                 expected: expected,
@@ -107,8 +106,7 @@ namespace WordCount.Tests
             const string text = "pre- pre-condition";
             TextSplitResult actual = _systemUnderTest.Split(text: text);
 
-            List<string> expected = new List<string>()
-                { "pre", "pre-condition" };
+            List<string> expected = new List<string> { "pre", "pre-condition" };
 
             Assert.Equal(
                 expected: expected,
@@ -121,8 +119,7 @@ namespace WordCount.Tests
             const string text = "Draußen ist es schön";
             TextSplitResult actual = _systemUnderTest.Split(text: text);
 
-            List<string> expected = new List<string>()
-                { "Draußen", "ist", "es", "schön" };
+            List<string> expected = new List<string> { "Draußen", "ist", "es", "schön" };
 
             Assert.Equal(
                 expected: expected,
@@ -135,8 +132,7 @@ namespace WordCount.Tests
             const string text = "Draußen ist es schön 1";
             TextSplitResult actual = _systemUnderTest.Split(text: text);
 
-            List<string> expected = new List<string>()
-                { "Draußen", "ist", "es", "schön" };
+            List<string> expected = new List<string> { "Draußen", "ist", "es", "schön" };
 
             Assert.Equal(
                 expected: expected,

@@ -45,11 +45,11 @@ namespace WordCount.Tests
         public void WordCountAnalyzerTests_Analyze_Text_Bla_bla_Expect_2_Words()
         {
             string text = "Bla bla";
-            List<string> mockTextSplitResulValues = new List<string>() { "Bla", "bla" };
+            List<string> mockTextSplitResulValues = new List<string> { "Bla", "bla" };
 
             _mockStopwordRemover
                 .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
-                .Returns(value: new StopwordRemoverResult() { Words = mockTextSplitResulValues });
+                .Returns(value: new StopwordRemoverResult { Words = mockTextSplitResulValues });
 
             _mockTextSplit
                 .Setup(m => m.Split(text))
@@ -65,7 +65,7 @@ namespace WordCount.Tests
         {
             const string text = "This is a Text";
 
-            List<string> values = new List<string>() { "This", "is", "a", "Text" };
+            List<string> values = new List<string> { "This", "is", "a", "Text" };
 
             _mockTextSplit
                 .Setup(m => m.Split(text))
@@ -73,9 +73,9 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(m => m.RemoveStopwords(values))
-                .Returns(new StopwordRemoverResult()
+                .Returns(new StopwordRemoverResult
                 {
-                    Words = new List<string>() { "This", "is", "Text" }
+                    Words = new List<string> { "This", "is", "Text" }
                 });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
@@ -103,8 +103,8 @@ namespace WordCount.Tests
         public void WordCountAnalyzerTests_Long_text_Bla_bla_bla_Expect_Number_of_Words_3()
         {
             const string text = "Bla bla bla";
-            List<string> mockValues = new List<string>() { "Bla", "bla", "bla" };
-            List<string> mockValuesStopwordsRemoved = new List<string>() { "Bla", "bla", "bla" };
+            List<string> mockValues = new List<string> { "Bla", "bla", "bla" };
+            List<string> mockValuesStopwordsRemoved = new List<string> { "Bla", "bla", "bla" };
 
             _mockTextSplit
                 .Setup(m => m.Split(text))
@@ -112,7 +112,7 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(m => m.RemoveStopwords(mockValues))
-                .Returns(new StopwordRemoverResult() { Words = mockValuesStopwordsRemoved });
+                .Returns(new StopwordRemoverResult { Words = mockValuesStopwordsRemoved });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
@@ -124,7 +124,7 @@ namespace WordCount.Tests
         {
             const string text = "Bla bla bla";
 
-            List<string> mockValues = new List<string>() { "Bla", "bla", "bla" };
+            List<string> mockValues = new List<string> { "Bla", "bla", "bla" };
 
             _mockTextSplit
                 .Setup(expression: m => m.Split(text))
@@ -132,7 +132,7 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult() { Words = mockValues });
+                .Returns(value: new StopwordRemoverResult { Words = mockValues });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
@@ -144,7 +144,7 @@ namespace WordCount.Tests
         {
             string text = "Bla bla bla";
 
-            List<string> mockValues = new List<string>() { "Bla", "bla", "bla" };
+            List<string> mockValues = new List<string> { "Bla", "bla", "bla" };
 
             _mockTextSplit
                 .Setup(m => m.Split(text))
@@ -152,7 +152,7 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult() { Words = mockValues });
+                .Returns(value: new StopwordRemoverResult { Words = mockValues });
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
@@ -164,7 +164,7 @@ namespace WordCount.Tests
         {
             const string text = "Bla bla bla";
 
-            List<string> mockValues = new List<string>() { "Bla", "bla", "bla" };
+            List<string> mockValues = new List<string> { "Bla", "bla", "bla" };
 
             _mockTextSplit
                 .Setup(expression: m => m.Split(text))
@@ -172,9 +172,9 @@ namespace WordCount.Tests
 
             _mockStopwordRemover
                 .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult() { Words = mockValues });
+                .Returns(value: new StopwordRemoverResult { Words = mockValues });
 
-            List<string> expected = new List<string>() { "Bla", "bla" };
+            List<string> expected = new List<string> { "Bla", "bla" };
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
 
@@ -190,7 +190,7 @@ namespace WordCount.Tests
 
             _mockTextSplit
                 .Setup(m => m.Split("a."))
-                .Returns(value: new TextSplitResult(new List<string>() { "a" }));
+                .Returns(value: new TextSplitResult(new List<string> { "a" }));
 
             WordCountAnalyzerResult actual = _systemUnderTest.Analyze("a.");
 

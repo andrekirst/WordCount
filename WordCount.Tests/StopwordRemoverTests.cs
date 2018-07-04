@@ -37,15 +37,15 @@ namespace WordCount.Tests
         [NamedFact]
         public void StopwordRemoverTests_Analyze_Stopword_a_Mary_has_a_little_lamb_Expect_4_Words_with_Stopword_a()
         {
-            List<string> values = new List<string>() { "Mary", "had", "a", "little", "lamb" };
+            List<string> values = new List<string> { "Mary", "had", "a", "little", "lamb" };
 
             _mockStopwordLoader
                 .Setup(m => m.GetStopwords())
-                .Returns(value: new List<string>() { "a" });
+                .Returns(value: new List<string> { "a" });
 
             StopwordRemoverResult actual = _systemUnderTest.RemoveStopwords(words: values);
 
-            List<string> expected = new List<string>() { "Mary", "had", "little", "lamb" };
+            List<string> expected = new List<string> { "Mary", "had", "little", "lamb" };
 
             Assert.NotNull(@object: actual);
             Assert.Equal(expected: expected, actual: actual.Words);
@@ -54,13 +54,13 @@ namespace WordCount.Tests
         [NamedFact]
         public void StopwordRemoverTests_Analyze_Stopword_a_Mary_has_a_little_lamb_Expect_5_Words_without_Stopwords()
         {
-            List<string> values = new List<string>() { "Mary", "had", "a", "little", "lamb" };
+            List<string> values = new List<string> { "Mary", "had", "a", "little", "lamb" };
 
             _mockStopwordLoader
                 .Setup(m => m.GetStopwords())
                 .Returns(new List<string>());
 
-            List<string> expected = new List<string>() { "Mary", "had", "a", "little", "lamb" };
+            List<string> expected = new List<string> { "Mary", "had", "a", "little", "lamb" };
 
             StopwordRemoverResult actual = _systemUnderTest.RemoveStopwords(words: values);
 
