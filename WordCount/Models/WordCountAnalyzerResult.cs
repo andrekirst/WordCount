@@ -11,5 +11,7 @@ namespace WordCount.Models
         public double AverageWordLength { get; set; }
 
         public List<string> DistinctWords { get; set; }
+
+        public int NumberOfChapters { get; set; }
     }
 }

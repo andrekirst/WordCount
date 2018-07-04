@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System;
+using Moq;
 using System.Collections.Generic;
 using Autofac;
 using WordCount.Implementations;
@@ -198,6 +199,48 @@ namespace WordCount.Tests
             Assert.Equal(expected: 0.0, actual: actual.AverageWordLength);
             Assert.Equal(expected: 0, actual: actual.NumberOfUniqueWords);
             Assert.Equal(expected: 0, actual: actual.NumberOfWords);
+        }
+
+        [NamedFact]
+        public void WordCountAnalyzerTests_Text_with_2_Linebreaks_Expect_2_chapters()
+        {
+            _mockTextSplit
+                .Setup(m => m.Split(It.IsAny<string>()))
+                .Returns(new TextSplitResult(new List<string>() {"asd"}));
+
+            _mockStopwordRemover
+                .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
+                .Returns(new StopwordRemoverResult() {Words = new List<string>() {"asd"}});
+
+            string inputText =
+                $"Das ist das erste Kapitel.{Environment.NewLine}{Environment.NewLine}Das ist das zweite Kapitel.";
+
+            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: inputText);
+
+            Assert.Equal(
+                expected: 2,
+                actual: actual.NumberOfChapters);
+        }
+
+        [NamedFact]
+        public void WordCountAnalyzerTests_Text_with_1_Linebreak_Expect_1_chapters()
+        {
+            _mockTextSplit
+                .Setup(m => m.Split(It.IsAny<string>()))
+                .Returns(new TextSplitResult(new List<string>() { "asd" }));
+
+            _mockStopwordRemover
+                .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
+                .Returns(new StopwordRemoverResult() { Words = new List<string>() { "asd" } });
+
+            string inputText =
+                $"Das ist das erste Kapitel.{Environment.NewLine}Das ist das zweite Kapitel.";
+
+            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: inputText);
+
+            Assert.Equal(
+                expected: 1,
+                actual: actual.NumberOfChapters);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using WordCount.Interfaces;
 using WordCount.Models;
@@ -35,13 +36,15 @@ namespace WordCount.Implementations
             int numberOfWords = words.Count;
             int numberOfUniqueWords = distinctWords.Count;
             double averageWordLength = words.Any() ? words.Average(selector: s => s.Length) : 0.0;
+            int numberOfchapters = text.Split(separator: new[] {Environment.NewLine + Environment.NewLine}, options: StringSplitOptions.None).Count();
 
             return new WordCountAnalyzerResult
             {
                 NumberOfWords = numberOfWords,
                 NumberOfUniqueWords = numberOfUniqueWords,
                 AverageWordLength = averageWordLength,
-                DistinctWords = distinctWords
+                DistinctWords = distinctWords,
+                NumberOfChapters = numberOfchapters
             };
         }
     }

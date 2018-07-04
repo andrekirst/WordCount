@@ -102,7 +102,7 @@ namespace WordCount.Tests
         {
             _mockDictionaryParameterParser
                 .Setup(m => m.ParseDictionaryParameter())
-                .Returns(new Models.DictionaryParameter
+                .Returns(new DictionaryParameter
                 {
                     IsPresent = true,
                     FileName = It.IsAny<string>()

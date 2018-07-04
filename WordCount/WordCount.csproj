@@ -108,6 +108,9 @@
     <Content Include="dict.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="sample_chapters.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="sample2_bindestrich.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
