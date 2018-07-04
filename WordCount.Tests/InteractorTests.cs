@@ -2,6 +2,9 @@
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
+using WordCount.Models;
+using WordCount.Tests.XUnitHelpers;
+using Xunit;
 
 namespace WordCount.Tests
 {
@@ -49,6 +52,40 @@ namespace WordCount.Tests
             _systemUnderTest = containerBuilder
                 .Build()
                 .Resolve<Interactor>();
+        }
+
+        [NamedFact]
+        public void InteractorTests_Loop_While_Enter_Text_Expect_2_Calls_of_GetInputText()
+        {
+            MockSequence sequence = new MockSequence();
+
+            _mockTextInput
+                .InSequence(sequence: sequence)
+                .Setup(expression: m => m.GetInputText())
+                .Returns(value: new Models.InputTextResult() {IsConsoleInput = true, Text = "Bla bla"});
+
+            WordCountAnalyzerResult wordCountAnalyzerResult = new WordCountAnalyzerResult();
+
+            _mockWordCountAnalyzer
+                .InSequence(sequence: sequence)
+                .Setup(m => m.Analyze("Bla bla"))
+                .Returns(value: wordCountAnalyzerResult);
+
+            _mockTextInput
+                .InSequence(sequence: sequence)
+                .Setup(m => m.GetInputText())
+                .Returns(value: new InputTextResult() {IsConsoleInput = true, Text = ""});
+
+        int actual = _systemUnderTest.Execute();
+
+            Assert.Equal(
+                expected: 0,
+                actual: actual);
+
+            _mockTextInput
+                .Verify(
+                    expression: v => v.GetInputText(),
+                    times: Times.Exactly(callCount: 2));
         }
     }
 }
