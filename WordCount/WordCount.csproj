@@ -50,9 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\Console\Console.cs" />
-    <Compile Include="Abstractions\Console\Environment.cs" />
+    <Compile Include="Abstractions\Environment\Environment.cs" />
     <Compile Include="Abstractions\Console\IConsole.cs" />
-    <Compile Include="Abstractions\Console\IEnvironment.cs" />
+    <Compile Include="Abstractions\Environment\IEnvironment.cs" />
     <Compile Include="AutofacModules\LogRequestsModule.cs" />
     <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
     <Compile Include="Extensions\EnumerableStringExtensions.cs" />

@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Moq;
-using WordCount.Abstractions.Console;
+using System;
+using WordCount.Abstractions.Environment;
 using WordCount.Implementations.ArgumentsHandling;
 using WordCount.Models;
 using WordCount.Tests.XUnitHelpers;
@@ -43,6 +44,10 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         [NamedFact]
         public void IndexParameterParserTests_Args_is_null_expect_IsPresent_False()
         {
+            _mockEnvironment
+                .Setup(expression: m => m.GetCommandLineArgs())
+                .Returns(value: (string[])null);
+
             IndexParameter actual = _systemUnderTest.ParseIndexParameter();
 
             Assert.NotNull(@object: actual);
@@ -52,6 +57,10 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         [NamedFact]
         public void IndexParameterParserTests_Args_is_empty_expect_IsPresent_False()
         {
+            _mockEnvironment
+                .Setup(expression: m => m.GetCommandLineArgs())
+                .Returns(value: Array.Empty<string>());
+
             IndexParameter actual = _systemUnderTest.ParseIndexParameter();
 
             Assert.NotNull(@object: actual);
