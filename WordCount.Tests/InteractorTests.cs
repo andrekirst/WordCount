@@ -62,7 +62,7 @@ namespace WordCount.Tests
             _mockTextInput
                 .InSequence(sequence: sequence)
                 .Setup(expression: m => m.GetInputText())
-                .Returns(value: new Models.InputTextResult() {HasEnteredText = true, Text = "Bla bla"});
+                .Returns(value: new InputTextResult() {HasEnteredText = true, Text = "Bla bla"});
 
             WordCountAnalyzerResult wordCountAnalyzerResult = new WordCountAnalyzerResult();
 

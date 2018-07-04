@@ -1,5 +1,4 @@
-﻿using WordCount.Extensions;
-using WordCount.Interfaces;
+﻿using WordCount.Interfaces;
 using WordCount.Models;
 
 namespace WordCount.Implementations
