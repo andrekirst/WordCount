@@ -17,7 +17,7 @@ namespace WordCount.Implementations.ArgumentsHandling
         public IndexParameter ParseIndexParameter()
         {
             string[] commandLineArgs = _environment.GetCommandLineArgs();
-            return new IndexParameter()
+            return new IndexParameter
             {
                 IsPresent = commandLineArgs.Contains(value: "-index")
             };

@@ -21,7 +21,7 @@ namespace WordCount.Implementations.ArgumentsHandling
             bool isPresent = commandLineArgs.Any(predicate: s => !s.StartsWith(value: "-"));
             string fileName = commandLineArgs?.FirstOrDefault();
 
-            return new SourceFileParameter()
+            return new SourceFileParameter
             {
                 IsPresent = isPresent,
                 FileName = fileName

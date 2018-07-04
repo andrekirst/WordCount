@@ -19,7 +19,7 @@ namespace WordCount.Implementations
 
             words.RemoveAll(match: stopwords.Contains);
             
-            return new StopwordRemoverResult()
+            return new StopwordRemoverResult
             {
                 Words = words
             };

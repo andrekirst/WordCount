@@ -30,7 +30,7 @@ namespace WordCount.Implementations
 
             _wordCountAnalyzerOutput.DisplayResult(wordCountAnalyzerResult: analyzeResult);
 
-            IndexOutputRequest indexOutputRequest = new IndexOutputRequest()
+            IndexOutputRequest indexOutputRequest = new IndexOutputRequest
             {
                 DistinctWords = analyzeResult.DistinctWords
             };

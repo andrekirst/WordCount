@@ -22,9 +22,9 @@ namespace WordCount.Implementations.ArgumentsHandling
             string dictionaryParameter = args?.FirstOfMatchingRegex(pattern: @"-dictionary=[a-zA-z.]{1,}");
             string[] parameterSplitByEqualSign = dictionaryParameter?.Split('=');
 
-            return new DictionaryParameter()
+            return new DictionaryParameter
             {
-                IsPresent = dictionaryParameter.IsFilled(),
+                IsPresent = dictionaryParameter?.IsFilled() ?? false,
                 FileName = parameterSplitByEqualSign?.LastOrDefault()
             };
         }
