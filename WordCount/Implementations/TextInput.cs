@@ -1,4 +1,5 @@
 ﻿using WordCount.Abstractions.Console;
+using WordCount.Extensions;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models;
@@ -39,7 +40,7 @@ namespace WordCount.Implementations
 
             return new InputTextResult
             {
-                IsConsoleInput = !sourceFileParameter.IsPresent,
+                HasEnteredText = text.IsFilled(),
                 Text = text
             };
         }

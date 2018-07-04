@@ -40,7 +40,7 @@ namespace WordCount.Implementations
                 _indexOutput.OutputIndex(indexOutputRequest: indexOutputRequest);
 
                 inputTextResult = _textInput.GetInputText();
-            } while (inputTextResult.IsConsoleInput && inputTextResult.Text.IsFilled());
+            } while (inputTextResult.HasEnteredText);
 
             return 0;
         }
