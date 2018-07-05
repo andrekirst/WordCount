@@ -89,6 +89,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ArgumentsHandlingTests\DictionaryParameterParserTests.cs" />
+    <Compile Include="ArgumentsHandlingTests\HelpParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\IndexParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\SourceFileParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\StopwordListParameterParserTests.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="DictionaryFileLoaderTests.cs" />
     <Compile Include="EnumerableHelpersTests\CountUnknownWordsTests.cs" />
     <Compile Include="EnumerableStringExtensionsTests\FirstOfMatchingRegexTests.cs" />
+    <Compile Include="HelpOutputTests.cs" />
     <Compile Include="IndexOutputTests.cs" />
     <Compile Include="InteractorTests.cs" />
     <Compile Include="ListExtensionsTests\ToEmptyIfNullListTests.cs" />

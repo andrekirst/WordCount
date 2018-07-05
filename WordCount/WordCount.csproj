@@ -61,11 +61,13 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\EnumerableHelpers.cs" />
     <Compile Include="Implementations\ArgumentsHandling\DictionaryParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\HelpParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\IndexParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\SourceFileParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\StopwordListParameterParser.cs" />
     <Compile Include="Implementations\ConsoleDisplayOutput.cs" />
     <Compile Include="Implementations\DictionaryFileLoader.cs" />
+    <Compile Include="Implementations\HelpOutput.cs" />
     <Compile Include="Implementations\IndexOutput.cs" />
     <Compile Include="Implementations\StopwordRemover.cs" />
     <Compile Include="Implementations\TextFileLoader.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Interfaces\IDictionaryFileLoader.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IDictionaryParameterParser.cs" />
     <Compile Include="Interfaces\IDisplayOutput.cs" />
+    <Compile Include="Interfaces\IHelpOutput.cs" />
     <Compile Include="Interfaces\IIndexOutput.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IIndexParameterParser.cs" />
     <Compile Include="Interfaces\IInteractor.cs" />
