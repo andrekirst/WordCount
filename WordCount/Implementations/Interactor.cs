@@ -1,5 +1,5 @@
 ﻿using WordCount.Interfaces;
-using WordCount.Models;
+using WordCount.Models.Requests;
 using WordCount.Models.Results;
 
 namespace WordCount.Implementations

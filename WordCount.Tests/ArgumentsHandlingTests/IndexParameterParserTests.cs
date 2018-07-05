@@ -46,7 +46,7 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         {
             _mockEnvironment
                 .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: (string[])null);
+                .Returns(value: null);
 
             IndexParameter actual = _systemUnderTest.ParseIndexParameter();
 
