@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Autofac;
 using WordCount.Implementations;
 using WordCount.Interfaces;
-using WordCount.Models;
+using WordCount.Models.Results;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 

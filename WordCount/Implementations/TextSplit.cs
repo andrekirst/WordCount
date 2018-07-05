@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WordCount.Interfaces;
-using WordCount.Models;
 using WordCount.Extensions;
+using WordCount.Models.Results;
 
 namespace WordCount.Implementations
 {

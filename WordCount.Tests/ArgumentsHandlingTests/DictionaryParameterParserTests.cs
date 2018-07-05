@@ -3,7 +3,7 @@ using Moq;
 using System;
 using WordCount.Abstractions.Environment;
 using WordCount.Implementations.ArgumentsHandling;
-using WordCount.Models;
+using WordCount.Models.Parameters;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WordCount.Implementations;
-using WordCount.Models;
+using WordCount.Models.Results;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 

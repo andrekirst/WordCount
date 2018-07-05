@@ -4,6 +4,7 @@ using WordCount.Helpers;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models;
+using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations
 {

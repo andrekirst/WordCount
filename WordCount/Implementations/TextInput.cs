@@ -2,7 +2,8 @@
 using WordCount.Extensions;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
-using WordCount.Models;
+using WordCount.Models.Parameters;
+using WordCount.Models.Results;
 
 namespace WordCount.Implementations
 {

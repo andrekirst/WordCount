@@ -6,7 +6,7 @@ using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
-using WordCount.Models;
+using WordCount.Models.Parameters;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 

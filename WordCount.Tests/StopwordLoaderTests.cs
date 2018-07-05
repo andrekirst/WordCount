@@ -7,7 +7,7 @@ using System.IO.Abstractions;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
-using WordCount.Models;
+using WordCount.Models.Parameters;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
@@ -73,7 +73,7 @@ namespace WordCount.Tests
         {
             _mockStopwordListParameterParser
                 .Setup(m => m.ParseStopwordListParameter())
-                .Returns(new Models.StopwordListParameter() { IsPresent = false });
+                .Returns(new StopwordListParameter() { IsPresent = false });
 
             _mockFileSystem
                 .Setup(expression: m => m.File.ReadAllLines(It.IsAny<string>()))
@@ -93,7 +93,7 @@ namespace WordCount.Tests
         {
             _mockStopwordListParameterParser
                 .Setup(m => m.ParseStopwordListParameter())
-                .Returns(new Models.StopwordListParameter() { IsPresent = false });
+                .Returns(new StopwordListParameter() { IsPresent = false });
 
             _mockFileSystem
                 .Setup(expression: m => m.File.Exists(It.IsAny<string>()))
@@ -121,7 +121,7 @@ namespace WordCount.Tests
         {
             _mockStopwordListParameterParser
                 .Setup(m => m.ParseStopwordListParameter())
-                .Returns(new Models.StopwordListParameter() { IsPresent = true, FileName = "meinestopliste.txt" });
+                .Returns(new StopwordListParameter() { IsPresent = true, FileName = "meinestopliste.txt" });
 
             _mockFileSystem
                 .Setup(m => m.File.Exists("meinestopliste.txt"))
