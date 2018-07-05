@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Moq;
-using WordCount.Abstractions.Console;
+using System;
+using WordCount.Abstractions.Environment;
 using WordCount.Implementations.ArgumentsHandling;
 using WordCount.Models;
 using WordCount.Tests.XUnitHelpers;
@@ -36,7 +37,7 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         {
             _mockEnvironment
                 .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new string[0]);
+                .Returns(value: Array.Empty<string>());
 
             SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
 

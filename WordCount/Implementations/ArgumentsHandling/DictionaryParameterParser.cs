@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using WordCount.Abstractions.Console;
+using WordCount.Abstractions.Environment;
 using WordCount.Extensions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models;

@@ -1,5 +1,6 @@
-﻿using System.Linq;
-using WordCount.Abstractions.Console;
+﻿using System;
+using System.Linq;
+using WordCount.Abstractions.Environment;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models;
 
@@ -16,7 +17,7 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public SourceFileParameter ParseSourceFileParameter()
         {
-            string[] commandLineArgs = _environment.GetCommandLineArgs() ?? new string[0];
+            string[] commandLineArgs = _environment.GetCommandLineArgs() ?? Array.Empty<string>();
 
             bool isPresent = commandLineArgs.Any(predicate: s => !s.StartsWith(value: "-"));
             string fileName = commandLineArgs.FirstOrDefault() ?? string.Empty;

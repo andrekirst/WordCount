@@ -1,5 +1,6 @@
-﻿using System.Linq;
-using WordCount.Abstractions.Console;
+﻿using System;
+using System.Linq;
+using WordCount.Abstractions.Environment;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models;
 
@@ -16,7 +17,7 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public IndexParameter ParseIndexParameter()
         {
-            string[] commandLineArgs = _environment.GetCommandLineArgs();
+            string[] commandLineArgs = _environment.GetCommandLineArgs() ?? Array.Empty<string>();
             return new IndexParameter
             {
                 IsPresent = commandLineArgs.Contains(value: "-index")
