@@ -1,5 +1,4 @@
-﻿using System;
-using WordCount.Abstractions.Reflection;
+﻿using WordCount.Abstractions.Reflection;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
