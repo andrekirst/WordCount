@@ -67,6 +67,7 @@
     <Compile Include="Implementations\ArgumentsHandling\IndexParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\SourceFileParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\StopwordListParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\TextUrlParameterParser.cs" />
     <Compile Include="Implementations\ConsoleDisplayOutput.cs" />
     <Compile Include="Implementations\DictionaryFileLoader.cs" />
     <Compile Include="Implementations\HelpOutput.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Implementations\WordCountAnalyzerOutput.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IHelpParameterParser.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IStopwordListParameterParser.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\ITextUrlParameterParser.cs" />
     <Compile Include="Interfaces\IDictionaryFileLoader.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IDictionaryParameterParser.cs" />
     <Compile Include="Interfaces\IDisplayOutput.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="Interfaces\IWordCountAnalyzerOutput.cs" />
     <Compile Include="Models\Parameters\BaseParameter.cs" />
     <Compile Include="Models\Parameters\DictionaryParameter.cs" />
+    <Compile Include="Models\Parameters\TextUrlParameter.cs" />
     <Compile Include="Models\Requests\IndexOutputRequest.cs" />
     <Compile Include="Models\Parameters\IndexParameter.cs" />
     <Compile Include="Models\Results\InputTextResult.cs" />

@@ -1,7 +1,6 @@
 ﻿namespace WordCount.Models.Parameters
 {
-    public class HelpParameter
+    public class HelpParameter : BaseParameter
     {
-        public bool IsPresent { get; set; }
     }
 }
