@@ -28,9 +28,9 @@ namespace WordCount.Implementations
 
         public int Execute()
         {
-            bool requestedHelp = _helpOutput.ShowHelpIfRequested();
+            bool hasRequestedHelp = _helpOutput.ShowHelpIfRequested();
 
-            if (requestedHelp)
+            if (hasRequestedHelp)
             {
                 return 1;
             }
