@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Moq;
-using System;
 using WordCount.Abstractions.Environment;
 using WordCount.Implementations.ArgumentsHandling;
 using WordCount.Models.Parameters;
@@ -9,94 +8,92 @@ using Xunit;
 
 namespace WordCount.Tests.ArgumentsHandlingTests
 {
-    public class SourceFileParameterParserTests
+    public class HelpParameterParserTests
     {
         private readonly Mock<IEnvironment> _mockEnvironment;
-        private readonly SourceFileParameterParser _systemUnderTest;
+        private readonly HelpParameterParser _systemUnderTest;
 
-        public SourceFileParameterParserTests()
+        public HelpParameterParserTests()
         {
             _mockEnvironment = new Mock<IEnvironment>();
 
-            var containerBuilder = new ContainerBuilder();
+            ContainerBuilder containerBuilder = new ContainerBuilder();
 
             containerBuilder
                 .RegisterInstance(instance: _mockEnvironment.Object)
                 .As<IEnvironment>();
 
             containerBuilder
-                .RegisterType<SourceFileParameterParser>();
+                .RegisterType<HelpParameterParser>();
 
             _systemUnderTest = containerBuilder
                 .Build()
-                .Resolve<SourceFileParameterParser>();
+                .Resolve<HelpParameterParser>();
         }
 
         [NamedFact]
-        public void SourceFileParameterParserTests_Args_is_empty_Expect_IsPresent_False()
+        public void HelpParameterParserTests_args_is_empty_Expect_IsPresent_False()
         {
             _mockEnvironment
                 .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: Array.Empty<string>());
+                .Returns(value: new string[0]);
 
-            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
+            HelpParameter actual = _systemUnderTest.ParseHelpParameter();
 
             Assert.NotNull(@object: actual);
             Assert.False(condition: actual.IsPresent);
         }
 
         [NamedFact]
-        public void SourceFileParameterParserTests_Args_is_null_Expect_IsPresent_False()
+        public void HelpParameterParserTests_args_is_null_Expect_IsPresent_False()
         {
             _mockEnvironment
                 .Setup(expression: m => m.GetCommandLineArgs())
                 .Returns(value: null);
 
-            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
+            HelpParameter actual = _systemUnderTest.ParseHelpParameter();
 
             Assert.NotNull(@object: actual);
             Assert.False(condition: actual.IsPresent);
         }
 
         [NamedFact]
-        public void SourceFileParameterParserTests_Args_has_FileName_Expect_Is_Present_True()
+        public void HelpParameterParserTests_args_have_sourcefile_but_no_help_Expect_IsPresent_False()
         {
             _mockEnvironment
                 .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "bla.txt" });
+                .Returns(value: new[] {"mytext.txt"});
 
-            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
+            HelpParameter actual = _systemUnderTest.ParseHelpParameter();
+
+            Assert.NotNull(@object: actual);
+            Assert.False(condition: actual.IsPresent);
+        }
+
+        [NamedFact]
+        public void HelpParameterParserTests_args_have_help_Expect_IsPresent_True()
+        {
+            _mockEnvironment
+                .Setup(expression: m => m.GetCommandLineArgs())
+                .Returns(value: new[] { "-help" });
+
+            HelpParameter actual = _systemUnderTest.ParseHelpParameter();
 
             Assert.NotNull(@object: actual);
             Assert.True(condition: actual.IsPresent);
         }
 
         [NamedFact]
-        public void SourceFileParameterParserTests_Args_has_FileName_bla_txt_Expect_Is_FileName_bla_txt()
+        public void HelpParameterParserTests_args_have_h_Expect_IsPresent_True()
         {
             _mockEnvironment
                 .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "bla.txt" });
+                .Returns(value: new[] { "-h" });
 
-            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(
-                expected: "bla.txt",
-                actual: actual.FileName);
-        }
-
-        [NamedFact]
-        public void SourceFileParameterParserTests_Args_has_IndexParameter_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "-index" });
-
-            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
+            HelpParameter actual = _systemUnderTest.ParseHelpParameter();
 
             Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
+            Assert.True(condition: actual.IsPresent);
         }
     }
 }

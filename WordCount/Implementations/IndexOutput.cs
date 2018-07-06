@@ -3,7 +3,8 @@ using System.Linq;
 using WordCount.Helpers;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
-using WordCount.Models;
+using WordCount.Models.Parameters;
+using WordCount.Models.Requests;
 
 namespace WordCount.Implementations
 {

@@ -2,7 +2,7 @@
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
-using WordCount.Models;
+using WordCount.Models.Results;
 using WordCount.Tests.XUnitHelpers;
 
 namespace WordCount.Tests

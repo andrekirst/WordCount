@@ -4,7 +4,8 @@ using WordCount.Abstractions.Console;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
-using WordCount.Models;
+using WordCount.Models.Parameters;
+using WordCount.Models.Results;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 

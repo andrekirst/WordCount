@@ -1,4 +1,4 @@
-﻿namespace WordCount.Models
+﻿namespace WordCount.Models.Results
 {
     public class InputTextResult
     {

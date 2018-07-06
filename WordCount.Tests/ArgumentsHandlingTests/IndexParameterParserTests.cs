@@ -3,7 +3,7 @@ using Moq;
 using System;
 using WordCount.Abstractions.Environment;
 using WordCount.Implementations.ArgumentsHandling;
-using WordCount.Models;
+using WordCount.Models.Parameters;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
@@ -46,7 +46,7 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         {
             _mockEnvironment
                 .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: (string[])null);
+                .Returns(value: null);
 
             IndexParameter actual = _systemUnderTest.ParseIndexParameter();
 

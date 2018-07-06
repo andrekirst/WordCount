@@ -1,4 +1,4 @@
-﻿using WordCount.Models;
+﻿using WordCount.Models.Requests;
 
 namespace WordCount.Interfaces
 {

@@ -38,8 +38,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IO.Abstractions, Version=2.1.0.178, Culture=neutral, PublicKeyToken=96bf224d23c43e59, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Abstractions.2.1.0.178\lib\net40\System.IO.Abstractions.dll</HintPath>
+    <Reference Include="System.IO.Abstractions, Version=2.1.0.185, Culture=neutral, PublicKeyToken=96bf224d23c43e59, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.2.1.0.185\lib\net40\System.IO.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,6 +53,8 @@
     <Compile Include="Abstractions\Console\IConsole.cs" />
     <Compile Include="Abstractions\Environment\Environment.cs" />
     <Compile Include="Abstractions\Environment\IEnvironment.cs" />
+    <Compile Include="Abstractions\Reflection\EntryAssembly.cs" />
+    <Compile Include="Abstractions\Reflection\IAssembly.cs" />
     <Compile Include="AutofacModules\LogRequestsModule.cs" />
     <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
     <Compile Include="Extensions\EnumerableStringExtensions.cs" />
@@ -61,11 +63,13 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\EnumerableHelpers.cs" />
     <Compile Include="Implementations\ArgumentsHandling\DictionaryParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\HelpParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\IndexParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\SourceFileParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\StopwordListParameterParser.cs" />
     <Compile Include="Implementations\ConsoleDisplayOutput.cs" />
     <Compile Include="Implementations\DictionaryFileLoader.cs" />
+    <Compile Include="Implementations\HelpOutput.cs" />
     <Compile Include="Implementations\IndexOutput.cs" />
     <Compile Include="Implementations\StopwordRemover.cs" />
     <Compile Include="Implementations\TextFileLoader.cs" />
@@ -75,10 +79,12 @@
     <Compile Include="Implementations\TextSplit.cs" />
     <Compile Include="Implementations\WordCountAnalyzer.cs" />
     <Compile Include="Implementations\WordCountAnalyzerOutput.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\IHelpParameterParser.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IStopwordListParameterParser.cs" />
     <Compile Include="Interfaces\IDictionaryFileLoader.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IDictionaryParameterParser.cs" />
     <Compile Include="Interfaces\IDisplayOutput.cs" />
+    <Compile Include="Interfaces\IHelpOutput.cs" />
     <Compile Include="Interfaces\IIndexOutput.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IIndexParameterParser.cs" />
     <Compile Include="Interfaces\IInteractor.cs" />
@@ -90,16 +96,17 @@
     <Compile Include="Interfaces\ITextSplit.cs" />
     <Compile Include="Interfaces\IWordCountAnalyzer.cs" />
     <Compile Include="Interfaces\IWordCountAnalyzerOutput.cs" />
-    <Compile Include="Models\BaseParameter.cs" />
-    <Compile Include="Models\DictionaryParameter.cs" />
-    <Compile Include="Models\IndexOutputRequest.cs" />
-    <Compile Include="Models\IndexParameter.cs" />
-    <Compile Include="Models\InputTextResult.cs" />
-    <Compile Include="Models\SourceFileParameter.cs" />
-    <Compile Include="Models\StopwordListParameter.cs" />
-    <Compile Include="Models\StopwordRemoverResult.cs" />
-    <Compile Include="Models\TextSplitResult.cs" />
-    <Compile Include="Models\WordCountAnalyzerResult.cs" />
+    <Compile Include="Models\Parameters\BaseParameter.cs" />
+    <Compile Include="Models\Parameters\DictionaryParameter.cs" />
+    <Compile Include="Models\Requests\IndexOutputRequest.cs" />
+    <Compile Include="Models\Parameters\IndexParameter.cs" />
+    <Compile Include="Models\Results\InputTextResult.cs" />
+    <Compile Include="Models\Parameters\HelpParameter.cs" />
+    <Compile Include="Models\Parameters\SourceFileParameter.cs" />
+    <Compile Include="Models\Parameters\StopwordListParameter.cs" />
+    <Compile Include="Models\Results\StopwordRemoverResult.cs" />
+    <Compile Include="Models\Results\TextSplitResult.cs" />
+    <Compile Include="Models\Results\WordCountAnalyzerResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

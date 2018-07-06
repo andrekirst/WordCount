@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WordCount.Models;
+using WordCount.Models.Results;
 
 namespace WordCount.Interfaces
 {

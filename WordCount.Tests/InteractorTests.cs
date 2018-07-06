@@ -2,7 +2,7 @@
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
-using WordCount.Models;
+using WordCount.Models.Results;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
@@ -14,6 +14,7 @@ namespace WordCount.Tests
         private readonly Mock<IWordCountAnalyzer> _mockWordCountAnalyzer;
         private readonly Mock<IWordCountAnalyzerOutput> _mockWordCountAnalyzerOutput;
         private readonly Mock<IIndexOutput> _mockIndexOutput;
+        private readonly Mock<IHelpOutput> _mockHelpOutput;
         private readonly Interactor _systemUnderTest;
 
         public InteractorTests()
@@ -22,28 +23,29 @@ namespace WordCount.Tests
             _mockWordCountAnalyzer = new Mock<IWordCountAnalyzer>();
             _mockWordCountAnalyzerOutput = new Mock<IWordCountAnalyzerOutput>();
             _mockIndexOutput = new Mock<IIndexOutput>();
+            _mockHelpOutput = new Mock<IHelpOutput>();
 
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder
                 .RegisterInstance(instance: _mockIndexOutput.Object)
-                .As<IIndexOutput>()
-                .SingleInstance();
+                .As<IIndexOutput>();
 
             containerBuilder
                 .RegisterInstance(instance: _mockTextInput.Object)
-                .As<ITextInput>()
-                .SingleInstance();
+                .As<ITextInput>();
 
             containerBuilder
                 .RegisterInstance(instance: _mockWordCountAnalyzer.Object)
-                .As<IWordCountAnalyzer>()
-                .SingleInstance();
+                .As<IWordCountAnalyzer>();
 
             containerBuilder
                 .RegisterInstance(instance: _mockWordCountAnalyzerOutput.Object)
-                .As<IWordCountAnalyzerOutput>()
-                .SingleInstance();
+                .As<IWordCountAnalyzerOutput>();
+
+            containerBuilder
+                .RegisterInstance(instance: _mockHelpOutput.Object)
+                .As<IHelpOutput>();
 
             containerBuilder
                 .RegisterType<Interactor>()
@@ -86,6 +88,18 @@ namespace WordCount.Tests
                 .Verify(
                     expression: v => v.GetInputText(),
                     times: Times.Exactly(callCount: 2));
+        }
+
+        [NamedFact]
+        public void InteractorTests_If_HelpParameter_is_present_Expect_ReturnCode_1()
+        {
+            _mockHelpOutput
+                .Setup(m => m.ShowHelpIfRequested())
+                .Returns(true);
+
+            int actual = _systemUnderTest.Execute();
+
+            Assert.Equal(expected: 1, actual: actual);
         }
     }
 }

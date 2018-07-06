@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WordCount.Models
+namespace WordCount.Models.Results
 {
     public class StopwordRemoverResult
     {

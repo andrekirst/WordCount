@@ -1,5 +1,6 @@
 ﻿using WordCount.Interfaces;
-using WordCount.Models;
+using WordCount.Models.Requests;
+using WordCount.Models.Results;
 
 namespace WordCount.Implementations
 {
@@ -9,21 +10,31 @@ namespace WordCount.Implementations
         private readonly IWordCountAnalyzer _wordCountAnalyzer;
         private readonly IWordCountAnalyzerOutput _wordCountAnalyzerOutput;
         private readonly IIndexOutput _indexOutput;
+        private readonly IHelpOutput _helpOutput;
 
         public Interactor(
             ITextInput textInput,
             IWordCountAnalyzer wordCountAnalyzer,
             IWordCountAnalyzerOutput wordCountAnalyzerOutput,
-            IIndexOutput indexOutput)
+            IIndexOutput indexOutput,
+            IHelpOutput helpOutput)
         {
             _textInput = textInput;
             _wordCountAnalyzer = wordCountAnalyzer;
             _wordCountAnalyzerOutput = wordCountAnalyzerOutput;
             _indexOutput = indexOutput;
+            _helpOutput = helpOutput;
         }
 
         public int Execute()
         {
+            bool hasRequestedHelp = _helpOutput.ShowHelpIfRequested();
+
+            if (hasRequestedHelp)
+            {
+                return 1;
+            }
+
             InputTextResult inputTextResult = _textInput.GetInputText();
             do
             {

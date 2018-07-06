@@ -2,8 +2,8 @@
 
 namespace WordCount.Interfaces.ArgumentsHandling
 {
-    public interface ISourceFileParameterParser
+    public interface IHelpParameterParser
     {
-        SourceFileParameter ParseSourceFileParameter();
+        HelpParameter ParseHelpParameter();
     }
 }
