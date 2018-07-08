@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>WordCount.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
+    <CodeAnalysisRuleSet>WordCount.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -53,6 +55,8 @@
     <Compile Include="Abstractions\Console\IConsole.cs" />
     <Compile Include="Abstractions\Environment\Environment.cs" />
     <Compile Include="Abstractions\Environment\IEnvironment.cs" />
+    <Compile Include="Abstractions\HttpClient\HttpClient.cs" />
+    <Compile Include="Abstractions\HttpClient\IHttpClient.cs" />
     <Compile Include="Abstractions\Reflection\EntryAssembly.cs" />
     <Compile Include="Abstractions\Reflection\IAssembly.cs" />
     <Compile Include="AutofacModules\LogRequestsModule.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="Implementations\Interactor.cs" />
     <Compile Include="Implementations\StopwordLoader.cs" />
     <Compile Include="Implementations\TextSplit.cs" />
+    <Compile Include="Implementations\TextUrlFileLoader.cs" />
     <Compile Include="Implementations\WordCountAnalyzer.cs" />
     <Compile Include="Implementations\WordCountAnalyzerOutput.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IHelpParameterParser.cs" />
@@ -96,6 +101,7 @@
     <Compile Include="Interfaces\ITextFileLoader.cs" />
     <Compile Include="Interfaces\ITextInput.cs" />
     <Compile Include="Interfaces\ITextSplit.cs" />
+    <Compile Include="Interfaces\ITextUrlFileLoader.cs" />
     <Compile Include="Interfaces\IWordCountAnalyzer.cs" />
     <Compile Include="Interfaces\IWordCountAnalyzerOutput.cs" />
     <Compile Include="Models\Parameters\BaseParameter.cs" />
@@ -116,6 +122,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="WordCount.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="dict.txt">

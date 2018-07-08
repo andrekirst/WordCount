@@ -1,0 +1,26 @@
+﻿using WordCount.Extensions;
+using System;
+using System.Linq;
+using WordCount.Tests.XUnitHelpers;
+using Xunit;
+
+namespace WordCount.Tests.StringExtensionsTests
+{
+    public class IsValidUrlTests
+    {
+        [NamedTheory]
+        [InlineData("googlede", false)]
+        [InlineData("google.de", false)]
+        [InlineData("http://google.de", true)]
+        public void IsValidUrlTests_ParameterTest_with_Uri_and_expected_Value(
+            string uri,
+            bool expectedValue)
+        {
+            bool actual = uri.IsValidUrl();
+
+            Assert.Equal(
+                expected: expectedValue,
+                actual: actual);
+        }
+    }
+}

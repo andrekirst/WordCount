@@ -93,6 +93,7 @@
     <Compile Include="ArgumentsHandlingTests\IndexParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\SourceFileParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\StopwordListParameterParserTests.cs" />
+    <Compile Include="ArgumentsHandlingTests\TextUrlParameterParserTests.cs" />
     <Compile Include="ConsoleDisplayOutputTests.cs" />
     <Compile Include="DictionaryFileLoaderTests.cs" />
     <Compile Include="EnumerableHelpersTests\CountUnknownWordsTests.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="StopwordRemoverTests.cs" />
     <Compile Include="StringExtensionsTests\IsFilledTests.cs" />
     <Compile Include="StringExtensionsTests\IsNullOrEmptyTests.cs" />
+    <Compile Include="StringExtensionsTests\IsValidUrlTests.cs" />
     <Compile Include="TextFileLoaderTests.cs" />
     <Compile Include="TextInputTests.cs" />
     <Compile Include="TextSplitTests.cs" />
