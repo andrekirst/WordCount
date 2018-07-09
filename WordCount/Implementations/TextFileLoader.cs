@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO.Abstractions;
 using WordCount.Interfaces;
+using WordCount.Interfaces.ArgumentsHandling;
+using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations
 {
@@ -8,20 +10,32 @@ namespace WordCount.Implementations
     {
         private readonly IFileSystem _fileSystem;
         private readonly IDisplayOutput _displayOutput;
+        private readonly ISourceFileParameterParser _sourceFileParameterParser;
 
         public TextFileLoader(
             IFileSystem fileSystem,
-            IDisplayOutput displayOutput)
+            IDisplayOutput displayOutput,
+            ISourceFileParameterParser sourceFileParameterParser)
         {
             _fileSystem = fileSystem;
             _displayOutput = displayOutput;
+            _sourceFileParameterParser = sourceFileParameterParser;
         }
 
-        public string ReadTextFile(string path)
+        public string ReadTextFile()
         {
-            if (_fileSystem.File.Exists(path: path))
+            SourceFileParameter sourceFileParameter = _sourceFileParameterParser.ParseSourceFileParameter();
+
+            if (!sourceFileParameter.IsPresent)
             {
-                string text = _fileSystem.File.ReadAllText(path: path);
+                return string.Empty;
+            }
+
+            string fileName = sourceFileParameter.FileName;
+
+            if (_fileSystem.File.Exists(path: fileName))
+            {
+                string text = _fileSystem.File.ReadAllText(path: fileName);
                 text = text.Replace(
                     oldValue: $"-{Environment.NewLine}",
                     newValue: string.Empty);
@@ -29,7 +43,7 @@ namespace WordCount.Implementations
             }
             else
             {
-                _displayOutput.WriteErrorLine(errorMessage: $"File \"{path}\" not found.");
+                _displayOutput.WriteErrorLine(errorMessage: $"File \"{fileName}\" not found.");
                 return string.Empty;
             }
         }

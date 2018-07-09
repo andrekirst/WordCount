@@ -1,6 +1,6 @@
 ﻿namespace WordCount.Interfaces
 {
-    public interface ITextFileLoader
+    public interface ITextUrlFileLoader
     {
         string ReadTextFile();
     }

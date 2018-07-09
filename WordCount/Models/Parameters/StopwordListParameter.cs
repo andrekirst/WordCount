@@ -1,9 +1,7 @@
 ﻿namespace WordCount.Models.Parameters
 {
-    public class StopwordListParameter
+    public class StopwordListParameter : BaseParameter
     {
-        public bool IsPresent { get; set; }
-
         public string FileName { get; set; }
     }
 }

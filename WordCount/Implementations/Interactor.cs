@@ -1,4 +1,5 @@
 ﻿using WordCount.Interfaces;
+using WordCount.Extensions;
 using WordCount.Models.Requests;
 using WordCount.Models.Results;
 
@@ -36,6 +37,11 @@ namespace WordCount.Implementations
             }
 
             InputTextResult inputTextResult = _textInput.GetInputText();
+
+            if (inputTextResult.Text.IsNullOrEmpty())
+            {
+                return 0;
+            }
             do
             {
                 WordCountAnalyzerResult analyzeResult = _wordCountAnalyzer.Analyze(text: inputTextResult.Text);
@@ -50,7 +56,7 @@ namespace WordCount.Implementations
                 _indexOutput.OutputIndex(indexOutputRequest: indexOutputRequest);
 
                 inputTextResult = _textInput.GetInputText();
-            } while (inputTextResult.HasEnteredText);
+            } while (inputTextResult.HasEnteredConsoleText);
 
             return 0;
         }

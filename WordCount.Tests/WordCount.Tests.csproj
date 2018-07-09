@@ -54,8 +54,8 @@
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.IO.Abstractions, Version=2.1.0.185, Culture=neutral, PublicKeyToken=96bf224d23c43e59, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Abstractions.2.1.0.185\lib\net40\System.IO.Abstractions.dll</HintPath>
+    <Reference Include="System.IO.Abstractions, Version=2.1.0.191, Culture=neutral, PublicKeyToken=96bf224d23c43e59, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.2.1.0.191\lib\net40\System.IO.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.1\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -93,6 +93,7 @@
     <Compile Include="ArgumentsHandlingTests\IndexParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\SourceFileParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\StopwordListParameterParserTests.cs" />
+    <Compile Include="ArgumentsHandlingTests\TextUrlParameterParserTests.cs" />
     <Compile Include="ConsoleDisplayOutputTests.cs" />
     <Compile Include="DictionaryFileLoaderTests.cs" />
     <Compile Include="EnumerableHelpersTests\CountUnknownWordsTests.cs" />
@@ -107,9 +108,11 @@
     <Compile Include="StopwordRemoverTests.cs" />
     <Compile Include="StringExtensionsTests\IsFilledTests.cs" />
     <Compile Include="StringExtensionsTests\IsNullOrEmptyTests.cs" />
+    <Compile Include="StringExtensionsTests\IsValidUrlTests.cs" />
     <Compile Include="TextFileLoaderTests.cs" />
     <Compile Include="TextInputTests.cs" />
     <Compile Include="TextSplitTests.cs" />
+    <Compile Include="TextUrlFileLoaderTests.cs" />
     <Compile Include="WordCountAnalyzerOutputTests.cs" />
     <Compile Include="WordCountAnalyzerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

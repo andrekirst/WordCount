@@ -3,8 +3,6 @@ using Moq;
 using WordCount.Abstractions.Console;
 using WordCount.Implementations;
 using WordCount.Interfaces;
-using WordCount.Interfaces.ArgumentsHandling;
-using WordCount.Models.Parameters;
 using WordCount.Models.Results;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
@@ -15,7 +13,7 @@ namespace WordCount.Tests
     {
         private readonly Mock<IConsole> _mockConsole;
         private readonly Mock<ITextFileLoader> _mockTextFileLoader;
-        private readonly Mock<ISourceFileParameterParser> _mockSourceFileParameterParser;
+        private readonly Mock<ITextUrlFileLoader> _mockTextUrlFileLoader;
         private readonly Mock<IDisplayOutput> _mockDisplayOutput;
         private readonly TextInput _systemUnderTest;
 
@@ -23,8 +21,8 @@ namespace WordCount.Tests
         {
             _mockConsole = new Mock<IConsole>();
             _mockTextFileLoader = new Mock<ITextFileLoader>();
-            _mockSourceFileParameterParser = new Mock<ISourceFileParameterParser>();
             _mockDisplayOutput = new Mock<IDisplayOutput>();
+            _mockTextUrlFileLoader = new Mock<ITextUrlFileLoader>();
 
             var containerBuilder = new ContainerBuilder();
 
@@ -37,12 +35,12 @@ namespace WordCount.Tests
                 .As<ITextFileLoader>();
 
             containerBuilder
-                .RegisterInstance(instance: _mockSourceFileParameterParser.Object)
-                .As<ISourceFileParameterParser>();
-
-            containerBuilder
                 .RegisterInstance(instance: _mockDisplayOutput.Object)
                 .As<IDisplayOutput>();
+
+            containerBuilder
+                .RegisterInstance(instance: _mockTextUrlFileLoader.Object)
+                .As<ITextUrlFileLoader>();
 
             containerBuilder
                 .RegisterType<TextInput>();
@@ -53,49 +51,45 @@ namespace WordCount.Tests
         }
 
         [NamedFact]
-        public void TextInputTests_Console_ReadLine_Bla_Expect_bla()
+        public void TextInputTests_TextFileLoader_returns_bla_Expect_HasEnteredText_false_and_Text_bla()
         {
-            _mockSourceFileParameterParser
-                .Setup(expression: m => m.ParseSourceFileParameter())
-                .Returns(value: new SourceFileParameter());
+            _mockTextFileLoader
+                .Setup(expression: m => m.ReadTextFile())
+                .Returns(value: "bla");
 
+            InputTextResult actual = _systemUnderTest.GetInputText();
+
+            Assert.NotNull(@object: actual);
+            Assert.Equal(expected: "bla", actual: actual.Text);
+            Assert.False(condition: actual.HasEnteredConsoleText);
+        }
+
+        [NamedFact]
+        public void TextInputTests_TextUrlFileLoader_returns_bla_Expect_HasEnteredText_false_and_Text_bla()
+        {
+            _mockTextUrlFileLoader
+                .Setup(expression: m => m.ReadTextFile())
+                .Returns(value: "bla");
+
+            InputTextResult actual = _systemUnderTest.GetInputText();
+
+            Assert.NotNull(@object: actual);
+            Assert.Equal(expected: "bla", actual: actual.Text);
+            Assert.False(condition: actual.HasEnteredConsoleText);
+        }
+
+        [NamedFact]
+        public void TextInputTests_ConsoleInput_bla_Expect_EnterText_and_content_bla_and_HasEnteredConsoleText_true()
+        {
             _mockConsole
                 .Setup(expression: m => m.ReadLine())
-                .Returns(value: "Bla");
+                .Returns(value: "bla");
 
             InputTextResult actual = _systemUnderTest.GetInputText();
 
-            Assert.Equal(expected: "Bla", actual: actual.Text);
-        }
-
-        [NamedFact]
-        public void TextInputTests_Parameter_argumentsReaderResult_Value_Blub_Expect_Blub()
-        {
-            _mockSourceFileParameterParser
-                .Setup(expression: m => m.ParseSourceFileParameter())
-                .Returns(value: new SourceFileParameter
-                {
-                    IsPresent = true,
-                    FileName = It.IsAny<string>()
-                });
-
-            _mockTextFileLoader
-                .Setup(expression: m => m.ReadTextFile(It.IsAny<string>()))
-                .Returns(value: "Blub");
-
-            InputTextResult actual = _systemUnderTest.GetInputText();
-
-            Assert.Equal(expected: "Blub", actual: actual.Text);
-        }
-
-        [NamedFact]
-        public void TextInputTests_If_Parameter_is_not_present_Then_Show_Enter_Text()
-        {
-            _mockSourceFileParameterParser
-                .Setup(expression: m => m.ParseSourceFileParameter())
-                .Returns(value: new SourceFileParameter {IsPresent = false});
-
-            _systemUnderTest.GetInputText();
+            Assert.NotNull(@object: actual);
+            Assert.Equal(expected: "bla", actual: actual.Text);
+            Assert.True(condition: actual.HasEnteredConsoleText);
 
             _mockDisplayOutput
                 .Verify(
@@ -104,51 +98,22 @@ namespace WordCount.Tests
         }
 
         [NamedFact]
-        public void TextInputTests_SourceFileParameter_not_present_and_Text_is_not_empty_Expect_HasEnteredText_True()
+        public void TextInputTests_ConsoleInput_empty_Expect_EnterText_and_content_empty_and_HasEnteredConsoleText_false()
         {
-            _mockSourceFileParameterParser
-                .Setup(expression: m => m.ParseSourceFileParameter())
-                .Returns(value: new SourceFileParameter { IsPresent = false });
-
-            _mockConsole
-                .Setup(expression: m => m.ReadLine())
-                .Returns(value: "Bla bla");
-
-            InputTextResult actual = _systemUnderTest.GetInputText();
-
-            Assert.True(condition: actual.HasEnteredText);
-        }
-
-        [NamedFact]
-        public void TextInputTests_SourceFileParameter_not_present_and_Text_is_empty_Expect_HasEnteredText_False()
-        {
-            _mockSourceFileParameterParser
-                .Setup(expression: m => m.ParseSourceFileParameter())
-                .Returns(value: new SourceFileParameter { IsPresent = false });
-
             _mockConsole
                 .Setup(expression: m => m.ReadLine())
                 .Returns(value: string.Empty);
 
             InputTextResult actual = _systemUnderTest.GetInputText();
 
-            Assert.False(condition: actual.HasEnteredText);
-        }
+            Assert.NotNull(@object: actual);
+            Assert.Equal(expected: string.Empty, actual: actual.Text);
+            Assert.False(condition: actual.HasEnteredConsoleText);
 
-        [NamedFact]
-        public void TextInputTests_SourceFileParameter_is_present_and_Text_is_not_empty_Expect_HasEnteredText_False()
-        {
-            _mockSourceFileParameterParser
-                .Setup(expression: m => m.ParseSourceFileParameter())
-                .Returns(value: new SourceFileParameter { IsPresent = true });
-
-            _mockTextFileLoader
-                .Setup(m => m.ReadTextFile(It.IsAny<string>()))
-                .Returns("Bla");
-
-            InputTextResult actual = _systemUnderTest.GetInputText();
-
-            Assert.False(condition: actual.HasEnteredText);
+            _mockDisplayOutput
+                .Verify(
+                    expression: v => v.Write("Enter text: "),
+                    times: Times.Once);
         }
     }
 }

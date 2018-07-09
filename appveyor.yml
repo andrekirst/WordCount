@@ -27,6 +27,7 @@ matrix:
   fast_finish: true
 
 environment:
+  deploymentfilename: ""
   SONARQUBE_TOKEN:
     secure: ACcdrpuhAnH8XDKRMUFdE4pjTH1vlH5LEvG0U5MDyuQYfDY3zjFXVzA0HLlmtQSq
   CODECOV_TOKEN:
@@ -50,6 +51,20 @@ build_script:
   - ps: MSBuild.SonarQube.Runner.exe end /d:"sonar.login=$($env:SONARQUBE_TOKEN)"
   - ps: codecov -f "c:\projects\WordCount\opencovertests.xml" -t $env:CODECOV_TOKEN
 
+after_build:
+  - ps: if ($env:APPVEYOR_REPO_BRANCH -eq "master") { $env:deploymentfilename = "wordcount-$($env:appveyor_build_version).zip" }
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { $env:deploymentfilename = "wordcount-$($env:appveyor_build_version)-PR$env:APPVEYOR_PULL_REQUEST_NUMBER.zip" }
+  - ps: if ($env:APPVEYOR_REPO_BRANCH -like "feature*") { $env:deploymentfilename = "wordcount-$($env:appveyor_build_version)-unstable.zip" }
+  - ps: New-Item -Type Directory -Path "$env:APPVEYOR_BUILD_FOLDER\output\"
+  - ps: Copy-Item -Destination "$env:APPVEYOR_BUILD_FOLDER\output\" -Path "$env:APPVEYOR_BUILD_FOLDER\WordCount\bin\Release\*.*" -Recurse
+  - ps: rm "$env:APPVEYOR_BUILD_FOLDER\output\*.pdb" -Recurse
+  - ps: rm "$env:APPVEYOR_BUILD_FOLDER\output\Autofac.xml" -Recurse
+  - ps: 7z a $env:deploymentfilename "$env:APPVEYOR_BUILD_FOLDER\output\*.*" -r
+
 on_success:
   - curl -s -o copilot https://copilot.blackducksoftware.com/ci/appveyor/scripts/upload
   - bash copilot
+
+artifacts:
+  - path: $(deploymentfilename)
+    name: wordcount

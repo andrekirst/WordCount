@@ -64,7 +64,7 @@ namespace WordCount.Tests
             _mockTextInput
                 .InSequence(sequence: sequence)
                 .Setup(expression: m => m.GetInputText())
-                .Returns(value: new InputTextResult() {HasEnteredText = true, Text = "Bla bla"});
+                .Returns(value: new InputTextResult() {HasEnteredConsoleText = true, Text = "Bla bla"});
 
             WordCountAnalyzerResult wordCountAnalyzerResult = new WordCountAnalyzerResult();
 
@@ -76,7 +76,7 @@ namespace WordCount.Tests
             _mockTextInput
                 .InSequence(sequence: sequence)
                 .Setup(m => m.GetInputText())
-                .Returns(value: new InputTextResult() { HasEnteredText = false, Text = ""});
+                .Returns(value: new InputTextResult() { HasEnteredConsoleText = false, Text = ""});
 
             int actual = _systemUnderTest.Execute();
 
@@ -100,6 +100,22 @@ namespace WordCount.Tests
             int actual = _systemUnderTest.Execute();
 
             Assert.Equal(expected: 1, actual: actual);
+        }
+
+        [NamedFact]
+        public void InteractorTests_if_the_first_input_is_empty_return_0_and_do_not_execute_Analyzer()
+        {
+            _mockTextInput
+                .Setup(m => m.GetInputText())
+                .Returns(new InputTextResult() {HasEnteredConsoleText = true, Text = string.Empty});
+
+            int actual = _systemUnderTest.Execute();
+
+            Assert.Equal(expected: 0, actual: actual);
+            _mockWordCountAnalyzer
+                .Verify(
+                    expression: v => v.Analyze(It.IsAny<string>()),
+                    times: Times.Never);
         }
     }
 }
