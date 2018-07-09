@@ -1,6 +1,4 @@
 ﻿using WordCount.Extensions;
-using System;
-using System.Linq;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;
 

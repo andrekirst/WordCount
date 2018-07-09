@@ -2,6 +2,6 @@
 {
     public interface ITextFileLoader
     {
-        string ReadTextFile(string path);
+        string ReadTextFile();
     }
 }

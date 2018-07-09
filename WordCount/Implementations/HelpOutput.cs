@@ -34,7 +34,8 @@ namespace WordCount.Implementations
                 _displayOutput.WriteLine(text: "-h | -help : Display this help");
                 _displayOutput.WriteLine(text: "-index : Display the index of the analyzed Text");
                 _displayOutput.WriteLine(text: "-dictionary=file : Uses the dictionary with the given file");
-                _displayOutput.WriteLine(text: "-stopwordlist=file : Uses the stopword with the given file. Default: stopword.txt"); 
+                _displayOutput.WriteLine(text: "-stopwordlist=file : Uses the stopword with the given file. Default: stopword.txt");
+                _displayOutput.WriteLine(text: "-texturl=url : Takes the text file from an url");
             }
 
             return helpParameter.IsPresent;

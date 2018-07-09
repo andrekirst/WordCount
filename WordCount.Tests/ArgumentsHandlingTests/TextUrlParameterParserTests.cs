@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Moq;
 using System;
-using System.Linq;
 using WordCount.Abstractions.Environment;
 using WordCount.Implementations.ArgumentsHandling;
 using WordCount.Models.Parameters;
@@ -62,7 +61,7 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         {
             _mockEnvironment
                 .Setup(m => m.GetCommandLineArgs())
-                .Returns(value: new string[] { "-texturl=http://www.google.de" });
+                .Returns(value: new[] { "-texturl=http://www.google.de" });
 
             TextUrlParameter actual = _systemUnderTest.ParseTextUrlParameter();
 
@@ -70,11 +69,23 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         }
 
         [NamedFact]
+        public void TextUrlParameterParserTests_Args_has_texturl_equalsign_url_Expect_url()
+        {
+            _mockEnvironment
+                .Setup(m => m.GetCommandLineArgs())
+                .Returns(value: new[] { "-texturl=http://www.google.de" });
+
+            TextUrlParameter actual = _systemUnderTest.ParseTextUrlParameter();
+
+            Assert.Equal(expected: "http://www.google.de", actual: actual.Url);
+        }
+
+        [NamedFact]
         public void TextUrlParameterParserTests_Args_has_texturl_equalsign_invalid_wwwaddress_Expect_IsPresent_False()
         {
             _mockEnvironment
                 .Setup(m => m.GetCommandLineArgs())
-                .Returns(value: new string[] { "-texturl=www.googlede" });
+                .Returns(value: new[] { "-texturl=www.googlede" });
 
             TextUrlParameter actual = _systemUnderTest.ParseTextUrlParameter();
 

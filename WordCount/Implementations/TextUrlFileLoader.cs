@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WordCount.Abstractions.HttpClient;
+﻿using WordCount.Abstractions.HttpClient;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
+using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations
 {
@@ -24,7 +20,11 @@ namespace WordCount.Implementations
 
         public string ReadTextFile()
         {
-            throw new NotImplementedException();
+            TextUrlParameter textUrlParameter = _textUrlParameterParser.ParseTextUrlParameter();
+
+            return textUrlParameter.IsPresent ?
+                _httpClient.ReadString(url: textUrlParameter.Url).Result
+                : null;
         }
     }
 }

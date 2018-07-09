@@ -1,8 +1,6 @@
 ﻿using WordCount.Abstractions.Console;
 using WordCount.Extensions;
 using WordCount.Interfaces;
-using WordCount.Interfaces.ArgumentsHandling;
-using WordCount.Models.Parameters;
 using WordCount.Models.Results;
 
 namespace WordCount.Implementations
@@ -11,37 +9,50 @@ namespace WordCount.Implementations
     {
         private readonly IConsole _console;
         private readonly ITextFileLoader _textFileLoader;
-        private readonly ISourceFileParameterParser _sourceFileParameterParser;
+        private readonly ITextUrlFileLoader _textUrlFileLoader;
         private readonly IDisplayOutput _displayOutput;
 
         public TextInput(
             IConsole console,
             ITextFileLoader textFileLoader,
-            ISourceFileParameterParser sourceFileParameterParser,
+            ITextUrlFileLoader textUrlFileLoader,
             IDisplayOutput displayOutput)
         {
             _console = console;
             _textFileLoader = textFileLoader;
-            _sourceFileParameterParser = sourceFileParameterParser;
+            _textUrlFileLoader = textUrlFileLoader;
             _displayOutput = displayOutput;
         }
 
         public InputTextResult GetInputText()
         {
-            SourceFileParameter sourceFileParameter = _sourceFileParameterParser.ParseSourceFileParameter();
-
-            if (!sourceFileParameter.IsPresent)
+            string text = _textFileLoader.ReadTextFile();
+            if (text.IsFilled())
             {
-                _displayOutput.Write(text: "Enter text: ");
+                return new InputTextResult
+                {
+                    HasEnteredConsoleText = false,
+                    Text = text
+                };
             }
 
-            string text = sourceFileParameter.IsPresent
-                ? _textFileLoader.ReadTextFile(path: sourceFileParameter.FileName)
-                : _console.ReadLine();
+            text = _textUrlFileLoader.ReadTextFile();
 
+            if (text.IsFilled())
+            {
+                return new InputTextResult
+                {
+                    HasEnteredConsoleText = false,
+                    Text = text
+                };
+            }
+
+            _displayOutput.Write(text: "Enter text: ");
+
+            text = _console.ReadLine();
             return new InputTextResult
             {
-                HasEnteredText = !sourceFileParameter.IsPresent && text.IsFilled(),
+                HasEnteredConsoleText = text.IsFilled(),
                 Text = text
             };
         }

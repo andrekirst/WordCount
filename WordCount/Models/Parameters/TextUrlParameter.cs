@@ -2,6 +2,6 @@
 {
     public class TextUrlParameter : BaseParameter
     {
-        
+        public string Url { get; set; }
     }
 }

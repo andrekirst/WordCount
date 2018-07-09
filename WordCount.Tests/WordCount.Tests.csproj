@@ -112,6 +112,7 @@
     <Compile Include="TextFileLoaderTests.cs" />
     <Compile Include="TextInputTests.cs" />
     <Compile Include="TextSplitTests.cs" />
+    <Compile Include="TextUrlFileLoaderTests.cs" />
     <Compile Include="WordCountAnalyzerOutputTests.cs" />
     <Compile Include="WordCountAnalyzerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

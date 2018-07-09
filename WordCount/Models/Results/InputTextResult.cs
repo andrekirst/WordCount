@@ -4,6 +4,6 @@
     {
         public string Text { get; set; }
 
-        public bool HasEnteredText { get; set; }
+        public bool HasEnteredConsoleText { get; set; }
     }
 }
