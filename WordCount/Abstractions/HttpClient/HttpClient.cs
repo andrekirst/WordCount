@@ -7,6 +7,7 @@ namespace WordCount.Abstractions.HttpClient
     [ExcludeFromCodeCoverage]
     public class HttpClient : IHttpClient
     {
+        [ExcludeFromCodeCoverage]
         public async Task<string> ReadString(string url)
         {
             System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient()
