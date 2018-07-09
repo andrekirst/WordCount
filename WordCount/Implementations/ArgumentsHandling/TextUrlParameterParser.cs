@@ -19,7 +19,7 @@ namespace WordCount.Implementations.ArgumentsHandling
         public TextUrlParameter ParseTextUrlParameter()
         {
             string[] args = _environment.GetCommandLineArgs();
-            string texturlParameter = args?.FirstOfMatchingRegex(pattern: @"-texturl=[a-zA-z.]{1,}");
+            string texturlParameter = args?.FirstOfMatchingRegex(pattern: @"-texturl=[a-zA-z.]{1,}") ?? string.Empty;
             string[] parameterSplitByEqualSign = texturlParameter?.Split('=') ?? Array.Empty<string>();
 
             bool isPresent =
