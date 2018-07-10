@@ -1,5 +1,4 @@
-﻿using WordCount.Abstractions.CultureInfo;
-using WordCount.Interfaces;
+﻿using WordCount.Interfaces;
 using WordCount.Models.Results;
 using CultureInfo = System.Globalization.CultureInfo;
 

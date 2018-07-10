@@ -36,6 +36,7 @@ namespace WordCount.Implementations
                 _displayOutput.WriteLine(text: "-dictionary=file : Uses the dictionary with the given file");
                 _displayOutput.WriteLine(text: "-stopwordlist=file : Uses the stopword with the given file. Default: stopword.txt");
                 _displayOutput.WriteLine(text: "-texturl=url : Takes the text file from an url");
+                _displayOutput.WriteLine(text: "-lang=language : Supported languages: de, en. Default: en");
             }
 
             return helpParameter.IsPresent;

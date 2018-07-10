@@ -40,16 +40,17 @@ namespace WordCount.Implementations
                     distinctWords: indexOutputRequest.DistinctWords,
                     dictionaryWords: dictionaryWords);
 
-                //string indexOutputText = dictionaryParameter.IsPresent
-                //    ? $"Index: (unknown: {unknwonWordsCount})"
-                //    : "Index:";
-                //_displayOutput.WriteLine(text: indexOutputText);
                 if (dictionaryParameter.IsPresent)
+                {
+                    _displayOutput.WriteResourceStringWithValuesLine(
+                        resourceIdent: "INDEX_WITH_UNKNOWN",
+                        values: unknwonWordsCount);
+                }
+                else
                 {
                     _displayOutput.WriteResourceStringWithValuesLine(
                         resourceIdent: "INDEX");
                 }
-                //string resourceIdentIndex = dictionaryParameter.IsPresent ? "INDEX_WITH_UNKNOWN" : "INDEX";
                 
 
                 DisplayWords(

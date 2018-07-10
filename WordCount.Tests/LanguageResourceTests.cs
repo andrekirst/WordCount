@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Autofac;
+﻿using Autofac;
 using Moq;
 using WordCount.Abstractions.CultureInfo;
 using WordCount.Abstractions.ResourceManager;

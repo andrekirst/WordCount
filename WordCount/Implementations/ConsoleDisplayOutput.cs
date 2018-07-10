@@ -1,6 +1,5 @@
 ﻿using System;
 using WordCount.Abstractions.Console;
-using WordCount.Abstractions.CultureInfo;
 using WordCount.Interfaces;
 
 namespace WordCount.Implementations

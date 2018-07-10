@@ -2,7 +2,6 @@
 using Autofac;
 using System.IO.Abstractions;
 using System.Reflection;
-using System.Resources;
 using WordCount.AutofacModules;
 using WordCount.Interfaces;
 

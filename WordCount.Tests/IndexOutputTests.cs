@@ -134,7 +134,7 @@ namespace WordCount.Tests
 
             _mockDisplayOutput
                 .Verify(
-                    expression: v => v.WriteLine("Index: (unknown: 1)"),
+                    expression: v => v.WriteResourceStringWithValuesLine("INDEX_WITH_UNKNOWN", 1),
                     times: Times.Once);
 
             _mockDisplayOutput
@@ -147,9 +147,8 @@ namespace WordCount.Tests
                     expression: v => v.WriteLine("Bla*"),
                     times: Times.Once);
 
-            Assert.Equal(expected: "Index: (unknown: 1)", actual: verifyList[index: 0]);
-            Assert.Equal(expected: "bla", actual: verifyList[index: 1]);
-            Assert.Equal(expected: "Bla*", actual: verifyList[index: 2]);
+            Assert.Equal(expected: "bla", actual: verifyList[index: 0]);
+            Assert.Equal(expected: "Bla*", actual: verifyList[index: 1]);
         }
     }
 }
