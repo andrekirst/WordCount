@@ -8,7 +8,13 @@ namespace WordCount.Abstractions.Console
 
         void Write(string text);
 
+        void Write(string text, params object[] values);
+
+        void WriteLine();
+
         void WriteLine(string text);
+
+        void WriteLine(string text, params object[] values);
 
         ConsoleColor ForegroundColor { get; set; }
 

@@ -40,12 +40,14 @@ namespace WordCount.Tests
                 AverageWordLength = 5.63,
                 NumberOfChapters = 2
             });
-            const string expected = "Number of words: 2, unique: 1; average word length: 5.63 characters; chapters: 2";
+            //const string expected = "Number of words: 2, unique: 1; average word length: 5.63 characters; chapters: 2";
 
+            //_mockDisplayOutput
+            //    .Verify(
+            //        expression: v => v.WriteLine(expected),
+            //        times: Times.Once);
             _mockDisplayOutput
-                .Verify(
-                    expression: v => v.WriteLine(expected),
-                    times: Times.Once);
+                .Verify(v => v.WriteResourceStringWithValues("NUMBER_OF_WORDS", 2), Times.Once);
         }
     }
 }

@@ -136,7 +136,8 @@ namespace WordCount.Tests
                 .Verify(v => v.File.ReadAllLines("meinestopliste.txt"), Times.Once);
 
             _mockDisplayOutput
-                .Verify(v => v.WriteLine("Used Stopwordlist: meinestopliste.txt"), Times.Once);
+                .Verify(v => v.WriteResourceStringWithValuesLine("USED_STOPWORDLIST", "meinestopliste.txt"),
+                    Times.Once);
         }
     }
 }

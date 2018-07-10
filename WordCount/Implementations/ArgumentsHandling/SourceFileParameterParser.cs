@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using WordCount.Abstractions.Environment;
+using WordCount.Extensions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
@@ -19,8 +20,10 @@ namespace WordCount.Implementations.ArgumentsHandling
         {
             string[] commandLineArgs = _environment.GetCommandLineArgs() ?? Array.Empty<string>();
 
-            bool isPresent = commandLineArgs.Any(predicate: s => !s.StartsWith(value: "-"));
-            string fileName = commandLineArgs.FirstOrDefault() ?? string.Empty;
+            string fileName = commandLineArgs
+                                  .FirstOrDefault(predicate: s => !s.StartsWith(value: "-")) ?? string.Empty;
+
+            bool isPresent = fileName.IsFilled();
 
             return new SourceFileParameter
             {
