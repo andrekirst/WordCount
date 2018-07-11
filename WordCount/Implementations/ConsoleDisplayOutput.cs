@@ -49,7 +49,7 @@ namespace WordCount.Implementations
 
         public void WriteErrorLine(string errorMessage)
         {
-            _console.ForegroundColor = System.ConsoleColor.Red;
+            _console.ForegroundColor = ConsoleColor.Red;
             _console.WriteLine(text: errorMessage);
             _console.ResetColor();
         }

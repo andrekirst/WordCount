@@ -33,7 +33,7 @@ namespace WordCount.Implementations.ArgumentsHandling
 
                 string[] splittedByEqualSign = languageParameter.Split('=');
 
-                string language = splittedByEqualSign?.LastOrDefault() ?? string.Empty;
+                string language = splittedByEqualSign.LastOrDefault() ?? string.Empty;
 
                 if (!LanguageCultureMappings.Mappings.ContainsKey(key: language))
                 {

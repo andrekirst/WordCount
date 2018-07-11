@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using WordCount.Abstractions.Environment;
 using WordCount.Extensions;
 using WordCount.Interfaces.ArgumentsHandling;
@@ -23,7 +22,7 @@ namespace WordCount.Implementations.ArgumentsHandling
                 string[] args = _environment.GetCommandLineArgs();
                 string texturlParameter =
                     args?.FirstOfMatchingRegex(pattern: @"-texturl=[a-zA-z.]{1,}") ?? string.Empty;
-                string[] parameterSplitByEqualSign = texturlParameter?.Split('=') ?? Array.Empty<string>();
+                string[] parameterSplitByEqualSign = texturlParameter.Split('=');
 
                 bool isPresent =
                     texturlParameter.IsFilled() &&
