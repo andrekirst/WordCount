@@ -51,7 +51,6 @@ namespace WordCount.Implementations
                     _displayOutput.WriteResourceStringWithValuesLine(
                         resourceIdent: "INDEX");
                 }
-                
 
                 DisplayWords(
                     distinctWords: indexOutputRequest.DistinctWords,

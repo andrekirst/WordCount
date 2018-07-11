@@ -124,7 +124,6 @@
     <Compile Include="Models\Parameters\HelpParameter.cs" />
     <Compile Include="Models\Parameters\SourceFileParameter.cs" />
     <Compile Include="Models\Parameters\StopwordListParameter.cs" />
-    <Compile Include="Models\Results\LanguageRessourceResult.cs" />
     <Compile Include="Models\Results\StopwordRemoverResult.cs" />
     <Compile Include="Models\Results\TextSplitResult.cs" />
     <Compile Include="Models\Results\WordCountAnalyzerResult.cs" />
