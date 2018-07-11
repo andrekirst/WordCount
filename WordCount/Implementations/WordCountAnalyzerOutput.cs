@@ -20,7 +20,7 @@ namespace WordCount.Implementations
 
         public void DisplayResult(WordCountAnalyzerResult wordCountAnalyzerResult)
         {
-            System.Globalization.CultureInfo culture = _languageParameterParser.ParseLanguageParameter().Culture;
+            CultureInfo culture = _languageParameterParser.ParseLanguageParameter().Culture;
 
             int numberOfWords = wordCountAnalyzerResult.NumberOfWords;
             int numberOfUniqueWords = wordCountAnalyzerResult.NumberOfUniqueWords;
