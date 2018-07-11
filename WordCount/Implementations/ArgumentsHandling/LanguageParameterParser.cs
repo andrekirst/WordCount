@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using WordCount.Abstractions.Console;
 using WordCount.Extensions;
@@ -33,7 +34,7 @@ namespace WordCount.Implementations.ArgumentsHandling
 
                 string[] splittedByEqualSign = languageParameter.Split('=');
 
-                string language = splittedByEqualSign.LastOrDefault() ?? string.Empty;
+                string language = splittedByEqualSign?.LastOrDefault() ?? string.Empty;
 
                 if (!LanguageCultureMappings.Mappings.ContainsKey(key: language))
                 {
@@ -42,11 +43,13 @@ namespace WordCount.Implementations.ArgumentsHandling
                 }
 
                 language = language.IsNullOrEmpty() ? "en" : language;
+                CultureInfo culture = CultureInfo.GetCultureInfo(name: LanguageCultureMappings.Mappings[key: language]);
 
                 return new LanguageParameter
                 {
                     IsPresent = languageParameter.IsFilled(),
-                    Language = language
+                    Language = language,
+                    Culture = culture
                 };
             });
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Autofac;
 using Moq;
 using WordCount.Abstractions.Console;
@@ -91,6 +92,21 @@ namespace WordCount.Tests.ArgumentsHandlingTests
             Assert.Equal(
                 expected: "de",
                 actual: actual.Language);
+        }
+
+        [NamedFact]
+        public void LanguageParameterParserTests_args_has_valid_de_language_parameter_expect_Culture_de_DE()
+        {
+            _mockEnvironment
+                .Setup(expression: m => m.GetCommandLineArgs())
+                .Returns(value: new[] { "-lang=de" });
+
+            LanguageParameter actual = _systemUnderTest.ParseLanguageParameter();
+
+            Assert.NotNull(@object: actual);
+            Assert.Equal(
+                expected: CultureInfo.GetCultureInfo(name: "de-DE"),
+                actual: actual.Culture);
         }
 
         [NamedFact]
