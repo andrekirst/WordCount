@@ -1,4 +1,5 @@
-﻿using WordCount.Interfaces;
+﻿using System;
+using WordCount.Interfaces;
 using WordCount.Extensions;
 using WordCount.Models.Requests;
 using WordCount.Models.Results;

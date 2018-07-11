@@ -7,7 +7,7 @@ using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations.ArgumentsHandling
 {
-    public class TextUrlParameterParser : ITextUrlParameterParser
+    public class TextUrlParameterParser : BaseParameterParser<TextUrlParameter>, ITextUrlParameterParser
     {
         private readonly IEnvironment _environment;
 
@@ -18,19 +18,23 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public TextUrlParameter ParseTextUrlParameter()
         {
-            string[] args = _environment.GetCommandLineArgs();
-            string texturlParameter = args?.FirstOfMatchingRegex(pattern: @"-texturl=[a-zA-z.]{1,}") ?? string.Empty;
-            string[] parameterSplitByEqualSign = texturlParameter?.Split('=') ?? Array.Empty<string>();
-
-            bool isPresent =
-                texturlParameter.IsFilled() &&
-                parameterSplitByEqualSign.LastOrDefault().IsValidUrl();
-
-            return new TextUrlParameter
+            return CachedValue(toCachingValue: () =>
             {
-                IsPresent = isPresent,
-                Url = isPresent ? parameterSplitByEqualSign.LastOrDefault() : null
-            };
+                string[] args = _environment.GetCommandLineArgs();
+                string texturlParameter =
+                    args?.FirstOfMatchingRegex(pattern: @"-texturl=[a-zA-z.]{1,}") ?? string.Empty;
+                string[] parameterSplitByEqualSign = texturlParameter?.Split('=') ?? Array.Empty<string>();
+
+                bool isPresent =
+                    texturlParameter.IsFilled() &&
+                    parameterSplitByEqualSign.LastOrDefault().IsValidUrl();
+
+                return new TextUrlParameter
+                {
+                    IsPresent = isPresent,
+                    Url = isPresent ? parameterSplitByEqualSign.LastOrDefault() : null
+                };
+            });
         }
     }
 }

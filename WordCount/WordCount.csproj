@@ -71,6 +71,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\EnumerableHelpers.cs" />
     <Compile Include="Helpers\LanguageCultureMappings.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\BaseParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\DictionaryParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\HelpParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\IndexParameterParser.cs" />

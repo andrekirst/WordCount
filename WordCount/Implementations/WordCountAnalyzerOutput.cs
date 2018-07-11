@@ -43,14 +43,6 @@ namespace WordCount.Implementations
                     values: numberOfChapters);
 
             _displayOutput.WriteLine();
-
-            //string result =
-            //    $"Number of words: {numberOfWords}"
-            //  + $", unique: {numberOfUniqueWords}"
-            //  + $"; average word length: {averageWordLengthAsString} characters"
-            //  + $"; chapters: {numberOfChapters}";
-
-            //_displayOutput.WriteLine(text: result);
         }
     }
 }

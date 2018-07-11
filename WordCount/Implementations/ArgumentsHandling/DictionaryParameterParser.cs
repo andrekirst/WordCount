@@ -6,7 +6,7 @@ using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations.ArgumentsHandling
 {
-    public class DictionaryParameterParser : IDictionaryParameterParser
+    public class DictionaryParameterParser : BaseParameterParser<DictionaryParameter>, IDictionaryParameterParser
     {
         private readonly IEnvironment _environment;
 
@@ -17,16 +17,19 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public DictionaryParameter ParseDictionaryParameter()
         {
-            string[] args = _environment.GetCommandLineArgs();
-
-            string dictionaryParameter = args?.FirstOfMatchingRegex(pattern: @"-dictionary=[a-zA-z.]{1,}");
-            string[] parameterSplitByEqualSign = dictionaryParameter?.Split('=');
-
-            return new DictionaryParameter
+            return CachedValue(toCachingValue: () =>
             {
-                IsPresent = dictionaryParameter?.IsFilled() ?? false,
-                FileName = parameterSplitByEqualSign?.LastOrDefault()
-            };
+                string[] args = _environment.GetCommandLineArgs();
+
+                string dictionaryParameter = args?.FirstOfMatchingRegex(pattern: @"-dictionary=[a-zA-z.]{1,}");
+                string[] parameterSplitByEqualSign = dictionaryParameter?.Split('=');
+
+                return new DictionaryParameter
+                {
+                    IsPresent = dictionaryParameter?.IsFilled() ?? false,
+                    FileName = parameterSplitByEqualSign?.LastOrDefault()
+                };
+            });
         }
     }
 }

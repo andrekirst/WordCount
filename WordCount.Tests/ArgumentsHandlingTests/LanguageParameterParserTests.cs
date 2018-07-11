@@ -1,6 +1,7 @@
 ﻿using System;
 using Autofac;
 using Moq;
+using WordCount.Abstractions.Console;
 using WordCount.Abstractions.Environment;
 using WordCount.Implementations.ArgumentsHandling;
 using WordCount.Models.Parameters;
@@ -12,17 +13,23 @@ namespace WordCount.Tests.ArgumentsHandlingTests
     public class LanguageParameterParserTests
     {
         private readonly Mock<IEnvironment> _mockEnvironment;
+        private readonly Mock<IConsole> _mockConsole;
         private readonly LanguageParameterParser _systemUnderTest;
 
         public LanguageParameterParserTests()
         {
             _mockEnvironment = new Mock<IEnvironment>();
+            _mockConsole = new Mock<IConsole>();
 
             ContainerBuilder containerBuilder = new ContainerBuilder();
 
             containerBuilder
                 .RegisterInstance(instance: _mockEnvironment.Object)
                 .As<IEnvironment>();
+
+            containerBuilder
+                .RegisterInstance(instance: _mockConsole.Object)
+                .As<IConsole>();
 
             containerBuilder
                 .RegisterType<LanguageParameterParser>();
@@ -99,6 +106,37 @@ namespace WordCount.Tests.ArgumentsHandlingTests
             Assert.Equal(
                 expected: "en",
                 actual: actual.Language);
+
+            _mockConsole
+                .Verify(v => v.WriteLine("Language \"it\" not supported."), Times.Once);
+        }
+
+        [NamedFact]
+        public void LanguageParameterParserTests_Double_Test_FromCache()
+        {
+            _mockEnvironment
+                .Setup(expression: m => m.GetCommandLineArgs())
+                .Returns(value: new[] { "-lang=it" });
+
+            LanguageParameter actual = _systemUnderTest.ParseLanguageParameter();
+
+            Assert.NotNull(@object: actual);
+            Assert.Equal(
+                expected: "en",
+                actual: actual.Language);
+
+            _mockConsole
+                .Verify(v => v.WriteLine("Language \"it\" not supported."), Times.Once);
+
+            actual = _systemUnderTest.ParseLanguageParameter();
+
+            Assert.NotNull(@object: actual);
+            Assert.Equal(
+                expected: "en",
+                actual: actual.Language);
+
+            _mockEnvironment
+                .Verify(v => v.GetCommandLineArgs(), Times.Once);
         }
     }
 }
