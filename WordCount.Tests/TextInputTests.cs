@@ -92,9 +92,7 @@ namespace WordCount.Tests
             Assert.True(condition: actual.HasEnteredConsoleText);
 
             _mockDisplayOutput
-                .Verify(
-                    expression: v => v.Write("Enter text: "),
-                    times: Times.Once);
+                .Verify(v => v.WriteResourceStringWithValues("ENTER_TEXT"), Times.Once);
         }
 
         [NamedFact]
@@ -111,9 +109,7 @@ namespace WordCount.Tests
             Assert.False(condition: actual.HasEnteredConsoleText);
 
             _mockDisplayOutput
-                .Verify(
-                    expression: v => v.Write("Enter text: "),
-                    times: Times.Once);
+                .Verify(v => v.WriteResourceStringWithValues("ENTER_TEXT"), Times.Once);
         }
     }
 }

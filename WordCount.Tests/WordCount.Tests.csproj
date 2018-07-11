@@ -91,6 +91,7 @@
     <Compile Include="ArgumentsHandlingTests\DictionaryParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\HelpParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\IndexParameterParserTests.cs" />
+    <Compile Include="ArgumentsHandlingTests\LanguageParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\SourceFileParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\StopwordListParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\TextUrlParameterParserTests.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="HelpOutputTests.cs" />
     <Compile Include="IndexOutputTests.cs" />
     <Compile Include="InteractorTests.cs" />
+    <Compile Include="LanguageResourceTests.cs" />
     <Compile Include="ListExtensionsTests\ToEmptyIfNullListTests.cs" />
     <Compile Include="RegexStringExtensionsTests\IsMatchingRegexTests.cs" />
     <Compile Include="RegexStringExtensionsTests\SplitByRegexTests.cs" />

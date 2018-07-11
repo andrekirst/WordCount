@@ -138,5 +138,16 @@ namespace WordCount.Tests
                 expected: expected,
                 actual: actual.Words);
         }
+
+        [NamedFact]
+        public void TextSplitTests_Words_with_Comma_expect_no_Comma()
+        {
+            const string text = "Longworth, however, in desperate need of money, killed the preacher with Hamlet's sword and  stole the manuscript";
+            TextSplitResult actual = _systemUnderTest.Split(text: text);
+
+            List<string> expected = new List<string>() { "Longworth", "however", "in", "desperate", "need", "of", "money", "killed", "the", "preacher", "with", "Hamlet's", "sword", "and", "stole", "the", "manuscript" };
+            Assert.Equal(expected: expected,
+                actual: actual.Words);
+        }
     }
 }

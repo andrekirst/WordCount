@@ -43,7 +43,10 @@ namespace WordCount.Implementations
             }
             else
             {
-                _displayOutput.WriteErrorLine(errorMessage: $"File \"{fileName}\" not found.");
+                _displayOutput
+                    .WriteErrorResourceStringWithValuesLine(
+                        resourceIdent: "FILE_NOT_FOUND",
+                        values: fileName);
                 return string.Empty;
             }
         }

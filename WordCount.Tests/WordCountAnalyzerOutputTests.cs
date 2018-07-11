@@ -1,7 +1,10 @@
-﻿using Autofac;
+﻿using System.Globalization;
+using Autofac;
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
+using WordCount.Interfaces.ArgumentsHandling;
+using WordCount.Models.Parameters;
 using WordCount.Models.Results;
 using WordCount.Tests.XUnitHelpers;
 
@@ -10,17 +13,23 @@ namespace WordCount.Tests
     public class WordCountAnalyzerOutputTests
     {
         private readonly Mock<IDisplayOutput> _mockDisplayOutput;
+        private readonly Mock<ILanguageParameterParser> _mockLanguageParameterParser;
         private readonly WordCountAnalyzerOutput _systemUnderTest;
 
         public WordCountAnalyzerOutputTests()
         {
             _mockDisplayOutput = new Mock<IDisplayOutput>();
+            _mockLanguageParameterParser = new Mock<ILanguageParameterParser>();
 
             ContainerBuilder containerBuilder = new ContainerBuilder();
 
             containerBuilder
                 .RegisterInstance(instance: _mockDisplayOutput.Object)
                 .As<IDisplayOutput>();
+
+            containerBuilder
+                .RegisterInstance(instance: _mockLanguageParameterParser.Object)
+                .As<ILanguageParameterParser>();
 
             containerBuilder
                 .RegisterType<WordCountAnalyzerOutput>();
@@ -31,8 +40,12 @@ namespace WordCount.Tests
         }
 
         [NamedFact]
-        public void WordCountAnalyzerOutputTests_DisplayResult_Result_NumberOfWords_2_Expect_Number_of_Words_2_Number_of_unique_Words_1()
+        public void WordCountAnalyzerOutputTests_DisplayResult_Result_NumberOfWords_2_Expect_Number_of_Words_2_Number()
         {
+            _mockLanguageParameterParser
+                .Setup(m => m.ParseLanguageParameter())
+                .Returns(new LanguageParameter{ Culture = CultureInfo.GetCultureInfo("de-DE")});
+
             _systemUnderTest.DisplayResult(wordCountAnalyzerResult: new WordCountAnalyzerResult
             {
                 NumberOfWords = 2,
@@ -40,12 +53,11 @@ namespace WordCount.Tests
                 AverageWordLength = 5.63,
                 NumberOfChapters = 2
             });
-            const string expected = "Number of words: 2, unique: 1; average word length: 5.63 characters; chapters: 2";
+            _mockDisplayOutput
+                .Verify(v => v.WriteResourceStringWithValues("NUMBER_OF_WORDS", 2), Times.Once);
 
             _mockDisplayOutput
-                .Verify(
-                    expression: v => v.WriteLine(expected),
-                    times: Times.Once);
+                .Verify(v => v.WriteResourceStringWithValues("AVERAGE_WORD_LENGTH", "5,63"), Times.Once);
         }
     }
 }

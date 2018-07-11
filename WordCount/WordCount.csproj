@@ -53,12 +53,16 @@
   <ItemGroup>
     <Compile Include="Abstractions\Console\Console.cs" />
     <Compile Include="Abstractions\Console\IConsole.cs" />
+    <Compile Include="Abstractions\CultureInfo\CultureInfo.cs" />
+    <Compile Include="Abstractions\CultureInfo\ICultureInfo.cs" />
     <Compile Include="Abstractions\Environment\Environment.cs" />
     <Compile Include="Abstractions\Environment\IEnvironment.cs" />
     <Compile Include="Abstractions\HttpClient\HttpClient.cs" />
     <Compile Include="Abstractions\HttpClient\IHttpClient.cs" />
     <Compile Include="Abstractions\Reflection\EntryAssembly.cs" />
     <Compile Include="Abstractions\Reflection\IAssembly.cs" />
+    <Compile Include="Abstractions\ResourceManager\IResourceManager.cs" />
+    <Compile Include="Abstractions\ResourceManager\ResourceManager.cs" />
     <Compile Include="AutofacModules\LogRequestsModule.cs" />
     <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
     <Compile Include="Extensions\EnumerableStringExtensions.cs" />
@@ -66,9 +70,12 @@
     <Compile Include="Extensions\RegexStringExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\EnumerableHelpers.cs" />
+    <Compile Include="Helpers\LanguageCultureMappings.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\BaseParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\DictionaryParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\HelpParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\IndexParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\LanguageParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\SourceFileParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\StopwordListParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\TextUrlParameterParser.cs" />
@@ -76,6 +83,7 @@
     <Compile Include="Implementations\DictionaryFileLoader.cs" />
     <Compile Include="Implementations\HelpOutput.cs" />
     <Compile Include="Implementations\IndexOutput.cs" />
+    <Compile Include="Implementations\LanguageResource.cs" />
     <Compile Include="Implementations\StopwordRemover.cs" />
     <Compile Include="Implementations\TextFileLoader.cs" />
     <Compile Include="Implementations\TextInput.cs" />
@@ -86,6 +94,7 @@
     <Compile Include="Implementations\WordCountAnalyzer.cs" />
     <Compile Include="Implementations\WordCountAnalyzerOutput.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IHelpParameterParser.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\ILanguageParameterParser.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IStopwordListParameterParser.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\ITextUrlParameterParser.cs" />
     <Compile Include="Interfaces\IDictionaryFileLoader.cs" />
@@ -96,6 +105,7 @@
     <Compile Include="Interfaces\ArgumentsHandling\IIndexParameterParser.cs" />
     <Compile Include="Interfaces\IInteractor.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\ISourceFileParameterParser.cs" />
+    <Compile Include="Interfaces\ILanguageResource.cs" />
     <Compile Include="Interfaces\IStopwordLoader.cs" />
     <Compile Include="Interfaces\IStopwordRemover.cs" />
     <Compile Include="Interfaces\ITextFileLoader.cs" />
@@ -106,6 +116,7 @@
     <Compile Include="Interfaces\IWordCountAnalyzerOutput.cs" />
     <Compile Include="Models\Parameters\BaseParameter.cs" />
     <Compile Include="Models\Parameters\DictionaryParameter.cs" />
+    <Compile Include="Models\Parameters\LanguageParameter.cs" />
     <Compile Include="Models\Parameters\TextUrlParameter.cs" />
     <Compile Include="Models\Requests\IndexOutputRequest.cs" />
     <Compile Include="Models\Parameters\IndexParameter.cs" />
@@ -147,6 +158,11 @@
   <ItemGroup>
     <Analyzer Include="..\packages\SecurityCodeScan.2.7.1.0\analyzers\dotnet\SecurityCodeScan.dll" />
     <Analyzer Include="..\packages\SecurityCodeScan.2.7.1.0\analyzers\dotnet\YamlDotNet.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Resource.de-DE.resx" />
+    <EmbeddedResource Include="Resources\Resource.en-US.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

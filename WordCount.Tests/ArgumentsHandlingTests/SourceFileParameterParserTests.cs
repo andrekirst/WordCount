@@ -98,5 +98,19 @@ namespace WordCount.Tests.ArgumentsHandlingTests
             Assert.NotNull(@object: actual);
             Assert.False(condition: actual.IsPresent);
         }
+
+        [NamedFact]
+        public void SourceFileParameterParserTests_Args_are_lang_pramater_and_file_parameter_expect_is_present_and_filename()
+        {
+            _mockEnvironment
+                .Setup(m => m.GetCommandLineArgs())
+                .Returns(value: new[] {"-lang=de", "sample.txt"});
+
+            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
+
+            Assert.NotNull(@object: actual);
+            Assert.True(condition: actual.IsPresent);
+            Assert.Equal(expected: "sample.txt", actual: actual.FileName);
+        }
     }
 }

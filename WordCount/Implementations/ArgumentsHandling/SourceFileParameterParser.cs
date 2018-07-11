@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
 using WordCount.Abstractions.Environment;
+using WordCount.Extensions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations.ArgumentsHandling
 {
-    public class SourceFileParameterParser : ISourceFileParameterParser
+    public class SourceFileParameterParser : BaseParameterParser<SourceFileParameter>, ISourceFileParameterParser
     {
         private readonly IEnvironment _environment;
 
@@ -17,16 +18,21 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public SourceFileParameter ParseSourceFileParameter()
         {
-            string[] commandLineArgs = _environment.GetCommandLineArgs() ?? Array.Empty<string>();
-
-            bool isPresent = commandLineArgs.Any(predicate: s => !s.StartsWith(value: "-"));
-            string fileName = commandLineArgs.FirstOrDefault() ?? string.Empty;
-
-            return new SourceFileParameter
+            return CachedValue(toCachingValue: () =>
             {
-                IsPresent = isPresent,
-                FileName = fileName
-            };
+                string[] commandLineArgs = _environment.GetCommandLineArgs() ?? Array.Empty<string>();
+
+                string fileName = commandLineArgs
+                                      .FirstOrDefault(predicate: s => !s.StartsWith(value: "-")) ?? string.Empty;
+
+                bool isPresent = fileName.IsFilled();
+
+                return new SourceFileParameter
+                {
+                    IsPresent = isPresent,
+                    FileName = fileName
+                };
+            });
         }
     }
 }

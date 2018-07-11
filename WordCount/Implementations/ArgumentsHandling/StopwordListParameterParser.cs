@@ -6,7 +6,7 @@ using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations.ArgumentsHandling
 {
-    public class StopwordListParameterParser : IStopwordListParameterParser
+    public class StopwordListParameterParser : BaseParameterParser<StopwordListParameter>, IStopwordListParameterParser
     {
         private readonly IEnvironment _environment;
 
@@ -17,16 +17,19 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public StopwordListParameter ParseStopwordListParameter()
         {
-            string[] args = _environment.GetCommandLineArgs();
-
-            string dictionaryParameter = args?.FirstOfMatchingRegex(pattern: @"-stopwordlist=[a-zA-z.]{1,}");
-            string[] parameterSplitByEqualSign = dictionaryParameter?.Split('=');
-
-            return new StopwordListParameter
+            return CachedValue(toCachingValue: () =>
             {
-                IsPresent = dictionaryParameter?.IsFilled() ?? false,
-                FileName = parameterSplitByEqualSign?.LastOrDefault()
-            };
+                string[] args = _environment.GetCommandLineArgs();
+
+                string dictionaryParameter = args?.FirstOfMatchingRegex(pattern: @"-stopwordlist=[a-zA-z.]{1,}");
+                string[] parameterSplitByEqualSign = dictionaryParameter?.Split('=');
+
+                return new StopwordListParameter
+                {
+                    IsPresent = dictionaryParameter?.IsFilled() ?? false,
+                    FileName = parameterSplitByEqualSign?.LastOrDefault()
+                };
+            });
         }
     }
 }

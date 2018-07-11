@@ -13,26 +13,33 @@ namespace WordCount.AutofacModules
             IComponentRegistry componentRegistry,
             IComponentRegistration registration)
         {
-            registration.Preparing += (sender, args) =>
-            {
-                RegistrationAction(
-                    activator: args.Component.Activator,
-                    actionName: "Resolving");
-            };
+            registration.Preparing += Registration_Preparing;
+            registration.Activated += Registration_Activated;
+            registration.Activating += Registration_Activating;
+        }
 
-            registration.Activated += (sender, args) =>
-            {
-                RegistrationAction(
-                    activator: args.Component.Activator,
-                    actionName: "Activated");
-            };
+        [ExcludeFromCodeCoverage]
+        private void Registration_Activating(object sender, ActivatingEventArgs<object> e)
+        {
+            RegistrationAction(
+                activator: e.Component.Activator,
+                actionName: "Activating");
+        }
 
-            registration.Activating += (sender, args) =>
-            {
-                RegistrationAction(
-                    activator: args.Component.Activator,
-                    actionName: "Activating");
-            };
+        [ExcludeFromCodeCoverage]
+        private void Registration_Activated(object sender, ActivatedEventArgs<object> e)
+        {
+            RegistrationAction(
+                activator: e.Component.Activator,
+                actionName: "Activated");
+        }
+
+        [ExcludeFromCodeCoverage]
+        private void Registration_Preparing(object sender, PreparingEventArgs e)
+        {
+            RegistrationAction(
+                activator: e.Component.Activator,
+                actionName: "Resolving");
         }
 
         [ExcludeFromCodeCoverage]

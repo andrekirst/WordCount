@@ -6,7 +6,7 @@ using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations.ArgumentsHandling
 {
-    public class IndexParameterParser : IIndexParameterParser
+    public class IndexParameterParser : BaseParameterParser<IndexParameter>, IIndexParameterParser
     {
         private readonly IEnvironment _environment;
 
@@ -17,11 +17,14 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public IndexParameter ParseIndexParameter()
         {
-            string[] commandLineArgs = _environment.GetCommandLineArgs() ?? Array.Empty<string>();
-            return new IndexParameter
+            return CachedValue(toCachingValue: () =>
             {
-                IsPresent = commandLineArgs.Contains(value: "-index")
-            };
+                string[] commandLineArgs = _environment.GetCommandLineArgs() ?? Array.Empty<string>();
+                return new IndexParameter
+                {
+                    IsPresent = commandLineArgs.Contains(value: "-index")
+                };
+            });
         }
     }
 }

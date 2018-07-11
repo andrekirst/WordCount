@@ -32,7 +32,9 @@ namespace WordCount.Implementations
             if (dictionaryParameter.IsPresent &&
                 !_fileSystem.File.Exists(path: path))
             {
-                _displayOutput.WriteErrorLine(errorMessage: $"File \"{path}\" not found.");
+                _displayOutput.WriteErrorResourceStringWithValuesLine(
+                    resourceIdent: "FILE_NOT_FOUND",
+                    values: path);
                 return new List<string>();
             }
 

@@ -32,7 +32,8 @@ namespace WordCount
             containerBuilder.RegisterAssemblyTypes(
                     executingAssembly,
                     externalFileSystemAssembly)
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces()
+                .SingleInstance();
 
             return containerBuilder
                 .Build()

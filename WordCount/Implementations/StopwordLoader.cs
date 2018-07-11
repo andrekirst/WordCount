@@ -39,7 +39,9 @@ namespace WordCount.Implementations
 
             if (isParameterPresent)
             {
-                _displayOutput.WriteLine(text: $"Used Stopwordlist: {fileName}"); 
+                _displayOutput.WriteResourceStringWithValuesLine(
+                    resourceIdent: "USED_STOPWORDLIST",
+                    values: fileName);
             }
 
             return _fileSystem
