@@ -18,6 +18,7 @@ namespace WordCount.Tests
         private readonly Mock<IFileSystem> _mockFileSystem;
         private readonly Mock<IStopwordListParameterParser> _mockStopwordListParameterParser;
         private readonly Mock<IDisplayOutput> _mockDisplayOutput;
+        private readonly Mock<ILanguageParameterParser> _mockLanguageParameterParser;
         private readonly StopwordLoader _systemUnderTest;
 
         public StopwordLoaderTests()
@@ -25,6 +26,7 @@ namespace WordCount.Tests
             _mockFileSystem = new Mock<IFileSystem>();
             _mockStopwordListParameterParser = new Mock<IStopwordListParameterParser>();
             _mockDisplayOutput = new Mock<IDisplayOutput>();
+            _mockLanguageParameterParser = new Mock<ILanguageParameterParser>();
 
             ContainerBuilder containerBuilder = new ContainerBuilder();
 
@@ -41,6 +43,10 @@ namespace WordCount.Tests
                 .As<IDisplayOutput>();
 
             containerBuilder
+                .RegisterInstance(instance: _mockLanguageParameterParser.Object)
+                .As<ILanguageParameterParser>();
+
+            containerBuilder
                 .RegisterType<StopwordLoader>();
 
             _systemUnderTest = containerBuilder
@@ -51,6 +57,10 @@ namespace WordCount.Tests
         [NamedFact]
         public void StopwordLoaderTests_GetStopwords_FileNotExist_Return_EmptyList()
         {
+            _mockLanguageParameterParser
+                .Setup(m => m.ParseLanguageParameter())
+                .Returns(new LanguageParameter {Language = "en"});
+
             _mockStopwordListParameterParser
                 .Setup(m => m.ParseStopwordListParameter())
                 .Returns(new StopwordListParameter() { IsPresent = false });
@@ -71,6 +81,10 @@ namespace WordCount.Tests
         [NamedFact]
         public void StopwordLoaderTests_GetStopwords_FileEmpty_Return_EmptyList()
         {
+            _mockLanguageParameterParser
+                .Setup(m => m.ParseLanguageParameter())
+                .Returns(new LanguageParameter {Language = "en"});
+
             _mockStopwordListParameterParser
                 .Setup(m => m.ParseStopwordListParameter())
                 .Returns(new StopwordListParameter() { IsPresent = false });
@@ -91,6 +105,10 @@ namespace WordCount.Tests
         [NamedFact]
         public void StopwordLoaderTests_GetStopwords_Contains_1_Row_With_word_a_Return_List_with_one_Entry_a()
         {
+            _mockLanguageParameterParser
+                .Setup(m => m.ParseLanguageParameter())
+                .Returns(new LanguageParameter {Language = "en"});
+
             _mockStopwordListParameterParser
                 .Setup(m => m.ParseStopwordListParameter())
                 .Returns(new StopwordListParameter() { IsPresent = false });
@@ -138,6 +156,30 @@ namespace WordCount.Tests
             _mockDisplayOutput
                 .Verify(v => v.WriteResourceStringWithValuesLine("USED_STOPWORDLIST", "meinestopliste.txt"),
                     Times.Once);
+        }
+
+        [NamedFact]
+        public void StopwordLoaderTests_StopwordParameter_is_not_present_language_is_de_expect_loading_de_file()
+        {
+            _mockStopwordListParameterParser
+                .Setup(expression: m => m.ParseStopwordListParameter())
+                .Returns(value: new StopwordListParameter { IsPresent = false });
+
+            _mockLanguageParameterParser
+                .Setup(m => m.ParseLanguageParameter())
+                .Returns(new LanguageParameter {Language = "de"});
+
+            _mockFileSystem
+                .Setup(m => m.File.Exists(It.IsAny<string>()))
+                .Returns(true);
+
+            _systemUnderTest.GetStopwords();
+
+            _mockFileSystem
+                .Verify(v => v.File.Exists("stopwords.de.txt"), Times.Once);
+
+            _mockFileSystem
+                .Verify(v => v.File.ReadAllLines("stopwords.de.txt"), Times.Once);
         }
     }
 }

@@ -36,7 +36,8 @@ namespace WordCount.Implementations.ArgumentsHandling
 
                 string language = splittedByEqualSign.LastOrDefault() ?? string.Empty;
 
-                if (!LanguageCultureMappings.Mappings.ContainsKey(key: language))
+                if (language.IsFilled() &&
+                    !LanguageCultureMappings.Mappings.ContainsKey(key: language))
                 {
                     _console.WriteLine(text: $"Language \"{language}\" not supported.");
                     language = "en";
