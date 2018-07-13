@@ -83,7 +83,7 @@ namespace WordCount.Tests
 
             _mockDisplayOutput
                 .Verify(
-                    expression: v => v.WriteResourceStringWithValuesLine("INDEX"),
+                    expression: v => v.WriteResourceLine("INDEX"),
                     times: Times.Once);
 
             _mockDisplayOutput
@@ -134,7 +134,7 @@ namespace WordCount.Tests
 
             _mockDisplayOutput
                 .Verify(
-                    expression: v => v.WriteResourceStringWithValuesLine("INDEX_WITH_UNKNOWN", 1),
+                    expression: v => v.WriteResourceLine("INDEX_WITH_UNKNOWN", 1),
                     times: Times.Once);
 
             _mockDisplayOutput

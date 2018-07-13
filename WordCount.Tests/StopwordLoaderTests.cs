@@ -154,7 +154,7 @@ namespace WordCount.Tests
                 .Verify(v => v.File.ReadAllLines("meinestopliste.txt"), Times.Once);
 
             _mockDisplayOutput
-                .Verify(v => v.WriteResourceStringWithValuesLine("USED_STOPWORDLIST", "meinestopliste.txt"),
+                .Verify(v => v.WriteResourceLine("USED_STOPWORDLIST", "meinestopliste.txt"),
                     Times.Once);
         }
 

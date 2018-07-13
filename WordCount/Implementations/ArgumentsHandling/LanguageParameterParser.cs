@@ -37,14 +37,14 @@ namespace WordCount.Implementations.ArgumentsHandling
                 string language = splittedByEqualSign.LastOrDefault() ?? string.Empty;
 
                 if (language.IsFilled() &&
-                    !LanguageCultureMappings.Mappings.ContainsKey(key: language))
+                    !LanguageToCultureMapping.Mappings.ContainsKey(key: language))
                 {
                     _console.WriteLine(text: $"Language \"{language}\" not supported.");
                     language = "en";
                 }
 
                 language = language.IsNullOrEmpty() ? "en" : language;
-                CultureInfo culture = CultureInfo.GetCultureInfo(name: LanguageCultureMappings.Mappings[key: language]);
+                CultureInfo culture = CultureInfo.GetCultureInfo(name: LanguageToCultureMapping.Mappings[key: language]);
 
                 return new LanguageParameter
                 {

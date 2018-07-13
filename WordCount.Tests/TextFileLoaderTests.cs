@@ -67,7 +67,7 @@ namespace WordCount.Tests
                 actual: actual);
 
             _mockDisplayOutput
-                .Verify(v => v.WriteErrorResourceStringWithValuesLine("FILE_NOT_FOUND", "datei1.txt"), Times.Once);
+                .Verify(v => v.WriteErrorResourceLine("FILE_NOT_FOUND", "datei1.txt"), Times.Once);
         }
 
         [NamedFact]

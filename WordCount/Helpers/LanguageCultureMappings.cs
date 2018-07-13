@@ -2,7 +2,7 @@
 
 namespace WordCount.Helpers
 {
-    public static class LanguageCultureMappings
+    public static class LanguageToCultureMapping
     {
         internal static readonly Dictionary<string, string> Mappings = new Dictionary<string, string>
         {

@@ -44,9 +44,9 @@ namespace WordCount.Implementations
             else
             {
                 _displayOutput
-                    .WriteErrorResourceStringWithValuesLine(
+                    .WriteErrorResourceLine(
                         resourceIdent: "FILE_NOT_FOUND",
-                        values: fileName);
+                        placeholderValues: fileName);
                 return string.Empty;
             }
         }

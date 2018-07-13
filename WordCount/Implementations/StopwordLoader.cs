@@ -31,9 +31,9 @@ namespace WordCount.Implementations
             StopwordListParameter stopwordListParameter = _stopwordListParameterParser.ParseStopwordListParameter();
             LanguageParameter languageParameter = _languageParameterParser.ParseLanguageParameter();
 
-            bool isParameterPresent = stopwordListParameter.IsPresent;
+            bool isStopwordListParameterPresent = stopwordListParameter.IsPresent;
 
-            string fileName = isParameterPresent ?
+            string fileName = isStopwordListParameterPresent ?
                 stopwordListParameter.FileName :
                 $"stopwords.{languageParameter.Language}.txt";
 
@@ -42,11 +42,11 @@ namespace WordCount.Implementations
                 return new List<string>();
             }
 
-            if (isParameterPresent)
+            if (isStopwordListParameterPresent)
             {
-                _displayOutput.WriteResourceStringWithValuesLine(
+                _displayOutput.WriteResourceLine(
                     resourceIdent: "USED_STOPWORDLIST",
-                    values: fileName);
+                    placeholderValues: fileName);
             }
 
             return _fileSystem

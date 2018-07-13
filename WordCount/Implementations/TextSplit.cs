@@ -14,8 +14,7 @@ namespace WordCount.Implementations
                 return new TextSplitResult();
             }
 
-            List<string> words = text.SplitByRegex(pattern: @"[a-zA-Z'\-\u00D8-\u00F6]{0,}[^"":<> ,-\.0-9(\r|\n)]");
-
+            List<string> words = text.SplitByRegex(pattern: @"((\b[^\s\d]+\b)((?<=\.\w).)?)");
             return new TextSplitResult(words: words);
         }
     }

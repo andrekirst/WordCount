@@ -42,13 +42,13 @@ namespace WordCount.Implementations
 
                 if (dictionaryParameter.IsPresent)
                 {
-                    _displayOutput.WriteResourceStringWithValuesLine(
+                    _displayOutput.WriteResourceLine(
                         resourceIdent: "INDEX_WITH_UNKNOWN",
-                        values: unknwonWordsCount);
+                        placeholderValues: unknwonWordsCount);
                 }
                 else
                 {
-                    _displayOutput.WriteResourceStringWithValuesLine(
+                    _displayOutput.WriteResourceLine(
                         resourceIdent: "INDEX");
                 }
 
