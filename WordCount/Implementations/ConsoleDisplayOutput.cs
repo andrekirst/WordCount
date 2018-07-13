@@ -22,23 +22,23 @@ namespace WordCount.Implementations
             _console.Write(text: text);
         }
 
-        public void WriteResourceStringWithValues(string resourceIdent, params object[] values)
+        public void WriteResource(string resourceIdent, params object[] placeholderValues)
         {
             string resourceValue = _languageResource.GetResourceStringById(resourceIdent: resourceIdent);
-            _console.Write(text: resourceValue, values: values);
+            _console.Write(text: resourceValue, values: placeholderValues);
         }
 
-        public void WriteResourceStringWithValuesLine(string resourceIdent, params object[] values)
+        public void WriteResourceLine(string resourceIdent, params object[] placeholderValues)
         {
             string resourceValue = _languageResource.GetResourceStringById(resourceIdent: resourceIdent);
-            _console.WriteLine(text: resourceValue, values: values);
+            _console.WriteLine(text: resourceValue, values: placeholderValues);
         }
 
-        public void WriteErrorResourceStringWithValuesLine(string resourceIdent, params object[] values)
+        public void WriteErrorResourceLine(string resourceIdent, params object[] placeholderValues)
         {
             _console.ForegroundColor = ConsoleColor.Red;
             string resourceValue = _languageResource.GetResourceStringById(resourceIdent: resourceIdent);
-            _console.WriteLine(text: resourceValue, values: values);
+            _console.WriteLine(text: resourceValue, values: placeholderValues);
             _console.ResetColor();
         }
 

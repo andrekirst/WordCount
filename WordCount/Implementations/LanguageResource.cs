@@ -30,7 +30,7 @@ namespace WordCount.Implementations
             string language =
                 languageParameter.IsPresent ? languageParameter.Language : "en";
 
-            string mappedLanguageCulture = LanguageCultureMappings.Mappings[key: language];
+            string mappedLanguageCulture = LanguageToCultureMapping.Mappings[key: language];
 
             System.Globalization.CultureInfo currentCultureInfo = _cultureInfo.GetCultureInfo(culture: mappedLanguageCulture);
 

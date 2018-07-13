@@ -67,7 +67,7 @@ namespace WordCount.Tests
             Assert.NotNull(@object: actual);
             Assert.Empty(collection: actual);
             _mockDisplayOutput
-                .Verify(v => v.WriteErrorResourceStringWithValuesLine("FILE_NOT_FOUND", "datei_gibt_es_nicht.txt"),
+                .Verify(v => v.WriteErrorResourceLine("FILE_NOT_FOUND", "datei_gibt_es_nicht.txt"),
                     Times.Once);
         }
 

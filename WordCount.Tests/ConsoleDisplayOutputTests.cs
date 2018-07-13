@@ -76,7 +76,7 @@ namespace WordCount.Tests
                 .Setup(m => m.GetResourceStringById("IDENT"))
                 .Returns("Wert: {0}");
 
-            _systemUnderTest.WriteResourceStringWithValues("IDENT", "value1");
+            _systemUnderTest.WriteResource("IDENT", "value1");
 
             _mockConsole
                 .Verify(v2 => v2.Write("Wert: {0}", "value1"), Times.Once);
@@ -89,7 +89,7 @@ namespace WordCount.Tests
                 .Setup(m => m.GetResourceStringById("IDENT"))
                 .Returns("Wert: {0}");
 
-            _systemUnderTest.WriteResourceStringWithValuesLine("IDENT", "value1");
+            _systemUnderTest.WriteResourceLine("IDENT", "value1");
 
             _mockConsole
                 .Verify(v2 => v2.WriteLine("Wert: {0}", "value1"), Times.Once);
@@ -102,7 +102,7 @@ namespace WordCount.Tests
                 .Setup(m => m.GetResourceStringById("IDENT"))
                 .Returns("Wert: {0}");
 
-            _systemUnderTest.WriteErrorResourceStringWithValuesLine("IDENT", "value1");
+            _systemUnderTest.WriteErrorResourceLine("IDENT", "value1");
 
             _mockConsole
                 .VerifySet(v => v.ForegroundColor = System.ConsoleColor.Red, Times.Once);

@@ -47,7 +47,7 @@ namespace WordCount.Implementations
                 };
             }
 
-            _displayOutput.WriteResourceStringWithValues(
+            _displayOutput.WriteResource(
                 resourceIdent: "ENTER_TEXT");
 
             text = _console.ReadLine();

@@ -154,5 +154,23 @@ namespace WordCount.Tests.ArgumentsHandlingTests
             _mockEnvironment
                 .Verify(v => v.GetCommandLineArgs(), Times.Once);
         }
+
+        [NamedFact]
+        public void LanguageParameterParserTests_parameter_is_not_present_do_not_output_unsupported_language()
+        {
+            _mockEnvironment
+                .Setup(expression: m => m.GetCommandLineArgs())
+                .Returns(value: Array.Empty<string>());
+
+            LanguageParameter actual = _systemUnderTest.ParseLanguageParameter();
+
+            Assert.NotNull(@object: actual);
+            Assert.Equal(
+                expected: "en",
+                actual: actual.Language);
+
+            _mockConsole
+                .Verify(v => v.WriteLine("Language \"\" not supported."), Times.Never);
+        }
     }
 }

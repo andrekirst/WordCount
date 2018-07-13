@@ -10,10 +10,10 @@
 
         void WriteErrorLine(string errorMessage);
 
-        void WriteResourceStringWithValues(string resourceIdent, params object[] values);
+        void WriteResource(string resourceIdent, params object[] placeholderValues);
 
-        void WriteResourceStringWithValuesLine(string resourceIdent, params object[] values);
+        void WriteResourceLine(string resourceIdent, params object[] placeholderValues);
 
-        void WriteErrorResourceStringWithValuesLine(string resourceIdent, params object[] values);
+        void WriteErrorResourceLine(string resourceIdent, params object[] placeholderValues);
     }
 }

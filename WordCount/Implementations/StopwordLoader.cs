@@ -9,39 +9,44 @@ namespace WordCount.Implementations
 {
     public class StopwordLoader : IStopwordLoader
     {
-        private const string StopwordFileName = "stopwords.txt";
         private readonly IFileSystem _fileSystem;
         private readonly IStopwordListParameterParser _stopwordListParameterParser;
         private readonly IDisplayOutput _displayOutput;
+        private readonly ILanguageParameterParser _languageParameterParser;
 
         public StopwordLoader(
             IFileSystem fileSystem,
             IStopwordListParameterParser stopwordListParameterParser,
-            IDisplayOutput displayOutput)
+            IDisplayOutput displayOutput,
+            ILanguageParameterParser languageParameterParser)
         {
             _fileSystem = fileSystem;
             _stopwordListParameterParser = stopwordListParameterParser;
             _displayOutput = displayOutput;
+            _languageParameterParser = languageParameterParser;
         }
 
         public List<string> GetStopwords()
         {
             StopwordListParameter stopwordListParameter = _stopwordListParameterParser.ParseStopwordListParameter();
+            LanguageParameter languageParameter = _languageParameterParser.ParseLanguageParameter();
 
-            bool isParameterPresent = stopwordListParameter.IsPresent;
+            bool isStopwordListParameterPresent = stopwordListParameter.IsPresent;
 
-            string fileName = isParameterPresent ? stopwordListParameter.FileName : StopwordFileName;
+            string fileName = isStopwordListParameterPresent ?
+                stopwordListParameter.FileName :
+                $"stopwords.{languageParameter.Language}.txt";
 
             if (!_fileSystem.File.Exists(path: fileName))
             {
                 return new List<string>();
             }
 
-            if (isParameterPresent)
+            if (isStopwordListParameterPresent)
             {
-                _displayOutput.WriteResourceStringWithValuesLine(
+                _displayOutput.WriteResourceLine(
                     resourceIdent: "USED_STOPWORDLIST",
-                    values: fileName);
+                    placeholderValues: fileName);
             }
 
             return _fileSystem
