@@ -11,6 +11,7 @@ namespace WordCount.Implementations.Language
 {
     public class LanguageDecision : ILanguageDecision
     {
+        private const string DefaultFallbackLanguage = "en";
         private readonly IAppSettingsReader _appSettingsReader;
         private readonly ILanguageParameterParser _languageParameterParser;
         private readonly IConsole _console;
@@ -40,10 +41,10 @@ namespace WordCount.Implementations.Language
                 !LanguageToCultureMapping.Mappings.ContainsKey(key: language))
             {
                 _console.WriteLine(text: $"Language \"{language}\" not supported.");
-                language = "en";
+                language = DefaultFallbackLanguage;
             }
 
-            language = language.IsFilled() ? language : "en";
+            language = language.IsFilled() ? language : DefaultFallbackLanguage;
             return new DecideLanguageResult
             {
                 Language = language
