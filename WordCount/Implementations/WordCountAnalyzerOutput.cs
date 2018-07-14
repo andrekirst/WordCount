@@ -1,5 +1,5 @@
 ﻿using WordCount.Interfaces;
-using WordCount.Interfaces.ArgumentsHandling;
+using WordCount.Interfaces.Language;
 using WordCount.Models.Results;
 using CultureInfo = System.Globalization.CultureInfo;
 
@@ -8,19 +8,19 @@ namespace WordCount.Implementations
     public class WordCountAnalyzerOutput : IWordCountAnalyzerOutput
     {
         private readonly IDisplayOutput _displayOutput;
-        private readonly ILanguageParameterParser _languageParameterParser;
+        private readonly ILanguageDecision _languageDecison;
 
         public WordCountAnalyzerOutput(
             IDisplayOutput displayOutput,
-            ILanguageParameterParser languageParameterParser)
+            ILanguageDecision languageDecison)
         {
             _displayOutput = displayOutput;
-            _languageParameterParser = languageParameterParser;
+            _languageDecison = languageDecison;
         }
 
         public void DisplayResult(WordCountAnalyzerResult wordCountAnalyzerResult)
         {
-            CultureInfo culture = _languageParameterParser.ParseLanguageParameter().Culture;
+            CultureInfo culture = _languageDecison.DecideLanguage().Culture;
 
             int numberOfWords = wordCountAnalyzerResult.NumberOfWords;
             int numberOfUniqueWords = wordCountAnalyzerResult.NumberOfUniqueWords;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using Autofac;
 using Moq;
 using WordCount.Abstractions.Console;
@@ -95,39 +94,6 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         }
 
         [NamedFact]
-        public void LanguageParameterParserTests_args_has_valid_de_language_parameter_expect_Culture_de_DE()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "-lang=de" });
-
-            LanguageParameter actual = _systemUnderTest.ParseLanguageParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(
-                expected: CultureInfo.GetCultureInfo(name: "de-DE"),
-                actual: actual.Culture);
-        }
-
-        [NamedFact]
-        public void LanguageParameterParserTests_args_has_invalid_it_language_parameter_expect_language_en()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "-lang=it" });
-
-            LanguageParameter actual = _systemUnderTest.ParseLanguageParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(
-                expected: "en",
-                actual: actual.Language);
-
-            _mockConsole
-                .Verify(v => v.WriteLine("Language \"it\" not supported."), Times.Once);
-        }
-
-        [NamedFact]
         public void LanguageParameterParserTests_Double_Test_FromCache()
         {
             _mockEnvironment
@@ -138,17 +104,14 @@ namespace WordCount.Tests.ArgumentsHandlingTests
 
             Assert.NotNull(@object: actual);
             Assert.Equal(
-                expected: "en",
+                expected: "it",
                 actual: actual.Language);
-
-            _mockConsole
-                .Verify(v => v.WriteLine("Language \"it\" not supported."), Times.Once);
 
             actual = _systemUnderTest.ParseLanguageParameter();
 
             Assert.NotNull(@object: actual);
             Assert.Equal(
-                expected: "en",
+                expected: "it",
                 actual: actual.Language);
 
             _mockEnvironment
@@ -156,7 +119,7 @@ namespace WordCount.Tests.ArgumentsHandlingTests
         }
 
         [NamedFact]
-        public void LanguageParameterParserTests_parameter_is_not_present_do_not_output_unsupported_language()
+        public void LanguageParameterParserTests_parameter_is_not_present_expect_language_empty()
         {
             _mockEnvironment
                 .Setup(expression: m => m.GetCommandLineArgs())
@@ -166,11 +129,8 @@ namespace WordCount.Tests.ArgumentsHandlingTests
 
             Assert.NotNull(@object: actual);
             Assert.Equal(
-                expected: "en",
+                expected: string.Empty,
                 actual: actual.Language);
-
-            _mockConsole
-                .Verify(v => v.WriteLine("Language \"\" not supported."), Times.Never);
         }
     }
 }
