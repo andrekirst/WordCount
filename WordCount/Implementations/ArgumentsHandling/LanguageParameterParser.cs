@@ -10,14 +10,11 @@ namespace WordCount.Implementations.ArgumentsHandling
     public class LanguageParameterParser : BaseParameterParser<LanguageParameter>, ILanguageParameterParser
     {
         private readonly IEnvironment _environment;
-        private readonly IConsole _console;
 
         public LanguageParameterParser(
-            IEnvironment environment,
-            IConsole console)
+            IEnvironment environment)
         {
             _environment = environment;
-            _console = console;
         }
 
         public LanguageParameter ParseLanguageParameter()
