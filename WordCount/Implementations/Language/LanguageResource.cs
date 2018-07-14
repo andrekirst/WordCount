@@ -1,5 +1,5 @@
-﻿using WordCount.Abstractions.CultureInfo;
-using WordCount.Abstractions.ResourceManager;
+﻿using WordCount.Abstractions.SystemAbstractions.Globalization;
+using WordCount.Abstractions.SystemAbstractions.Resources;
 using WordCount.Helpers;
 using WordCount.Interfaces.Language;
 

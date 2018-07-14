@@ -1,4 +1,4 @@
-﻿namespace WordCount.Abstractions.Environment
+﻿namespace WordCount.Abstractions.SystemAbstractions
 {
     public interface IEnvironment
     {

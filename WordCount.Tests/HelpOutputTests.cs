@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Moq;
-using WordCount.Abstractions.Reflection;
+using WordCount.Abstractions.SystemAbstractions.Reflection;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;

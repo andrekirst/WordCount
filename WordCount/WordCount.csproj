@@ -52,18 +52,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstractions\Console\Console.cs" />
-    <Compile Include="Abstractions\Console\IConsole.cs" />
-    <Compile Include="Abstractions\CultureInfo\CultureInfo.cs" />
-    <Compile Include="Abstractions\CultureInfo\ICultureInfo.cs" />
-    <Compile Include="Abstractions\Environment\Environment.cs" />
-    <Compile Include="Abstractions\Environment\IEnvironment.cs" />
-    <Compile Include="Abstractions\HttpClient\HttpClient.cs" />
-    <Compile Include="Abstractions\HttpClient\IHttpClient.cs" />
-    <Compile Include="Abstractions\Reflection\EntryAssembly.cs" />
-    <Compile Include="Abstractions\Reflection\IAssembly.cs" />
-    <Compile Include="Abstractions\ResourceManager\IResourceManager.cs" />
-    <Compile Include="Abstractions\ResourceManager\ResourceManager.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Configuration\ConfigurationManager.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Configuration\IConfigurationManager.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Console.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\IConsole.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Globalization\CultureInfo.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Globalization\ICultureInfo.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Environment.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\IEnvironment.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Net\Http\HttpClient.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Net\Http\IHttpClient.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Reflection\EntryAssembly.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Reflection\IAssembly.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Resources\IResourceManager.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Resources\ResourceManager.cs" />
     <Compile Include="AutofacModules\LogRequestsModule.cs" />
     <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
     <Compile Include="Extensions\EnumerableStringExtensions.cs" />

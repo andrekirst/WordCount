@@ -112,6 +112,7 @@
     <Compile Include="StringExtensionsTests\IsFilledTests.cs" />
     <Compile Include="StringExtensionsTests\IsNullOrEmptyTests.cs" />
     <Compile Include="StringExtensionsTests\IsValidUrlTests.cs" />
+    <Compile Include="SystemAbstractionTests\ConfigurationTests\AppSettingsReaderTests.cs" />
     <Compile Include="TextFileLoaderTests.cs" />
     <Compile Include="TextInputTests.cs" />
     <Compile Include="TextSplitTests.cs" />

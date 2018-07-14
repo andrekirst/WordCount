@@ -1,5 +1,5 @@
 ﻿using System;
-using WordCount.Abstractions.Console;
+using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Interfaces;
 using WordCount.Interfaces.Language;
 

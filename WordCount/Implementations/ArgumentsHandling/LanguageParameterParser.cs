@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using WordCount.Abstractions.Console;
+using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Extensions;
-using WordCount.Abstractions.Environment;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 

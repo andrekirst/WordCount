@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace WordCount.Abstractions.HttpClient
+namespace WordCount.Abstractions.SystemAbstractions.Net.Http
 {
     public interface IHttpClient
     {
