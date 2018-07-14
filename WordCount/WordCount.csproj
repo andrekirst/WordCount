@@ -39,6 +39,7 @@
       <HintPath>..\packages\Autofac.4.8.1\lib\net45\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Abstractions, Version=2.1.0.191, Culture=neutral, PublicKeyToken=96bf224d23c43e59, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Abstractions.2.1.0.191\lib\net40\System.IO.Abstractions.dll</HintPath>
@@ -51,18 +52,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstractions\Console\Console.cs" />
-    <Compile Include="Abstractions\Console\IConsole.cs" />
-    <Compile Include="Abstractions\CultureInfo\CultureInfo.cs" />
-    <Compile Include="Abstractions\CultureInfo\ICultureInfo.cs" />
-    <Compile Include="Abstractions\Environment\Environment.cs" />
-    <Compile Include="Abstractions\Environment\IEnvironment.cs" />
-    <Compile Include="Abstractions\HttpClient\HttpClient.cs" />
-    <Compile Include="Abstractions\HttpClient\IHttpClient.cs" />
-    <Compile Include="Abstractions\Reflection\EntryAssembly.cs" />
-    <Compile Include="Abstractions\Reflection\IAssembly.cs" />
-    <Compile Include="Abstractions\ResourceManager\IResourceManager.cs" />
-    <Compile Include="Abstractions\ResourceManager\ResourceManager.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Configuration\ConfigurationManager.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Configuration\IConfigurationManager.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Console.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\IConsole.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Globalization\CultureInfo.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Globalization\ICultureInfo.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Environment.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\IEnvironment.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Net\Http\HttpClient.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Net\Http\IHttpClient.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Reflection\EntryAssembly.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Reflection\IAssembly.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Resources\IResourceManager.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Resources\ResourceManager.cs" />
     <Compile Include="AutofacModules\LogRequestsModule.cs" />
     <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
     <Compile Include="Extensions\EnumerableStringExtensions.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\EnumerableHelpers.cs" />
     <Compile Include="Helpers\LanguageCultureMappings.cs" />
+    <Compile Include="Implementations\AppSettingsReader.cs" />
     <Compile Include="Implementations\ArgumentsHandling\BaseParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\DictionaryParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\HelpParameterParser.cs" />
@@ -83,7 +87,8 @@
     <Compile Include="Implementations\DictionaryFileLoader.cs" />
     <Compile Include="Implementations\HelpOutput.cs" />
     <Compile Include="Implementations\IndexOutput.cs" />
-    <Compile Include="Implementations\LanguageResource.cs" />
+    <Compile Include="Implementations\Language\LanguageDecision.cs" />
+    <Compile Include="Implementations\Language\LanguageResource.cs" />
     <Compile Include="Implementations\StopwordRemover.cs" />
     <Compile Include="Implementations\TextFileLoader.cs" />
     <Compile Include="Implementations\TextInput.cs" />
@@ -97,6 +102,7 @@
     <Compile Include="Interfaces\ArgumentsHandling\ILanguageParameterParser.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IStopwordListParameterParser.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\ITextUrlParameterParser.cs" />
+    <Compile Include="Interfaces\IAppSettingsReader.cs" />
     <Compile Include="Interfaces\IDictionaryFileLoader.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IDictionaryParameterParser.cs" />
     <Compile Include="Interfaces\IDisplayOutput.cs" />
@@ -105,7 +111,8 @@
     <Compile Include="Interfaces\ArgumentsHandling\IIndexParameterParser.cs" />
     <Compile Include="Interfaces\IInteractor.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\ISourceFileParameterParser.cs" />
-    <Compile Include="Interfaces\ILanguageResource.cs" />
+    <Compile Include="Interfaces\Language\ILanguageDecision.cs" />
+    <Compile Include="Interfaces\Language\ILanguageResource.cs" />
     <Compile Include="Interfaces\IStopwordLoader.cs" />
     <Compile Include="Interfaces\IStopwordRemover.cs" />
     <Compile Include="Interfaces\ITextFileLoader.cs" />
@@ -120,6 +127,7 @@
     <Compile Include="Models\Parameters\TextUrlParameter.cs" />
     <Compile Include="Models\Requests\IndexOutputRequest.cs" />
     <Compile Include="Models\Parameters\IndexParameter.cs" />
+    <Compile Include="Models\Results\DecideLanguageResult.cs" />
     <Compile Include="Models\Results\InputTextResult.cs" />
     <Compile Include="Models\Parameters\HelpParameter.cs" />
     <Compile Include="Models\Parameters\SourceFileParameter.cs" />

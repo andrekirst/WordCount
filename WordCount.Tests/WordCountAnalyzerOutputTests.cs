@@ -3,8 +3,7 @@ using Autofac;
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
-using WordCount.Interfaces.ArgumentsHandling;
-using WordCount.Models.Parameters;
+using WordCount.Interfaces.Language;
 using WordCount.Models.Results;
 using WordCount.Tests.XUnitHelpers;
 
@@ -13,13 +12,13 @@ namespace WordCount.Tests
     public class WordCountAnalyzerOutputTests
     {
         private readonly Mock<IDisplayOutput> _mockDisplayOutput;
-        private readonly Mock<ILanguageParameterParser> _mockLanguageParameterParser;
+        private readonly Mock<ILanguageDecision> _mockLanguageDecision;
         private readonly WordCountAnalyzerOutput _systemUnderTest;
 
         public WordCountAnalyzerOutputTests()
         {
             _mockDisplayOutput = new Mock<IDisplayOutput>();
-            _mockLanguageParameterParser = new Mock<ILanguageParameterParser>();
+            _mockLanguageDecision = new Mock<ILanguageDecision>();
 
             ContainerBuilder containerBuilder = new ContainerBuilder();
 
@@ -28,8 +27,8 @@ namespace WordCount.Tests
                 .As<IDisplayOutput>();
 
             containerBuilder
-                .RegisterInstance(instance: _mockLanguageParameterParser.Object)
-                .As<ILanguageParameterParser>();
+                .RegisterInstance(instance: _mockLanguageDecision.Object)
+                .As<ILanguageDecision>();
 
             containerBuilder
                 .RegisterType<WordCountAnalyzerOutput>();
@@ -42,9 +41,9 @@ namespace WordCount.Tests
         [NamedFact]
         public void WordCountAnalyzerOutputTests_DisplayResult_Result_NumberOfWords_2_Expect_Number_of_Words_2_Number()
         {
-            _mockLanguageParameterParser
-                .Setup(m => m.ParseLanguageParameter())
-                .Returns(new LanguageParameter{ Culture = CultureInfo.GetCultureInfo("de-DE")});
+            _mockLanguageDecision
+                .Setup(m => m.DecideLanguage())
+                .Returns(new DecideLanguageResult { Culture = new CultureInfo("de-DE") });
 
             _systemUnderTest.DisplayResult(wordCountAnalyzerResult: new WordCountAnalyzerResult
             {

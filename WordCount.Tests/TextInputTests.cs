@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Moq;
-using WordCount.Abstractions.Console;
+using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Models.Results;

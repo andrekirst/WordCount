@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace WordCount.Abstractions.HttpClient
+namespace WordCount.Abstractions.SystemAbstractions.Net.Http
 {
     [ExcludeFromCodeCoverage]
     public class HttpClient : IHttpClient

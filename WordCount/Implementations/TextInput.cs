@@ -1,4 +1,4 @@
-﻿using WordCount.Abstractions.Console;
+﻿using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Extensions;
 using WordCount.Interfaces;
 using WordCount.Models.Results;

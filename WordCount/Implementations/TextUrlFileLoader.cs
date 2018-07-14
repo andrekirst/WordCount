@@ -1,4 +1,4 @@
-﻿using WordCount.Abstractions.HttpClient;
+﻿using WordCount.Abstractions.SystemAbstractions.Net.Http;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;

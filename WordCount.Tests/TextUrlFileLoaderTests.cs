@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Autofac;
 using Moq;
-using WordCount.Abstractions.HttpClient;
+using WordCount.Abstractions.SystemAbstractions.Net.Http;
 using WordCount.Implementations;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;

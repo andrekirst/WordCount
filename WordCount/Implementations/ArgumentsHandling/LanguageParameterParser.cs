@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using WordCount.Abstractions.Console;
+using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Extensions;
-using WordCount.Abstractions.Environment;
-using WordCount.Helpers;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
@@ -13,14 +10,11 @@ namespace WordCount.Implementations.ArgumentsHandling
     public class LanguageParameterParser : BaseParameterParser<LanguageParameter>, ILanguageParameterParser
     {
         private readonly IEnvironment _environment;
-        private readonly IConsole _console;
 
         public LanguageParameterParser(
-            IEnvironment environment,
-            IConsole console)
+            IEnvironment environment)
         {
             _environment = environment;
-            _console = console;
         }
 
         public LanguageParameter ParseLanguageParameter()
@@ -36,21 +30,10 @@ namespace WordCount.Implementations.ArgumentsHandling
 
                 string language = splittedByEqualSign.LastOrDefault() ?? string.Empty;
 
-                if (language.IsFilled() &&
-                    !LanguageToCultureMapping.Mappings.ContainsKey(key: language))
-                {
-                    _console.WriteLine(text: $"Language \"{language}\" not supported.");
-                    language = "en";
-                }
-
-                language = language.IsNullOrEmpty() ? "en" : language;
-                CultureInfo culture = CultureInfo.GetCultureInfo(name: LanguageToCultureMapping.Mappings[key: language]);
-
                 return new LanguageParameter
                 {
                     IsPresent = languageParameter.IsFilled(),
-                    Language = language,
-                    Culture = culture
+                    Language = language
                 };
             });
         }

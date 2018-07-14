@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Diagnostics.CodeAnalysis;
 
-namespace WordCount.Abstractions.Environment
+namespace WordCount.Abstractions.SystemAbstractions
 {
     [ExcludeFromCodeCoverage]
     public class Environment : IEnvironment

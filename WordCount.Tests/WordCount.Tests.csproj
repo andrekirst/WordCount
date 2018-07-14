@@ -102,7 +102,8 @@
     <Compile Include="HelpOutputTests.cs" />
     <Compile Include="IndexOutputTests.cs" />
     <Compile Include="InteractorTests.cs" />
-    <Compile Include="LanguageResourceTests.cs" />
+    <Compile Include="Language\LanguageDecisionTests.cs" />
+    <Compile Include="Language\LanguageResourceTests.cs" />
     <Compile Include="ListExtensionsTests\ToEmptyIfNullListTests.cs" />
     <Compile Include="RegexStringExtensionsTests\IsMatchingRegexTests.cs" />
     <Compile Include="RegexStringExtensionsTests\SplitByRegexTests.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="StringExtensionsTests\IsFilledTests.cs" />
     <Compile Include="StringExtensionsTests\IsNullOrEmptyTests.cs" />
     <Compile Include="StringExtensionsTests\IsValidUrlTests.cs" />
+    <Compile Include="SystemAbstractionTests\ConfigurationTests\AppSettingsReaderTests.cs" />
     <Compile Include="TextFileLoaderTests.cs" />
     <Compile Include="TextInputTests.cs" />
     <Compile Include="TextSplitTests.cs" />
