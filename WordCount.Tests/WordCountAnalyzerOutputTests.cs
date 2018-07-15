@@ -53,10 +53,10 @@ namespace WordCount.Tests
                 NumberOfChapters = 2
             });
             _mockDisplayOutput
-                .Verify(v => v.WriteResource("NUMBER_OF_WORDS", 2), Times.Once);
+                .Verify(v => v.WriteResourceLine("NUMBER_OF_WORDS", 2), Times.Once);
 
             _mockDisplayOutput
-                .Verify(v => v.WriteResource("AVERAGE_WORD_LENGTH", "5,63"), Times.Once);
+                .Verify(v => v.WriteResourceLine("AVERAGE_WORD_LENGTH", "5,63"), Times.Once);
         }
     }
 }

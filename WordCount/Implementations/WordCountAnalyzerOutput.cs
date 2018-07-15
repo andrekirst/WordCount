@@ -22,29 +22,24 @@ namespace WordCount.Implementations
         {
             CultureInfo culture = _languageDecison.DecideLanguage().Culture;
 
-            int numberOfWords = wordCountAnalyzerResult.NumberOfWords;
-            int numberOfUniqueWords = wordCountAnalyzerResult.NumberOfUniqueWords;
-            string averageWordLengthAsString = wordCountAnalyzerResult.AverageWordLength.ToString(format: "N2", provider: culture);
-            int numberOfChapters = wordCountAnalyzerResult.NumberOfChapters;
-
             _displayOutput.WriteResourceLine(resourceIdent: "STATISTICS");
 
             _displayOutput.WriteResourceLine(
                 resourceIdent: "NUMBER_OF_WORDS",
-                placeholderValues: numberOfWords);
+                placeholderValues: wordCountAnalyzerResult.NumberOfWords);
 
             _displayOutput.WriteResourceLine(
                 resourceIdent: "UNIQUE",
-                placeholderValues: numberOfUniqueWords);
+                placeholderValues: wordCountAnalyzerResult.NumberOfUniqueWords);
 
             _displayOutput.WriteResourceLine(
                     resourceIdent: "AVERAGE_WORD_LENGTH",
-                    placeholderValues: averageWordLengthAsString);
+                    placeholderValues: wordCountAnalyzerResult.AverageWordLength.ToString(format: "N2", provider: culture));
 
             _displayOutput
                 .WriteResourceLine(
                     resourceIdent: "CHAPTERS",
-                    placeholderValues: numberOfChapters);
+                    placeholderValues: wordCountAnalyzerResult.NumberOfChapters);
         }
     }
 }
