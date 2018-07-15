@@ -138,6 +138,9 @@
   <data name="NUMBER_OF_WORDS" xml:space="preserve">
     <value>Number of words: {0}</value>
   </data>
+  <data name="STATISTICS" xml:space="preserve">
+    <value>Statistics:</value>
+  </data>
   <data name="UNIQUE" xml:space="preserve">
     <value>unique: {0}</value>
   </data>

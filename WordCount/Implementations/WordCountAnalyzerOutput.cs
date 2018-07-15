@@ -27,28 +27,24 @@ namespace WordCount.Implementations
             string averageWordLengthAsString = wordCountAnalyzerResult.AverageWordLength.ToString(format: "N2", provider: culture);
             int numberOfChapters = wordCountAnalyzerResult.NumberOfChapters;
 
-            _displayOutput.WriteResource(
+            _displayOutput.WriteResourceLine(resourceIdent: "STATISTICS");
+
+            _displayOutput.WriteResourceLine(
                 resourceIdent: "NUMBER_OF_WORDS",
                 placeholderValues: numberOfWords);
-            _displayOutput.Write(text: ", ");
 
-            _displayOutput.WriteResource(
+            _displayOutput.WriteResourceLine(
                 resourceIdent: "UNIQUE",
                 placeholderValues: numberOfUniqueWords);
-            _displayOutput.Write(text: ", ");
 
-            _displayOutput
-                .WriteResource(
+            _displayOutput.WriteResourceLine(
                     resourceIdent: "AVERAGE_WORD_LENGTH",
                     placeholderValues: averageWordLengthAsString);
-            _displayOutput.Write(text: ", ");
 
             _displayOutput
-                .WriteResource(
+                .WriteResourceLine(
                     resourceIdent: "CHAPTERS",
                     placeholderValues: numberOfChapters);
-
-            _displayOutput.WriteLine();
         }
     }
 }
