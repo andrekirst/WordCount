@@ -89,6 +89,7 @@
     <Compile Include="Implementations\IndexOutput.cs" />
     <Compile Include="Implementations\Language\LanguageDecision.cs" />
     <Compile Include="Implementations\Language\LanguageResource.cs" />
+    <Compile Include="Implementations\StatisticsOutput.cs" />
     <Compile Include="Implementations\StopwordRemover.cs" />
     <Compile Include="Implementations\TextFileLoader.cs" />
     <Compile Include="Implementations\TextInput.cs" />
