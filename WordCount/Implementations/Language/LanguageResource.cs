@@ -1,7 +1,10 @@
-﻿using WordCount.Abstractions.SystemAbstractions.Globalization;
+﻿using System;
+using System.Linq;
+using WordCount.Abstractions.SystemAbstractions.Globalization;
 using WordCount.Abstractions.SystemAbstractions.Resources;
 using WordCount.Helpers;
 using WordCount.Interfaces.Language;
+using WordCount.Models.Results;
 
 namespace WordCount.Implementations.Language
 {
@@ -23,7 +26,7 @@ namespace WordCount.Implementations.Language
 
         public string GetResourceStringById(string resourceIdent)
         {
-            var languageDecision = _languageDecision.DecideLanguage();
+            DecideLanguageResult languageDecision = _languageDecision.DecideLanguage();
 
             string mappedLanguageCulture = LanguageToCultureMapping.Mappings[key: languageDecision.Language];
 
@@ -32,6 +35,11 @@ namespace WordCount.Implementations.Language
             return _resourceManager.GetString(
                 name: resourceIdent,
                 cultureInfo: currentCultureInfo);
+        }
+
+        public int DetectLongestResourceString(string[] resourceIdents)
+        {
+            return resourceIdents.Max(selector: s => GetResourceStringById(resourceIdent: s).Length);
         }
     }
 }

@@ -111,6 +111,7 @@
     <Compile Include="Interfaces\ArgumentsHandling\IIndexParameterParser.cs" />
     <Compile Include="Interfaces\IInteractor.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\ISourceFileParameterParser.cs" />
+    <Compile Include="Interfaces\IStatisticsOutput.cs" />
     <Compile Include="Interfaces\Language\ILanguageDecision.cs" />
     <Compile Include="Interfaces\Language\ILanguageResource.cs" />
     <Compile Include="Interfaces\IStopwordLoader.cs" />

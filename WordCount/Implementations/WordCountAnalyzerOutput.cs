@@ -8,38 +8,41 @@ namespace WordCount.Implementations
     public class WordCountAnalyzerOutput : IWordCountAnalyzerOutput
     {
         private readonly IDisplayOutput _displayOutput;
-        private readonly ILanguageDecision _languageDecison;
+        private readonly IStatisticsOutput _statisticsOutput;
+        private readonly ILanguageResource _languageResource;
 
         public WordCountAnalyzerOutput(
             IDisplayOutput displayOutput,
-            ILanguageDecision languageDecison)
+            IStatisticsOutput statisticsOutput,
+            ILanguageResource languageResource)
         {
             _displayOutput = displayOutput;
-            _languageDecison = languageDecison;
+            _statisticsOutput = statisticsOutput;
+            _languageResource = languageResource;
         }
 
         public void DisplayResult(WordCountAnalyzerResult wordCountAnalyzerResult)
         {
-            CultureInfo culture = _languageDecison.DecideLanguage().Culture;
-
             _displayOutput.WriteResourceLine(resourceIdent: "STATISTICS");
 
-            _displayOutput.WriteResourceLine(
-                resourceIdent: "NUMBER_OF_WORDS",
-                placeholderValues: wordCountAnalyzerResult.NumberOfWords);
+            int lengthOfTheLongestStringOfRessourceStrings = _languageResource.DetectLongestResourceString(
+                resourceIdents: new[] { "NUMBER_OF_WORDS", "UNIQUE", "AVERAGE_WORD_LENGTH", "CHAPTERS" });
 
-            _displayOutput.WriteResourceLine(
-                resourceIdent: "UNIQUE",
-                placeholderValues: wordCountAnalyzerResult.NumberOfUniqueWords);
+            _statisticsOutput.WriteNumberOfWords(
+                numberOfWords: wordCountAnalyzerResult.NumberOfWords,
+                maxCountOfFillingPoints: lengthOfTheLongestStringOfRessourceStrings);
 
-            _displayOutput.WriteResourceLine(
-                    resourceIdent: "AVERAGE_WORD_LENGTH",
-                    placeholderValues: wordCountAnalyzerResult.AverageWordLength.ToString(format: "N2", provider: culture));
+            _statisticsOutput.WriteNumberOfUniqeWords(
+                numberOfUniqeWords: wordCountAnalyzerResult.NumberOfUniqueWords,
+                maxCountOfFillingPoints: lengthOfTheLongestStringOfRessourceStrings);
 
-            _displayOutput
-                .WriteResourceLine(
-                    resourceIdent: "CHAPTERS",
-                    placeholderValues: wordCountAnalyzerResult.NumberOfChapters);
+            _statisticsOutput.WriteAveragewordLength(
+                averageWordLength: wordCountAnalyzerResult.AverageWordLength,
+                maxCountOfFillingPoints: lengthOfTheLongestStringOfRessourceStrings);
+
+            _statisticsOutput.WriteNumberOfChapters(
+                numberOfChapters: wordCountAnalyzerResult.NumberOfChapters,
+                maxCountOfFillingPoints: lengthOfTheLongestStringOfRessourceStrings);
         }
     }
 }
