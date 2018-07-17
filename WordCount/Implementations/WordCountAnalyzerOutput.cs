@@ -27,21 +27,12 @@ namespace WordCount.Implementations
             int lengthOfTheLongestStringOfRessourceStrings = _languageResource.DetectLongestResourceString(
                 resourceIdents: new[] { "NUMBER_OF_WORDS", "UNIQUE", "AVERAGE_WORD_LENGTH", "CHAPTERS" });
 
-            _statisticsOutput.WriteNumberOfWords(
-                numberOfWords: wordCountAnalyzerResult.NumberOfWords,
-                maxCountOfFillingPoints: lengthOfTheLongestStringOfRessourceStrings);
-
-            _statisticsOutput.WriteNumberOfUniqeWords(
-                numberOfUniqeWords: wordCountAnalyzerResult.NumberOfUniqueWords,
-                maxCountOfFillingPoints: lengthOfTheLongestStringOfRessourceStrings);
-
-            _statisticsOutput.WriteAveragewordLength(
-                averageWordLength: wordCountAnalyzerResult.AverageWordLength,
-                maxCountOfFillingPoints: lengthOfTheLongestStringOfRessourceStrings);
-
-            _statisticsOutput.WriteNumberOfChapters(
-                numberOfChapters: wordCountAnalyzerResult.NumberOfChapters,
-                maxCountOfFillingPoints: lengthOfTheLongestStringOfRessourceStrings);
+            _statisticsOutput
+                .WriteOutputs(lengthOfMaxString: 20)
+                    .WriteNumberOfWords(numberOfWords: wordCountAnalyzerResult.NumberOfWords)
+                    .WriteNumberOfUniqeWords(numberOfUniqeWords: wordCountAnalyzerResult.NumberOfUniqueWords)
+                    .WriteAverageWordLength(averageWordLength: wordCountAnalyzerResult.AverageWordLength)
+                    .WriteNumberOfChapters(numberOfChapters: wordCountAnalyzerResult.NumberOfChapters);
         }
     }
 }
