@@ -1,7 +1,6 @@
 ﻿using WordCount.Interfaces;
 using WordCount.Interfaces.Language;
 using WordCount.Models.Results;
-using CultureInfo = System.Globalization.CultureInfo;
 
 namespace WordCount.Implementations
 {

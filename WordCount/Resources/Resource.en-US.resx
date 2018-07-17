@@ -118,10 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AVERAGE_WORD_LENGTH" xml:space="preserve">
-    <value>average word length: {0} characters</value>
+    <value>Average word length</value>
   </data>
   <data name="CHAPTERS" xml:space="preserve">
-    <value>chapters: {0}</value>
+    <value>Chapters</value>
+  </data>
+  <data name="CHARACTERS" xml:space="preserve">
+    <value>characters</value>
   </data>
   <data name="ENTER_TEXT" xml:space="preserve">
     <value>Enter text: </value>
@@ -136,13 +139,13 @@
     <value>Index: (unknown: {0})</value>
   </data>
   <data name="NUMBER_OF_WORDS" xml:space="preserve">
-    <value>Number of words: {0}</value>
+    <value>Number of words</value>
   </data>
   <data name="STATISTICS" xml:space="preserve">
     <value>Statistics:</value>
   </data>
   <data name="UNIQUE" xml:space="preserve">
-    <value>unique: {0}</value>
+    <value>Unique</value>
   </data>
   <data name="USED_STOPWORDLIST" xml:space="preserve">
     <value>Used Stopwordlist: {0}</value>

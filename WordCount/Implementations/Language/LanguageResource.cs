@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using WordCount.Abstractions.SystemAbstractions.Globalization;
 using WordCount.Abstractions.SystemAbstractions.Resources;
 using WordCount.Helpers;

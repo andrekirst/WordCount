@@ -8,17 +8,13 @@ namespace WordCount.Extensions
     {
         public static List<string> SplitByRegex(this string text, string pattern)
         {
-            MatchCollection regexMatches = Regex.Matches(
+            return Regex.Matches(
                 input: text,
                 pattern: pattern,
-                options: RegexOptions.Compiled);
-
-            List<string> words = regexMatches
+                options: RegexOptions.Compiled)
                 .OfType<Match>()
                 .Select(selector: m => m.Value)
                 .ToList();
-
-            return words;
         }
 
         public static bool IsMatchingRegex(this string text, string pattern)
