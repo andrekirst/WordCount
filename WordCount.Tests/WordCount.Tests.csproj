@@ -110,6 +110,7 @@
     <Compile Include="StatisticsOutputTests.cs" />
     <Compile Include="StopwordLoaderTests.cs" />
     <Compile Include="StopwordRemoverTests.cs" />
+    <Compile Include="StringExtensionsTests\FillRightWithPointsTests.cs" />
     <Compile Include="StringExtensionsTests\IsFilledTests.cs" />
     <Compile Include="StringExtensionsTests\IsNullOrEmptyTests.cs" />
     <Compile Include="StringExtensionsTests\IsValidUrlTests.cs" />

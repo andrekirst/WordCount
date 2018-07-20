@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using WordCount.Interfaces.Language;
 using WordCount.Interfaces.Output;
+using WordCount.Extensions;
 
 namespace WordCount.Implementations.Output
 {
@@ -23,9 +24,7 @@ namespace WordCount.Implementations.Output
         public void WriteNumberOfWords(int numberOfWords, int maxCountOfFillingPoints)
         {
             string resourceValue = _languageResource.GetResourceStringById(resourceIdent: "NUMBER_OF_WORDS");
-            string output = resourceValue.PadRight(
-                totalWidth: maxCountOfFillingPoints,
-                paddingChar: '.');
+            string output = resourceValue.FillRightWithPoints(totalWidth: maxCountOfFillingPoints);
 
             output = $"- {output} {numberOfWords}";
             _displayOutput.WriteLine(text: output);
@@ -34,9 +33,7 @@ namespace WordCount.Implementations.Output
         public void WriteNumberOfUniqeWords(int numberOfUniqeWords, int maxCountOfFillingPoints)
         {
             string resourceValue = _languageResource.GetResourceStringById(resourceIdent: "UNIQUE");
-            string output = resourceValue.PadRight(
-                totalWidth: maxCountOfFillingPoints,
-                paddingChar: '.');
+            string output = resourceValue.FillRightWithPoints(totalWidth: maxCountOfFillingPoints);
 
             output = $"- {output} {numberOfUniqeWords}";
             _displayOutput.WriteLine(text: output);
@@ -48,9 +45,7 @@ namespace WordCount.Implementations.Output
 
             string resourceValueAverageWordLength = _languageResource.GetResourceStringById(resourceIdent: "AVERAGE_WORD_LENGTH");
             string resourceValueCharacters = _languageResource.GetResourceStringById(resourceIdent: "CHARACTERS");
-            string output = resourceValueAverageWordLength.PadRight(
-                totalWidth: maxCountOfFillingPoints,
-                paddingChar: '.');
+            string output = resourceValueAverageWordLength.FillRightWithPoints(totalWidth: maxCountOfFillingPoints);
 
             string averageWordLengthAsString = averageWordLength.ToString(format: "N2", provider: currentCulture);
 
@@ -61,9 +56,7 @@ namespace WordCount.Implementations.Output
         public void WriteNumberOfChapters(int numberOfChapters, int maxCountOfFillingPoints)
         {
             string resourceValue = _languageResource.GetResourceStringById(resourceIdent: "CHAPTERS");
-            string output = resourceValue.PadRight(
-                totalWidth: maxCountOfFillingPoints,
-                paddingChar: '.');
+            string output = resourceValue.FillRightWithPoints(totalWidth: maxCountOfFillingPoints);
 
             output = $"- {output} {numberOfChapters}";
             _displayOutput.WriteLine(text: output);
