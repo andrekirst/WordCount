@@ -3,6 +3,7 @@ using System.IO.Abstractions;
 using System.Linq;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
+using WordCount.Interfaces.Output;
 using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations

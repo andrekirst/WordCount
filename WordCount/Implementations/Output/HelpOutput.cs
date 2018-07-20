@@ -1,9 +1,9 @@
 ﻿using WordCount.Abstractions.SystemAbstractions.Reflection;
-using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
+using WordCount.Interfaces.Output;
 using WordCount.Models.Parameters;
 
-namespace WordCount.Implementations
+namespace WordCount.Implementations.Output
 {
     public class HelpOutput : IHelpOutput
     {

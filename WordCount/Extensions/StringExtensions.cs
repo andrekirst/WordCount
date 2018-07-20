@@ -18,5 +18,12 @@ namespace WordCount.Extensions
         {
             return Uri.IsWellFormedUriString(uriString: text, uriKind: UriKind.Absolute);
         }
+
+        public static string FillRightWithPoints(this string text, int totalWidth)
+        {
+            return text.PadRight(
+                totalWidth: totalWidth,
+                paddingChar: '.');
+        }
     }
 }

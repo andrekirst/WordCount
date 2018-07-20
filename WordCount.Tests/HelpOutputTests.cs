@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using Moq;
 using WordCount.Abstractions.SystemAbstractions.Reflection;
-using WordCount.Implementations;
-using WordCount.Interfaces;
+using WordCount.Implementations.Output;
 using WordCount.Interfaces.ArgumentsHandling;
+using WordCount.Interfaces.Output;
 using WordCount.Models.Parameters;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;

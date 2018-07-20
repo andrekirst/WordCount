@@ -2,6 +2,7 @@
 using Moq;
 using WordCount.Implementations;
 using WordCount.Interfaces;
+using WordCount.Interfaces.Output;
 using WordCount.Models.Results;
 using WordCount.Tests.XUnitHelpers;
 using Xunit;

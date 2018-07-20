@@ -15,6 +15,7 @@ namespace WordCount.Implementations.Language
         private readonly IAppSettingsReader _appSettingsReader;
         private readonly ILanguageParameterParser _languageParameterParser;
         private readonly IConsole _console;
+        private DecideLanguageResult _cache;
 
         public LanguageDecision(
             IAppSettingsReader appSettingsReader,
@@ -28,6 +29,11 @@ namespace WordCount.Implementations.Language
 
         public DecideLanguageResult DecideLanguage()
         {
+            if (_cache != null)
+            {
+                return _cache;
+            }
+
             string language = _appSettingsReader.DefaultLanguage;
 
             LanguageParameter languageParameter = _languageParameterParser.ParseLanguageParameter();
@@ -45,7 +51,7 @@ namespace WordCount.Implementations.Language
             }
 
             language = language.IsFilled() ? language : DefaultFallbackLanguage;
-            return new DecideLanguageResult
+            return _cache = new DecideLanguageResult
             {
                 Language = language
             };

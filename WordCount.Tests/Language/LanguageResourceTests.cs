@@ -82,5 +82,28 @@ namespace WordCount.Tests.Language
             _mockCultureInfo
                 .Verify(v => v.GetCultureInfo("de-DE"), Times.Once);
         }
+
+        [NamedFact]
+        public void LanguageRessourceTests_DetectLongestResourceString_Langer_Text_und_kurzer_Text_Expect_Laenge_des_laengerem()
+        {
+            _mockResourceManager
+                .Setup(m => m.GetString("KEY1", It.IsAny<System.Globalization.CultureInfo>()))
+                .Returns(value: "Kurzer Text");
+
+            _mockResourceManager
+                .Setup(m => m.GetString("KEY2", It.IsAny<System.Globalization.CultureInfo>()))
+                .Returns(value: "Langer Text mit viel Inhalt");
+
+            _mockLanguageDecision
+                .Setup(m => m.DecideLanguage())
+                .Returns(value: new DecideLanguageResult
+                {
+                    Language = "de"
+                });
+
+            int actual = _systemUnderTest.DetectLongestResourceString(new[] {"KEY1", "KEY2"});
+
+            Assert.Equal(expected: 27, actual: actual);
+        }
     }
 }
