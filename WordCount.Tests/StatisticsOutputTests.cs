@@ -1,14 +1,11 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using Autofac;
 using Moq;
-using WordCount.Implementations;
-using WordCount.Interfaces;
+using WordCount.Implementations.Output;
 using WordCount.Interfaces.Language;
+using WordCount.Interfaces.Output;
 using WordCount.Models.Results;
 using WordCount.Tests.XUnitHelpers;
-using Xunit;
 
 namespace WordCount.Tests
 {

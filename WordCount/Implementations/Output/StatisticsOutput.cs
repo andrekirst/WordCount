@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
-using WordCount.Interfaces;
 using WordCount.Interfaces.Language;
+using WordCount.Interfaces.Output;
 
-namespace WordCount.Implementations
+namespace WordCount.Implementations.Output
 {
     public class StatisticsOutput : IStatisticsOutput
     {

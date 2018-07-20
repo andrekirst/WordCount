@@ -1,6 +1,6 @@
 ﻿using WordCount.Models.Results;
 
-namespace WordCount.Interfaces
+namespace WordCount.Interfaces.Output
 {
     public interface IWordCountAnalyzerOutput
     {

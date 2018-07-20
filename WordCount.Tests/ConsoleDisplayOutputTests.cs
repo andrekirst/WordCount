@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Moq;
 using WordCount.Abstractions.SystemAbstractions;
-using WordCount.Implementations;
+using WordCount.Implementations.Output;
 using WordCount.Interfaces.Language;
 using WordCount.Tests.XUnitHelpers;
 

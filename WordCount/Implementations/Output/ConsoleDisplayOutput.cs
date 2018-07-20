@@ -1,9 +1,9 @@
 ﻿using System;
 using WordCount.Abstractions.SystemAbstractions;
-using WordCount.Interfaces;
 using WordCount.Interfaces.Language;
+using WordCount.Interfaces.Output;
 
-namespace WordCount.Implementations
+namespace WordCount.Implementations.Output
 {
     public class ConsoleDisplayOutput : IDisplayOutput
     {

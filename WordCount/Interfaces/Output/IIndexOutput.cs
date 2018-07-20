@@ -1,6 +1,6 @@
 ﻿using WordCount.Models.Requests;
 
-namespace WordCount.Interfaces
+namespace WordCount.Interfaces.Output
 {
     public interface IIndexOutput
     {

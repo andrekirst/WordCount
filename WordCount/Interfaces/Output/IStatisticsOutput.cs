@@ -1,4 +1,4 @@
-﻿namespace WordCount.Interfaces
+﻿namespace WordCount.Interfaces.Output
 {
     public interface IStatisticsOutput
     {

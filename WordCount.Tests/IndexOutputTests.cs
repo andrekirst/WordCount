@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Autofac;
 using Moq;
-using WordCount.Implementations;
+using WordCount.Implementations.Output;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
+using WordCount.Interfaces.Output;
 using WordCount.Models.Parameters;
 using WordCount.Models.Requests;
 using WordCount.Tests.XUnitHelpers;

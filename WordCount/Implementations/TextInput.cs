@@ -1,6 +1,7 @@
 ﻿using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Extensions;
 using WordCount.Interfaces;
+using WordCount.Interfaces.Output;
 using WordCount.Models.Results;
 
 namespace WordCount.Implementations

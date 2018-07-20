@@ -1,8 +1,8 @@
-﻿using WordCount.Interfaces;
-using WordCount.Interfaces.Language;
+﻿using WordCount.Interfaces.Language;
+using WordCount.Interfaces.Output;
 using WordCount.Models.Results;
 
-namespace WordCount.Implementations
+namespace WordCount.Implementations.Output
 {
     public class WordCountAnalyzerOutput : IWordCountAnalyzerOutput
     {
