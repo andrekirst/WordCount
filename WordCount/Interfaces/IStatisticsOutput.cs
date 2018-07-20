@@ -10,7 +10,7 @@
             int numberOfUniqeWords,
             int maxCountOfFillingPoints);
 
-        void WriteAveragewordLength(
+        void WriteAverageWordLength(
             double averageWordLength,
             int maxCountOfFillingPoints);
 

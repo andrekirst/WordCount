@@ -46,7 +46,7 @@ namespace WordCount.Implementations
             {
                 WordCountAnalyzerResult analyzeResult = _wordCountAnalyzer.Analyze(text: inputTextResult.Text);
 
-                _wordCountAnalyzerOutput.DisplayResult(wordCountAnalyzerResult: analyzeResult);
+                _wordCountAnalyzerOutput.DisplayResult(result: analyzeResult);
 
                 IndexOutputRequest indexOutputRequest = new IndexOutputRequest
                 {

@@ -42,7 +42,7 @@ namespace WordCount.Implementations
             _displayOutput.WriteLine(text: output);
         }
 
-        public void WriteAveragewordLength(double averageWordLength, int maxCountOfFillingPoints)
+        public void WriteAverageWordLength(double averageWordLength, int maxCountOfFillingPoints)
         {
             CultureInfo currentCulture = _languageDecision.DecideLanguage().Culture;
 

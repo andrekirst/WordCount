@@ -151,5 +151,31 @@ namespace WordCount.Tests.Language
             _mockConsole
                 .Verify(v => v.WriteLine("Language \"it\" not supported."), Times.Once);
         }
+
+        [NamedFact]
+        public void LanguageDecisionTests_CachingTest()
+        {
+            _mockLanguageParameterParser
+                .Setup(expression: m => m.ParseLanguageParameter())
+                .Returns(value: new LanguageParameter { IsPresent = false });
+
+            _mockAppSettingsReader
+                .SetupGet(m => m.DefaultLanguage)
+                .Returns(value: "de");
+
+            DecideLanguageResult actual = _systemUnderTest.DecideLanguage();
+
+            Assert.NotNull(@object: actual);
+            Assert.Equal(expected: "de", actual: actual.Language);
+
+            actual = _systemUnderTest.DecideLanguage();
+            Assert.NotNull(@object: actual);
+            Assert.Equal(expected: "de", actual: actual.Language);
+
+            _mockAppSettingsReader
+                .VerifyGet(v => v.DefaultLanguage, Times.Once);
+            _mockLanguageParameterParser
+                .Verify(v => v.ParseLanguageParameter(), Times.Once);
+        }
     }
 }

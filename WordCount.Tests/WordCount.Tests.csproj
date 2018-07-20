@@ -107,6 +107,7 @@
     <Compile Include="ListExtensionsTests\ToEmptyIfNullListTests.cs" />
     <Compile Include="RegexStringExtensionsTests\IsMatchingRegexTests.cs" />
     <Compile Include="RegexStringExtensionsTests\SplitByRegexTests.cs" />
+    <Compile Include="StatisticsOutputTests.cs" />
     <Compile Include="StopwordLoaderTests.cs" />
     <Compile Include="StopwordRemoverTests.cs" />
     <Compile Include="StringExtensionsTests\IsFilledTests.cs" />

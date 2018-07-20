@@ -12,13 +12,15 @@ namespace WordCount.Tests
     public class WordCountAnalyzerOutputTests
     {
         private readonly Mock<IDisplayOutput> _mockDisplayOutput;
-        private readonly Mock<ILanguageDecision> _mockLanguageDecision;
+        private readonly Mock<IStatisticsOutput> _mockStatisticsOutput;
+        private readonly Mock<ILanguageResource> _mockLanguageResource;
         private readonly WordCountAnalyzerOutput _systemUnderTest;
 
         public WordCountAnalyzerOutputTests()
         {
             _mockDisplayOutput = new Mock<IDisplayOutput>();
-            _mockLanguageDecision = new Mock<ILanguageDecision>();
+            _mockLanguageResource = new Mock<ILanguageResource>();
+            _mockStatisticsOutput = new Mock<IStatisticsOutput>();
 
             ContainerBuilder containerBuilder = new ContainerBuilder();
 
@@ -27,8 +29,12 @@ namespace WordCount.Tests
                 .As<IDisplayOutput>();
 
             containerBuilder
-                .RegisterInstance(instance: _mockLanguageDecision.Object)
-                .As<ILanguageDecision>();
+                .RegisterInstance(instance: _mockLanguageResource.Object)
+                .As<ILanguageResource>();
+
+            containerBuilder
+                .RegisterInstance(instance: _mockStatisticsOutput.Object)
+                .As<IStatisticsOutput>();
 
             containerBuilder
                 .RegisterType<WordCountAnalyzerOutput>();
@@ -41,22 +47,29 @@ namespace WordCount.Tests
         [NamedFact]
         public void WordCountAnalyzerOutputTests_DisplayResult_Result_NumberOfWords_2_Expect_Number_of_Words_2_Number()
         {
-            _mockLanguageDecision
-                .Setup(m => m.DecideLanguage())
-                .Returns(new DecideLanguageResult { Culture = new CultureInfo("de-DE") });
+            _mockLanguageResource
+                .Setup(m => m.DetectLongestResourceString(It.IsAny<string[]>()))
+                .Returns(20);
 
-            _systemUnderTest.DisplayResult(wordCountAnalyzerResult: new WordCountAnalyzerResult
+            _systemUnderTest.DisplayResult(result: new WordCountAnalyzerResult
             {
                 NumberOfWords = 2,
                 NumberOfUniqueWords = 1,
                 AverageWordLength = 5.63,
-                NumberOfChapters = 2
+                NumberOfChapters = 3
             });
-            _mockDisplayOutput
-                .Verify(v => v.WriteResourceLine("NUMBER_OF_WORDS", 2), Times.Once);
 
             _mockDisplayOutput
-                .Verify(v => v.WriteResourceLine("AVERAGE_WORD_LENGTH", "5,63"), Times.Once);
+                .Verify(v => v.WriteResourceLine("STATISTICS"), Times.Once);
+
+            _mockStatisticsOutput
+                .Verify(v => v.WriteNumberOfWords(2, 20), Times.Once);
+            _mockStatisticsOutput
+                .Verify(v => v.WriteNumberOfUniqeWords(1, 20), Times.Once);
+            _mockStatisticsOutput
+                .Verify(v => v.WriteAverageWordLength(5.63, 20), Times.Once);
+            _mockStatisticsOutput
+                .Verify(v => v.WriteNumberOfChapters(3, 20), Times.Once);
         }
     }
 }

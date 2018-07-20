@@ -4,6 +4,6 @@ namespace WordCount.Interfaces
 {
     public interface IWordCountAnalyzerOutput
     {
-        void DisplayResult(WordCountAnalyzerResult wordCountAnalyzerResult);
+        void DisplayResult(WordCountAnalyzerResult result);
     }
 }
