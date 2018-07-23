@@ -89,6 +89,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ArgumentsHandlingTests\DictionaryParameterParserTests.cs" />
+    <Compile Include="ArgumentsHandlingTests\DisplayParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\HelpParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\IndexParameterParserTests.cs" />
     <Compile Include="ArgumentsHandlingTests\LanguageParameterParserTests.cs" />

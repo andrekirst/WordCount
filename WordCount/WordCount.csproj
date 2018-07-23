@@ -77,6 +77,7 @@
     <Compile Include="Implementations\AppSettingsReader.cs" />
     <Compile Include="Implementations\ArgumentsHandling\BaseParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\DictionaryParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\DisplayParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\HelpParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\IndexParameterParser.cs" />
     <Compile Include="Implementations\ArgumentsHandling\LanguageParameterParser.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Implementations\TextUrlFileLoader.cs" />
     <Compile Include="Implementations\WordCountAnalyzer.cs" />
     <Compile Include="Implementations\Output\WordCountAnalyzerOutput.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\IDisplayParameterParser.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IHelpParameterParser.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\ILanguageParameterParser.cs" />
     <Compile Include="Interfaces\ArgumentsHandling\IStopwordListParameterParser.cs" />
@@ -125,6 +127,7 @@
     <Compile Include="Interfaces\Output\IWordCountAnalyzerOutput.cs" />
     <Compile Include="Models\Parameters\BaseParameter.cs" />
     <Compile Include="Models\Parameters\DictionaryParameter.cs" />
+    <Compile Include="Models\Parameters\DisplayParameter.cs" />
     <Compile Include="Models\Parameters\LanguageParameter.cs" />
     <Compile Include="Models\Parameters\TextUrlParameter.cs" />
     <Compile Include="Models\Requests\IndexOutputRequest.cs" />
