@@ -8,18 +8,18 @@ namespace WordCount.Implementations.ArgumentsHandling
 {
     public class IndexParameterParser : BaseParameterParser<IndexParameter>, IIndexParameterParser
     {
-        private readonly IEnvironment _environment;
+        private IEnvironment Environment { get; }
 
         public IndexParameterParser(IEnvironment environment)
         {
-            _environment = environment;
+            Environment = environment;
         }
 
         public IndexParameter ParseIndexParameter()
         {
             return CachedValue(toCachingValue: () =>
             {
-                string[] commandLineArgs = _environment.GetCommandLineArgs() ?? Array.Empty<string>();
+                string[] commandLineArgs = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
                 return new IndexParameter
                 {
                     IsPresent = commandLineArgs.Contains(value: "-index")

@@ -8,18 +8,18 @@ namespace WordCount.Implementations.ArgumentsHandling
 {
     public class DictionaryParameterParser : BaseParameterParser<DictionaryParameter>, IDictionaryParameterParser
     {
-        private readonly IEnvironment _environment;
+        private IEnvironment Environment { get; }
 
         public DictionaryParameterParser(IEnvironment environment)
         {
-            _environment = environment;
+            Environment = environment;
         }
 
         public DictionaryParameter ParseDictionaryParameter()
         {
             return CachedValue(toCachingValue: () =>
             {
-                string[] args = _environment.GetCommandLineArgs();
+                string[] args = Environment.GetCommandLineArgs();
 
                 string dictionaryParameter = args?.FirstOfMatchingRegex(pattern: @"-dictionary=[a-zA-z.]{1,}");
                 string[] parameterSplitByEqualSign = dictionaryParameter?.Split('=');

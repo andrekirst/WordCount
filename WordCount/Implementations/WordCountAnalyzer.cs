@@ -8,27 +8,27 @@ namespace WordCount.Implementations
 {
     public class WordCountAnalyzer : IWordCountAnalyzer
     {
-        private readonly ITextSplit _textSplit;
-        private readonly IStopwordRemover _stopwordRemover;
+        private ITextSplit TextSplit { get; }
+        private IStopwordRemover StopwordRemover { get; }
 
         public WordCountAnalyzer(
             ITextSplit textSplit,
             IStopwordRemover stopwordRemover)
         {
-            _textSplit = textSplit;
-            _stopwordRemover = stopwordRemover;
+            TextSplit = textSplit;
+            StopwordRemover = stopwordRemover;
         }
 
         public WordCountAnalyzerResult Analyze(string text)
         {
-            TextSplitResult textSplitResult = _textSplit.Split(text: text);
+            TextSplitResult textSplitResult = TextSplit.Split(text: text);
 
             if (!textSplitResult.WordsAvailable)
             {
                 return new WordCountAnalyzerResult();
             }
 
-            StopwordRemoverResult stopwordRemoverResult = _stopwordRemover.RemoveStopwords(words: textSplitResult.Words);
+            StopwordRemoverResult stopwordRemoverResult = StopwordRemover.RemoveStopwords(words: textSplitResult.Words);
 
             List<string> words = stopwordRemoverResult.Words;
             List<string> distinctWords = words.Distinct().ToList();

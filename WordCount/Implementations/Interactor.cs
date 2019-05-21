@@ -8,11 +8,11 @@ namespace WordCount.Implementations
 {
     public class Interactor : IInteractor
     {
-        private readonly ITextInput _textInput;
-        private readonly IWordCountAnalyzer _wordCountAnalyzer;
-        private readonly IWordCountAnalyzerOutput _wordCountAnalyzerOutput;
-        private readonly IIndexOutput _indexOutput;
-        private readonly IHelpOutput _helpOutput;
+        private ITextInput TextInput { get; }
+        private IWordCountAnalyzer WordCountAnalyzer { get; }
+        private IWordCountAnalyzerOutput WordCountAnalyzerOutput { get; }
+        private IIndexOutput IndexOutput { get; }
+        private IHelpOutput HelpOutput { get; }
 
         public Interactor(
             ITextInput textInput,
@@ -21,23 +21,23 @@ namespace WordCount.Implementations
             IIndexOutput indexOutput,
             IHelpOutput helpOutput)
         {
-            _textInput = textInput;
-            _wordCountAnalyzer = wordCountAnalyzer;
-            _wordCountAnalyzerOutput = wordCountAnalyzerOutput;
-            _indexOutput = indexOutput;
-            _helpOutput = helpOutput;
+            TextInput = textInput;
+            WordCountAnalyzer = wordCountAnalyzer;
+            WordCountAnalyzerOutput = wordCountAnalyzerOutput;
+            IndexOutput = indexOutput;
+            HelpOutput = helpOutput;
         }
 
         public int Execute()
         {
-            bool hasRequestedHelp = _helpOutput.ShowHelpIfRequested();
+            bool hasRequestedHelp = HelpOutput.ShowHelpIfRequested();
 
             if (hasRequestedHelp)
             {
                 return 1;
             }
 
-            InputTextResult inputTextResult = _textInput.GetInputText();
+            InputTextResult inputTextResult = TextInput.GetInputText();
 
             if (inputTextResult.Text.IsNullOrEmpty())
             {
@@ -45,18 +45,18 @@ namespace WordCount.Implementations
             }
             do
             {
-                WordCountAnalyzerResult analyzeResult = _wordCountAnalyzer.Analyze(text: inputTextResult.Text);
+                WordCountAnalyzerResult analyzeResult = WordCountAnalyzer.Analyze(text: inputTextResult.Text);
 
-                _wordCountAnalyzerOutput.DisplayResult(result: analyzeResult);
+                WordCountAnalyzerOutput.DisplayResult(result: analyzeResult);
 
                 IndexOutputRequest indexOutputRequest = new IndexOutputRequest
                 {
                     DistinctWords = analyzeResult.DistinctWords
                 };
 
-                _indexOutput.OutputIndex(indexOutputRequest: indexOutputRequest);
+                IndexOutput.OutputIndex(indexOutputRequest: indexOutputRequest);
 
-                inputTextResult = _textInput.GetInputText();
+                inputTextResult = TextInput.GetInputText();
             } while (inputTextResult.HasEnteredConsoleText);
 
             return 0;

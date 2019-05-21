@@ -9,23 +9,23 @@ namespace WordCount.Implementations
 {
     public class TextFileLoader : ITextFileLoader
     {
-        private readonly IFileSystem _fileSystem;
-        private readonly IDisplayOutput _displayOutput;
-        private readonly ISourceFileParameterParser _sourceFileParameterParser;
+        private IFileSystem FileSystem { get; }
+        private IDisplayOutput DisplayOutput { get; }
+        private ISourceFileParameterParser SourceFileParameterParser { get; }
 
         public TextFileLoader(
             IFileSystem fileSystem,
             IDisplayOutput displayOutput,
             ISourceFileParameterParser sourceFileParameterParser)
         {
-            _fileSystem = fileSystem;
-            _displayOutput = displayOutput;
-            _sourceFileParameterParser = sourceFileParameterParser;
+            FileSystem = fileSystem;
+            DisplayOutput = displayOutput;
+            SourceFileParameterParser = sourceFileParameterParser;
         }
 
         public string ReadTextFile()
         {
-            SourceFileParameter sourceFileParameter = _sourceFileParameterParser.ParseSourceFileParameter();
+            SourceFileParameter sourceFileParameter = SourceFileParameterParser.ParseSourceFileParameter();
 
             if (!sourceFileParameter.IsPresent)
             {
@@ -34,22 +34,19 @@ namespace WordCount.Implementations
 
             string fileName = sourceFileParameter.FileName;
 
-            if (_fileSystem.File.Exists(path: fileName))
+            if (FileSystem.File.Exists(path: fileName))
             {
-                string text = _fileSystem.File.ReadAllText(path: fileName);
-                text = text.Replace(
+                return FileSystem.File.ReadAllText(path: fileName)
+                    .Replace(
                     oldValue: $"-{Environment.NewLine}",
                     newValue: string.Empty);
-                return text;
             }
-            else
-            {
-                _displayOutput
-                    .WriteErrorResourceLine(
-                        resourceIdent: "FILE_NOT_FOUND",
-                        placeholderValues: fileName);
-                return string.Empty;
-            }
+
+            DisplayOutput
+                .WriteErrorResourceLine(
+                    resourceIdent: "FILE_NOT_FOUND",
+                    placeholderValues: fileName);
+            return string.Empty;
         }
     }
 }

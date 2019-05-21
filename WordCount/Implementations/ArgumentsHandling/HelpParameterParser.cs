@@ -8,18 +8,18 @@ namespace WordCount.Implementations.ArgumentsHandling
 {
     public class HelpParameterParser : BaseParameterParser<HelpParameter>, IHelpParameterParser
     {
-        private readonly IEnvironment _environment;
+        private IEnvironment Environment { get; }
 
         public HelpParameterParser(IEnvironment environment)
         {
-            _environment = environment;
+            Environment = environment;
         }
 
         public HelpParameter ParseHelpParameter()
         {
             return CachedValue(toCachingValue: () =>
             {
-                string[] args = _environment.GetCommandLineArgs() ?? Array.Empty<string>();
+                string[] args = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
                 if (!args.Any())
                 {
                     return new HelpParameter()

@@ -8,18 +8,18 @@ namespace WordCount.Implementations.ArgumentsHandling
 {
     public class StopwordListParameterParser : BaseParameterParser<StopwordListParameter>, IStopwordListParameterParser
     {
-        private readonly IEnvironment _environment;
+        private IEnvironment Environment { get; }
 
         public StopwordListParameterParser(IEnvironment environment)
         {
-            _environment = environment;
+            Environment = environment;
         }
 
         public StopwordListParameter ParseStopwordListParameter()
         {
             return CachedValue(toCachingValue: () =>
             {
-                string[] args = _environment.GetCommandLineArgs();
+                string[] args = Environment.GetCommandLineArgs();
 
                 string dictionaryParameter = args?.FirstOfMatchingRegex(pattern: @"-stopwordlist=[a-zA-z.]{1,}");
                 string[] parameterSplitByEqualSign = dictionaryParameter?.Split('=');

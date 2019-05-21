@@ -10,30 +10,30 @@ namespace WordCount.Implementations
 {
     public class DictionaryFileLoader : IDictionaryFileLoader
     {
-        private readonly IFileSystem _fileSystem;
-        private readonly IDisplayOutput _displayOutput;
-        private readonly IDictionaryParameterParser _dictionaryParameterParser;
+        private IFileSystem FileSystem { get; }
+        private IDisplayOutput DisplayOutput { get; }
+        private IDictionaryParameterParser DictionaryParameterParser { get; }
 
         public DictionaryFileLoader(
             IFileSystem fileSystem,
             IDisplayOutput displayOutput,
             IDictionaryParameterParser dictionaryParameterParser)
         {
-            _fileSystem = fileSystem;
-            _displayOutput = displayOutput;
-            _dictionaryParameterParser = dictionaryParameterParser;
+            FileSystem = fileSystem;
+            DisplayOutput = displayOutput;
+            DictionaryParameterParser = dictionaryParameterParser;
         }
 
         public List<string> ReadWords()
         {
-            DictionaryParameter dictionaryParameter = _dictionaryParameterParser.ParseDictionaryParameter();
+            DictionaryParameter dictionaryParameter = DictionaryParameterParser.ParseDictionaryParameter();
 
             string path = dictionaryParameter.FileName;
 
             if (dictionaryParameter.IsPresent &&
-                !_fileSystem.File.Exists(path: path))
+                !FileSystem.File.Exists(path: path))
             {
-                _displayOutput.WriteErrorResourceLine(
+                DisplayOutput.WriteErrorResourceLine(
                     resourceIdent: "FILE_NOT_FOUND",
                     placeholderValues: path);
                 return new List<string>();
@@ -44,7 +44,7 @@ namespace WordCount.Implementations
                 return new List<string>();
             }
 
-            return _fileSystem
+            return FileSystem
                 .File
                 .ReadAllLines(path: path)
                 .ToEmptyIfNullList();

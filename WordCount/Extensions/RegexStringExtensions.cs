@@ -6,16 +6,14 @@ namespace WordCount.Extensions
 {
     public static class RegexStringExtensions
     {
-        public static List<string> SplitByRegex(this string text, string pattern)
-        {
-            return Regex.Matches(
-                input: text,
-                pattern: pattern,
-                options: RegexOptions.Compiled)
+        public static List<string> SplitByRegex(this string text, string pattern) =>
+            Regex.Matches(
+                    input: text,
+                    pattern: pattern,
+                    options: RegexOptions.Compiled)
                 .OfType<Match>()
                 .Select(selector: m => m.Value)
                 .ToList();
-        }
 
         public static bool IsMatchingRegex(this string text, string pattern)
         {

@@ -8,10 +8,10 @@ namespace WordCount.Implementations
 {
     public class TextInput : ITextInput
     {
-        private readonly IConsole _console;
-        private readonly ITextFileLoader _textFileLoader;
-        private readonly ITextUrlFileLoader _textUrlFileLoader;
-        private readonly IDisplayOutput _displayOutput;
+        private IConsole Console { get; }
+        private ITextFileLoader TextFileLoader { get; }
+        private ITextUrlFileLoader TextUrlFileLoader { get; }
+        private IDisplayOutput DisplayOutput { get; }
 
         public TextInput(
             IConsole console,
@@ -19,15 +19,15 @@ namespace WordCount.Implementations
             ITextUrlFileLoader textUrlFileLoader,
             IDisplayOutput displayOutput)
         {
-            _console = console;
-            _textFileLoader = textFileLoader;
-            _textUrlFileLoader = textUrlFileLoader;
-            _displayOutput = displayOutput;
+            Console = console;
+            TextFileLoader = textFileLoader;
+            TextUrlFileLoader = textUrlFileLoader;
+            DisplayOutput = displayOutput;
         }
 
         public InputTextResult GetInputText()
         {
-            string text = _textFileLoader.ReadTextFile();
+            string text = TextFileLoader.ReadTextFile();
             if (text.IsFilled())
             {
                 return new InputTextResult
@@ -37,7 +37,7 @@ namespace WordCount.Implementations
                 };
             }
 
-            text = _textUrlFileLoader.ReadTextFile();
+            text = TextUrlFileLoader.ReadTextFile();
 
             if (text.IsFilled())
             {
@@ -48,10 +48,10 @@ namespace WordCount.Implementations
                 };
             }
 
-            _displayOutput.WriteResource(
+            DisplayOutput.WriteResource(
                 resourceIdent: "ENTER_TEXT");
 
-            text = _console.ReadLine();
+            text = Console.ReadLine();
             return new InputTextResult
             {
                 HasEnteredConsoleText = text.IsFilled(),

@@ -6,13 +6,9 @@ namespace WordCount.Abstractions.SystemAbstractions
     [ExcludeFromCodeCoverage]
     public class Environment : IEnvironment
     {
-        public string[] GetCommandLineArgs()
-        {
-            string[] commandLineArgs = System.Environment.GetCommandLineArgs();
-            commandLineArgs = commandLineArgs
+        public string[] GetCommandLineArgs() =>
+            System.Environment.GetCommandLineArgs()
                 .Skip(count: 1)
                 .ToArray();
-            return commandLineArgs;
-        }
     }
 }

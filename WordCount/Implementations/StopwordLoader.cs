@@ -10,10 +10,10 @@ namespace WordCount.Implementations
 {
     public class StopwordLoader : IStopwordLoader
     {
-        private readonly IFileSystem _fileSystem;
-        private readonly IStopwordListParameterParser _stopwordListParameterParser;
-        private readonly IDisplayOutput _displayOutput;
-        private readonly ILanguageParameterParser _languageParameterParser;
+        private IFileSystem FileSystem { get; }
+        private IStopwordListParameterParser StopwordListParameterParser { get; }
+        private IDisplayOutput DisplayOutput { get; }
+        private ILanguageParameterParser LanguageParameterParser { get; }
 
         public StopwordLoader(
             IFileSystem fileSystem,
@@ -21,16 +21,16 @@ namespace WordCount.Implementations
             IDisplayOutput displayOutput,
             ILanguageParameterParser languageParameterParser)
         {
-            _fileSystem = fileSystem;
-            _stopwordListParameterParser = stopwordListParameterParser;
-            _displayOutput = displayOutput;
-            _languageParameterParser = languageParameterParser;
+            FileSystem = fileSystem;
+            StopwordListParameterParser = stopwordListParameterParser;
+            DisplayOutput = displayOutput;
+            LanguageParameterParser = languageParameterParser;
         }
 
         public List<string> GetStopwords()
         {
-            StopwordListParameter stopwordListParameter = _stopwordListParameterParser.ParseStopwordListParameter();
-            LanguageParameter languageParameter = _languageParameterParser.ParseLanguageParameter();
+            StopwordListParameter stopwordListParameter = StopwordListParameterParser.ParseStopwordListParameter();
+            LanguageParameter languageParameter = LanguageParameterParser.ParseLanguageParameter();
 
             bool isStopwordListParameterPresent = stopwordListParameter.IsPresent;
 
@@ -38,19 +38,19 @@ namespace WordCount.Implementations
                 stopwordListParameter.FileName :
                 $"stopwords.{languageParameter.Language}.txt";
 
-            if (!_fileSystem.File.Exists(path: fileName))
+            if (!FileSystem.File.Exists(path: fileName))
             {
                 return new List<string>();
             }
 
             if (isStopwordListParameterPresent)
             {
-                _displayOutput.WriteResourceLine(
+                DisplayOutput.WriteResourceLine(
                     resourceIdent: "USED_STOPWORDLIST",
                     placeholderValues: fileName);
             }
 
-            return _fileSystem
+            return FileSystem
                 .File
                 .ReadAllLines(path: fileName)
                 .ToList();

@@ -5,10 +5,8 @@ namespace WordCount.Extensions
 {
     public static class EnumerableStringExtensions
     {
-        public static string FirstOfMatchingRegex(this IEnumerable<string> enumerable, string pattern)
-        {
-            return enumerable?
+        public static string FirstOfMatchingRegex(this IEnumerable<string> enumerable, string pattern) =>
+            enumerable?
                 .FirstOrDefault(predicate: p => p.IsMatchingRegex(pattern: pattern));
-        }
     }
 }

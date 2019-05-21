@@ -8,13 +8,13 @@ namespace WordCount.Abstractions.SystemAbstractions.Net.Http
     public class HttpClient : IHttpClient
     {
         [ExcludeFromCodeCoverage]
-        public async Task<string> ReadString(string url)
+        public Task<string> ReadString(string url)
         {
-            System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient()
+            System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient
             {
                 BaseAddress = new Uri(uriString: url)
             };
-            return await httpClient.GetStringAsync(requestUri: url);
+            return httpClient.GetStringAsync(requestUri: url);
         }
     }
 }

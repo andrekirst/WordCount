@@ -11,10 +11,10 @@ namespace WordCount.Implementations.Language
 {
     public class LanguageDecision : ILanguageDecision
     {
+        private IAppSettingsReader AppSettingsReader { get; }
+        private ILanguageParameterParser LanguageParameterParser { get; }
+        private IConsole Console { get; }
         private const string DefaultFallbackLanguage = "en";
-        private readonly IAppSettingsReader _appSettingsReader;
-        private readonly ILanguageParameterParser _languageParameterParser;
-        private readonly IConsole _console;
         private DecideLanguageResult _cache;
 
         public LanguageDecision(
@@ -22,9 +22,9 @@ namespace WordCount.Implementations.Language
             ILanguageParameterParser languageParameterParser,
             IConsole console)
         {
-            _appSettingsReader = appSettingsReader;
-            _languageParameterParser = languageParameterParser;
-            _console = console;
+            AppSettingsReader = appSettingsReader;
+            LanguageParameterParser = languageParameterParser;
+            Console = console;
         }
 
         public DecideLanguageResult DecideLanguage()
@@ -34,9 +34,9 @@ namespace WordCount.Implementations.Language
                 return _cache;
             }
 
-            string language = _appSettingsReader.DefaultLanguage;
+            string language = AppSettingsReader.DefaultLanguage;
 
-            LanguageParameter languageParameter = _languageParameterParser.ParseLanguageParameter();
+            LanguageParameter languageParameter = LanguageParameterParser.ParseLanguageParameter();
 
             if (languageParameter.IsPresent)
             {
@@ -46,7 +46,7 @@ namespace WordCount.Implementations.Language
             if (language.IsFilled() &&
                 !LanguageToCultureMapping.Mappings.ContainsKey(key: language))
             {
-                _console.WriteLine(text: $"Language \"{language}\" not supported.");
+                Console.WriteLine(text: $"Language \"{language}\" not supported.");
                 language = DefaultFallbackLanguage;
             }
 

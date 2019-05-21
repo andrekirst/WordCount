@@ -19,33 +19,24 @@ namespace WordCount.AutofacModules
         }
 
         [ExcludeFromCodeCoverage]
-        private void Registration_Activating(object sender, ActivatingEventArgs<object> e)
-        {
+        private void Registration_Activating(object sender, ActivatingEventArgs<object> e) =>
             RegistrationAction(
                 activator: e.Component.Activator,
                 actionName: "Activating");
-        }
 
         [ExcludeFromCodeCoverage]
-        private void Registration_Activated(object sender, ActivatedEventArgs<object> e)
-        {
+        private void Registration_Activated(object sender, ActivatedEventArgs<object> e) =>
             RegistrationAction(
                 activator: e.Component.Activator,
                 actionName: "Activated");
-        }
 
         [ExcludeFromCodeCoverage]
-        private void Registration_Preparing(object sender, PreparingEventArgs e)
-        {
+        private void Registration_Preparing(object sender, PreparingEventArgs e) =>
             RegistrationAction(
                 activator: e.Component.Activator,
                 actionName: "Resolving");
-        }
 
         [ExcludeFromCodeCoverage]
-        private static void RegistrationAction(IInstanceActivator activator, string actionName)
-        {
-            Debug.WriteLine(value: $"{actionName} concrete type {activator.LimitType}");
-        }
+        private static void RegistrationAction(IInstanceActivator activator, string actionName) => Debug.WriteLine(value: $"{actionName} concrete type {activator.LimitType}");
     }
 }

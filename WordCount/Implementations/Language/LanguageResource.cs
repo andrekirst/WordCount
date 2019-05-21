@@ -9,36 +9,33 @@ namespace WordCount.Implementations.Language
 {
     public class LanguageResource : ILanguageResource
     {
-        private readonly ICultureInfo _cultureInfo;
-        private readonly IResourceManager _resourceManager;
-        private readonly ILanguageDecision _languageDecision;
+        private ILanguageDecision LanguageDecision { get; }
+        private ICultureInfo CultureInfo { get; }
+        private IResourceManager ResourceManager { get; }
 
         public LanguageResource(
             ILanguageDecision languageDecision,
             ICultureInfo cultureInfo,
             IResourceManager resourceManager)
         {
-            _cultureInfo = cultureInfo;
-            _resourceManager = resourceManager;
-            _languageDecision = languageDecision;
+            LanguageDecision = languageDecision;
+            CultureInfo = cultureInfo;
+            ResourceManager = resourceManager;
         }
 
         public string GetResourceStringById(string resourceIdent)
         {
-            DecideLanguageResult languageDecision = _languageDecision.DecideLanguage();
+            DecideLanguageResult languageDecision = LanguageDecision.DecideLanguage();
 
             string mappedLanguageCulture = LanguageToCultureMapping.Mappings[key: languageDecision.Language];
 
-            System.Globalization.CultureInfo currentCultureInfo = _cultureInfo.GetCultureInfo(culture: mappedLanguageCulture);
+            System.Globalization.CultureInfo currentCultureInfo = CultureInfo.GetCultureInfo(culture: mappedLanguageCulture);
 
-            return _resourceManager.GetString(
+            return ResourceManager.GetString(
                 name: resourceIdent,
                 cultureInfo: currentCultureInfo);
         }
 
-        public int DetectLongestResourceString(string[] resourceIdents)
-        {
-            return resourceIdents.Max(selector: s => GetResourceStringById(resourceIdent: s).Length);
-        }
+        public int DetectLongestResourceString(string[] resourceIdents) => resourceIdents.Max(selector: s => GetResourceStringById(resourceIdent: s).Length);
     }
 }

@@ -5,13 +5,13 @@ namespace WordCount.Implementations
 {
     public class AppSettingsReader : IAppSettingsReader
     {
-        private readonly IConfigurationManager _configurationManager;
+        private IConfigurationManager ConfigurationManager { get; }
 
         public AppSettingsReader(IConfigurationManager configurationManager)
         {
-            _configurationManager = configurationManager;
+            ConfigurationManager = configurationManager;
         }
 
-        public string DefaultLanguage => _configurationManager.AppSettings[name: "defaultLanguage"];
+        public string DefaultLanguage => ConfigurationManager.AppSettings[name: "defaultLanguage"];
     }
 }

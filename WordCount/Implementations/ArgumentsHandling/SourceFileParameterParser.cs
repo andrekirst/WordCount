@@ -9,18 +9,18 @@ namespace WordCount.Implementations.ArgumentsHandling
 {
     public class SourceFileParameterParser : BaseParameterParser<SourceFileParameter>, ISourceFileParameterParser
     {
-        private readonly IEnvironment _environment;
+        private IEnvironment Environment { get; }
 
         public SourceFileParameterParser(IEnvironment environment)
         {
-            _environment = environment;
+            Environment = environment;
         }
 
         public SourceFileParameter ParseSourceFileParameter()
         {
             return CachedValue(toCachingValue: () =>
             {
-                string[] commandLineArgs = _environment.GetCommandLineArgs() ?? Array.Empty<string>();
+                string[] commandLineArgs = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
 
                 string fileName = commandLineArgs
                                       .FirstOrDefault(predicate: s => !s.StartsWith(value: "-")) ?? string.Empty;

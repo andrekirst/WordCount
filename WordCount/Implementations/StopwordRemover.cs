@@ -6,22 +6,22 @@ namespace WordCount.Implementations
 {
     public class StopwordRemover : IStopwordRemover
     {
-        private readonly IStopwordLoader _stopwordLoader;
+        private IStopwordLoader StopwordLoader { get; }
 
         public StopwordRemover(IStopwordLoader stopwordLoader)
         {
-            _stopwordLoader = stopwordLoader;
+            StopwordLoader = stopwordLoader;
         }
 
         public StopwordRemoverResult RemoveStopwords(List<string> words)
         {
-            List<string> stopwords = _stopwordLoader.GetStopwords();
-
-            words.RemoveAll(match: stopwords.Contains);
+            List<string> stopwords = StopwordLoader.GetStopwords();
+            List<string> newWordsList = new List<string>(collection: words);
+            newWordsList.RemoveAll(match: stopwords.Contains);
             
             return new StopwordRemoverResult
             {
-                Words = words
+                Words = newWordsList
             };
         }
     }

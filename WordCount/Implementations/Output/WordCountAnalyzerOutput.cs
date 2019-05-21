@@ -6,40 +6,40 @@ namespace WordCount.Implementations.Output
 {
     public class WordCountAnalyzerOutput : IWordCountAnalyzerOutput
     {
-        private readonly IDisplayOutput _displayOutput;
-        private readonly IStatisticsOutput _statisticsOutput;
-        private readonly ILanguageResource _languageResource;
+        private IDisplayOutput DisplayOutput { get; }
+        private IStatisticsOutput StatisticsOutput { get; }
+        private ILanguageResource LanguageResource { get; }
 
         public WordCountAnalyzerOutput(
             IDisplayOutput displayOutput,
             IStatisticsOutput statisticsOutput,
             ILanguageResource languageResource)
         {
-            _displayOutput = displayOutput;
-            _statisticsOutput = statisticsOutput;
-            _languageResource = languageResource;
+            DisplayOutput = displayOutput;
+            StatisticsOutput = statisticsOutput;
+            LanguageResource = languageResource;
         }
 
         public void DisplayResult(WordCountAnalyzerResult result)
         {
-            _displayOutput.WriteResourceLine(resourceIdent: "STATISTICS");
+            DisplayOutput.WriteResourceLine(resourceIdent: "STATISTICS");
 
-            int lengthOfMaxString = _languageResource.DetectLongestResourceString(
+            int lengthOfMaxString = LanguageResource.DetectLongestResourceString(
                 resourceIdents: new[] { "NUMBER_OF_WORDS", "UNIQUE", "AVERAGE_WORD_LENGTH", "CHAPTERS" });
 
-            _statisticsOutput.WriteNumberOfWords(
+            StatisticsOutput.WriteNumberOfWords(
                 numberOfWords: result.NumberOfWords,
                 maxCountOfFillingPoints: lengthOfMaxString);
 
-            _statisticsOutput.WriteNumberOfUniqeWords(
+            StatisticsOutput.WriteNumberOfUniqeWords(
                 numberOfUniqeWords: result.NumberOfUniqueWords,
                 maxCountOfFillingPoints: lengthOfMaxString);
 
-            _statisticsOutput.WriteAverageWordLength(
+            StatisticsOutput.WriteAverageWordLength(
                 averageWordLength: result.AverageWordLength,
                 maxCountOfFillingPoints: lengthOfMaxString);
 
-            _statisticsOutput.WriteNumberOfChapters(
+            StatisticsOutput.WriteNumberOfChapters(
                 numberOfChapters: result.NumberOfChapters,
                 maxCountOfFillingPoints: lengthOfMaxString);
         }

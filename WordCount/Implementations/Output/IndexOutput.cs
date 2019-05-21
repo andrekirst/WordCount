@@ -11,10 +11,10 @@ namespace WordCount.Implementations.Output
 {
     public class IndexOutput : IIndexOutput
     {
-        private readonly IDisplayOutput _displayOutput;
-        private readonly IDictionaryFileLoader _dictionaryFileLoader;
-        private readonly IIndexParameterParser _indexParameterParser;
-        private readonly IDictionaryParameterParser _dictionaryParameterParser;
+        private IDisplayOutput DisplayOutput { get; }
+        private IDictionaryFileLoader DictionaryFileLoader { get; }
+        private IIndexParameterParser IndexParameterParser { get; }
+        private IDictionaryParameterParser DictionaryParameterParser { get; }
 
         public IndexOutput(
             IDisplayOutput displayOutput,
@@ -22,20 +22,20 @@ namespace WordCount.Implementations.Output
             IIndexParameterParser indexParameterParser,
             IDictionaryParameterParser dictionaryParameterParser)
         {
-            _displayOutput = displayOutput;
-            _dictionaryFileLoader = dictionaryFileLoader;
-            _indexParameterParser = indexParameterParser;
-            _dictionaryParameterParser = dictionaryParameterParser;
+            DisplayOutput = displayOutput;
+            DictionaryFileLoader = dictionaryFileLoader;
+            IndexParameterParser = indexParameterParser;
+            DictionaryParameterParser = dictionaryParameterParser;
         }
 
         public void OutputIndex(IndexOutputRequest indexOutputRequest)
         {
-            IndexParameter indexParameter = _indexParameterParser.ParseIndexParameter();
-            DictionaryParameter dictionaryParameter = _dictionaryParameterParser.ParseDictionaryParameter();
+            IndexParameter indexParameter = IndexParameterParser.ParseIndexParameter();
+            DictionaryParameter dictionaryParameter = DictionaryParameterParser.ParseDictionaryParameter();
 
             if (indexParameter.IsPresent)
             {
-                List<string> dictionaryWords = _dictionaryFileLoader.ReadWords();
+                List<string> dictionaryWords = DictionaryFileLoader.ReadWords();
 
                 int unknwonWordsCount = EnumerableHelpers.CountUnknownWords(
                     distinctWords: indexOutputRequest.DistinctWords,
@@ -43,13 +43,13 @@ namespace WordCount.Implementations.Output
 
                 if (dictionaryParameter.IsPresent)
                 {
-                    _displayOutput.WriteResourceLine(
+                    DisplayOutput.WriteResourceLine(
                         resourceIdent: "INDEX_WITH_UNKNOWN",
                         placeholderValues: unknwonWordsCount);
                 }
                 else
                 {
-                    _displayOutput.WriteResourceLine(
+                    DisplayOutput.WriteResourceLine(
                         resourceIdent: "INDEX");
                 }
 
@@ -73,7 +73,7 @@ namespace WordCount.Implementations.Output
                 {
                     word += "*";
                 }
-                _displayOutput.WriteLine(text: word);
+                DisplayOutput.WriteLine(text: word);
             }
         }
     }

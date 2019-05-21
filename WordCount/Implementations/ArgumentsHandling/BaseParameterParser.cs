@@ -8,7 +8,7 @@ namespace WordCount.Implementations.ArgumentsHandling
     {
         private T Cache { get; set; }
 
-        public T CachedValue(Func<T> toCachingValue)
+        protected T CachedValue(Func<T> toCachingValue)
         {
             if (Cache != null)
             {

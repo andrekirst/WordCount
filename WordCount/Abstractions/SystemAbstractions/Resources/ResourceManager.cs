@@ -14,11 +14,9 @@ namespace WordCount.Abstractions.SystemAbstractions.Resources
                 assembly: typeof(Program).Assembly);
         }
 
-        public string GetString(string name, System.Globalization.CultureInfo cultureInfo)
-        {
-            return _resourceManager.GetString(
+        public string GetString(string name, System.Globalization.CultureInfo cultureInfo) =>
+            _resourceManager.GetString(
                 name: name,
                 culture: cultureInfo);
-        }
     }
 }

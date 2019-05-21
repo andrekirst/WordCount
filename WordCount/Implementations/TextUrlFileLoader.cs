@@ -7,23 +7,23 @@ namespace WordCount.Implementations
 {
     public class TextUrlFileLoader : ITextUrlFileLoader
     {
-        private readonly ITextUrlParameterParser _textUrlParameterParser;
-        private readonly IHttpClient _httpClient;
+        private ITextUrlParameterParser TextUrlParameterParser { get; }
+        private IHttpClient HttpClient { get; }
 
         public TextUrlFileLoader(
             ITextUrlParameterParser textUrlParameterParser,
             IHttpClient httpClient)
         {
-            _textUrlParameterParser = textUrlParameterParser;
-            _httpClient = httpClient;
+            TextUrlParameterParser = textUrlParameterParser;
+            HttpClient = httpClient;
         }
 
         public string ReadTextFile()
         {
-            TextUrlParameter textUrlParameter = _textUrlParameterParser.ParseTextUrlParameter();
+            TextUrlParameter textUrlParameter = TextUrlParameterParser.ParseTextUrlParameter();
 
             return textUrlParameter.IsPresent ?
-                _httpClient.ReadString(url: textUrlParameter.Url).Result
+                HttpClient.ReadString(url: textUrlParameter.Url).Result
                 : null;
         }
     }

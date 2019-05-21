@@ -11,12 +11,10 @@ namespace WordCount.Extensions
             TImplementation,
             ConcreteReflectionActivatorData,
             SingleRegistrationStyle>
-            Register<TService, TImplementation>(this ContainerBuilder containerBuilder)
-        {
-            return containerBuilder
+            Register<TService, TImplementation>(this ContainerBuilder containerBuilder) =>
+            containerBuilder
                 .RegisterType<TImplementation>()
                 .As<TService>()
                 .SingleInstance();
-        }
     }
 }

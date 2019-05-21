@@ -9,19 +9,19 @@ namespace WordCount.Implementations.ArgumentsHandling
 {
     public class LanguageParameterParser : BaseParameterParser<LanguageParameter>, ILanguageParameterParser
     {
-        private readonly IEnvironment _environment;
+        private IEnvironment Environment { get; }
 
         public LanguageParameterParser(
             IEnvironment environment)
         {
-            _environment = environment;
+            Environment = environment;
         }
 
         public LanguageParameter ParseLanguageParameter()
         {
             return CachedValue(toCachingValue: () =>
             {
-                string[] commandLineArgs = _environment.GetCommandLineArgs() ?? Array.Empty<string>();
+                string[] commandLineArgs = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
 
                 string languageParameter =
                     commandLineArgs.FirstOfMatchingRegex(pattern: "^-lang=[a-zA-Z]{1,}$") ?? string.Empty;

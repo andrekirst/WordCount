@@ -5,9 +5,6 @@ namespace WordCount.Abstractions.SystemAbstractions.Globalization
     [ExcludeFromCodeCoverage]
     public class CultureInfo : ICultureInfo
     {
-        public System.Globalization.CultureInfo GetCultureInfo(string culture)
-        {
-            return System.Globalization.CultureInfo.GetCultureInfo(name: culture);
-        }
+        public System.Globalization.CultureInfo GetCultureInfo(string culture) => System.Globalization.CultureInfo.GetCultureInfo(name: culture);
     }
 }
