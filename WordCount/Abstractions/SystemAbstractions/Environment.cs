@@ -8,7 +8,7 @@ namespace WordCount.Abstractions.SystemAbstractions
     {
         public string[] GetCommandLineArgs() =>
             System.Environment.GetCommandLineArgs()
-                .Skip(count: 1)
+                .Skip(1)
                 .ToArray();
     }
 }

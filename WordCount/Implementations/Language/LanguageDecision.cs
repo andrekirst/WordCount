@@ -34,9 +34,9 @@ namespace WordCount.Implementations.Language
                 return _cache;
             }
 
-            string language = AppSettingsReader.DefaultLanguage;
+            var language = AppSettingsReader.DefaultLanguage;
 
-            LanguageParameter languageParameter = LanguageParameterParser.ParseLanguageParameter();
+            var languageParameter = LanguageParameterParser.ParseLanguageParameter();
 
             if (languageParameter.IsPresent)
             {
@@ -44,9 +44,9 @@ namespace WordCount.Implementations.Language
             }
 
             if (language.IsFilled() &&
-                !LanguageToCultureMapping.Mappings.ContainsKey(key: language))
+                !LanguageToCultureMapping.Mappings.ContainsKey(language))
             {
-                Console.WriteLine(text: $"Language \"{language}\" not supported.");
+                Console.WriteLine($"Language \"{language}\" not supported.");
                 language = DefaultFallbackLanguage;
             }
 

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7B7E3D45-7E36-4E7D-B0B3-CAEE591451C0}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>WordCount</RootNamespace>
+    <AssemblyName>WordCount</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>WordCount.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+    <CodeAnalysisRuleSet>WordCount.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.9.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.9.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Abstractions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=96bf224d23c43e59, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.4.2.13\lib\net40\System.IO.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstractions\SystemAbstractions\Configuration\ConfigurationManager.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Configuration\IConfigurationManager.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Console.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\IConsole.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Globalization\CultureInfo.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Globalization\ICultureInfo.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Environment.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\IEnvironment.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Net\Http\HttpClient.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Net\Http\IHttpClient.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Reflection\EntryAssembly.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Reflection\IAssembly.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Resources\IResourceManager.cs" />
+    <Compile Include="Abstractions\SystemAbstractions\Resources\ResourceManager.cs" />
+    <Compile Include="AutofacModules\LogRequestsModule.cs" />
+    <Compile Include="Extensions\ContainerBuilderExtensions.cs" />
+    <Compile Include="Extensions\EnumerableStringExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\RegexStringExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Helpers\EnumerableHelpers.cs" />
+    <Compile Include="Helpers\LanguageCultureMappings.cs" />
+    <Compile Include="Implementations\AppSettingsReader.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\BaseParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\DictionaryParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\HelpParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\IndexParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\LanguageParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\SourceFileParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\StopwordListParameterParser.cs" />
+    <Compile Include="Implementations\ArgumentsHandling\TextUrlParameterParser.cs" />
+    <Compile Include="Implementations\Output\ConsoleDisplayOutput.cs" />
+    <Compile Include="Implementations\DictionaryFileLoader.cs" />
+    <Compile Include="Implementations\Output\HelpOutput.cs" />
+    <Compile Include="Implementations\Output\IndexOutput.cs" />
+    <Compile Include="Implementations\Language\LanguageDecision.cs" />
+    <Compile Include="Implementations\Language\LanguageResource.cs" />
+    <Compile Include="Implementations\Output\StatisticsOutput.cs" />
+    <Compile Include="Implementations\StopwordRemover.cs" />
+    <Compile Include="Implementations\TextFileLoader.cs" />
+    <Compile Include="Implementations\TextInput.cs" />
+    <Compile Include="Implementations\Interactor.cs" />
+    <Compile Include="Implementations\StopwordLoader.cs" />
+    <Compile Include="Implementations\TextSplit.cs" />
+    <Compile Include="Implementations\TextUrlFileLoader.cs" />
+    <Compile Include="Implementations\WordCountAnalyzer.cs" />
+    <Compile Include="Implementations\Output\WordCountAnalyzerOutput.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\IHelpParameterParser.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\ILanguageParameterParser.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\IStopwordListParameterParser.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\ITextUrlParameterParser.cs" />
+    <Compile Include="Interfaces\IAppSettingsReader.cs" />
+    <Compile Include="Interfaces\IDictionaryFileLoader.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\IDictionaryParameterParser.cs" />
+    <Compile Include="Interfaces\Output\IDisplayOutput.cs" />
+    <Compile Include="Interfaces\Output\IHelpOutput.cs" />
+    <Compile Include="Interfaces\Output\IIndexOutput.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\IIndexParameterParser.cs" />
+    <Compile Include="Interfaces\IInteractor.cs" />
+    <Compile Include="Interfaces\ArgumentsHandling\ISourceFileParameterParser.cs" />
+    <Compile Include="Interfaces\Output\IStatisticsOutput.cs" />
+    <Compile Include="Interfaces\Language\ILanguageDecision.cs" />
+    <Compile Include="Interfaces\Language\ILanguageResource.cs" />
+    <Compile Include="Interfaces\IStopwordLoader.cs" />
+    <Compile Include="Interfaces\IStopwordRemover.cs" />
+    <Compile Include="Interfaces\ITextFileLoader.cs" />
+    <Compile Include="Interfaces\ITextInput.cs" />
+    <Compile Include="Interfaces\ITextSplit.cs" />
+    <Compile Include="Interfaces\ITextUrlFileLoader.cs" />
+    <Compile Include="Interfaces\IWordCountAnalyzer.cs" />
+    <Compile Include="Interfaces\Output\IWordCountAnalyzerOutput.cs" />
+    <Compile Include="Models\Parameters\BaseParameter.cs" />
+    <Compile Include="Models\Parameters\DictionaryParameter.cs" />
+    <Compile Include="Models\Parameters\LanguageParameter.cs" />
+    <Compile Include="Models\Parameters\TextUrlParameter.cs" />
+    <Compile Include="Models\Requests\IndexOutputRequest.cs" />
+    <Compile Include="Models\Parameters\IndexParameter.cs" />
+    <Compile Include="Models\Results\DecideLanguageResult.cs" />
+    <Compile Include="Models\Results\InputTextResult.cs" />
+    <Compile Include="Models\Parameters\HelpParameter.cs" />
+    <Compile Include="Models\Parameters\SourceFileParameter.cs" />
+    <Compile Include="Models\Parameters\StopwordListParameter.cs" />
+    <Compile Include="Models\Results\StopwordRemoverResult.cs" />
+    <Compile Include="Models\Results\TextSplitResult.cs" />
+    <Compile Include="Models\Results\WordCountAnalyzerResult.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="WordCount.ruleset" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dict.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sample_chapters.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sample2_bindestrich.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sample.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="stopwords.de.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="stopwords2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="stopwords.en.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\SecurityCodeScan.3.2.0.0\analyzers\dotnet\SecurityCodeScan.dll" />
+    <Analyzer Include="..\packages\SecurityCodeScan.3.2.0.0\analyzers\dotnet\YamlDotNet.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Resource.de-DE.resx" />
+    <EmbeddedResource Include="Resources\Resource.en-US.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

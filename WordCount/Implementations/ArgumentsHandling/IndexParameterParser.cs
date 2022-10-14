@@ -17,12 +17,12 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public IndexParameter ParseIndexParameter()
         {
-            return CachedValue(toCachingValue: () =>
+            return CachedValue(() =>
             {
-                string[] commandLineArgs = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
+                var commandLineArgs = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
                 return new IndexParameter
                 {
-                    IsPresent = commandLineArgs.Contains(value: "-index")
+                    IsPresent = commandLineArgs.Contains("-index")
                 };
             });
         }

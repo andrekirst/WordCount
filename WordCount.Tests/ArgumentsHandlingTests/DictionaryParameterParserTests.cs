@@ -1,119 +1,106 @@
-﻿using Autofac;
-using Moq;
+﻿using Moq;
 using System;
+using AutoFixture.Xunit2;
+using FluentAssertions;
 using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Implementations.ArgumentsHandling;
-using WordCount.Models.Parameters;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests.ArgumentsHandlingTests
+namespace WordCount.Tests.ArgumentsHandlingTests;
+
+public class DictionaryParameterParserTests
 {
-    public class DictionaryParameterParserTests
+    [Theory, AutoMoqData]
+    public void DictionaryParameterParserTests_Args_have_no_Dictionary_Parameter_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        DictionaryParameterParser sut)
     {
-        private readonly Mock<IEnvironment> _mockEnvironment;
-        private readonly DictionaryParameterParser _systemUnderTest;
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "bla.txt" });
 
-        public DictionaryParameterParserTests()
-        {
-            _mockEnvironment = new Mock<IEnvironment>();
+        var actual = sut.ParseDictionaryParameter();
 
-            ContainerBuilder containerBuilder = new ContainerBuilder();
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-            containerBuilder
-                .RegisterInstance(instance: _mockEnvironment.Object)
-                .As<IEnvironment>();
+    [Theory, AutoMoqData]
+    public void DictionaryParameterParserTests_Args_is_null_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        DictionaryParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(() => null);
 
-            containerBuilder
-                .RegisterType<DictionaryParameterParser>();
+        var actual = sut
+            .ParseDictionaryParameter();
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<DictionaryParameterParser>();
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-        [NamedFact]
-        public void DictionaryParameterParserTests_Args_have_no_Dictionary_Parameter_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] {"bla.txt"});
+    [Theory, AutoMoqData]
+    public void DictionaryParameterParserTests_Args_is_empty_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        DictionaryParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(Array.Empty<string>());
 
-            DictionaryParameter actual = _systemUnderTest
-                .ParseDictionaryParameter();
+        var actual = sut
+            .ParseDictionaryParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-        [NamedFact]
-        public void DictionaryParameterParserTests_Args_is_null_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: null);
+    [Theory, AutoMoqData]
+    public void DictionaryParameterParserTests_Args_has_DictionaryParameter_with_no_equal_sign_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        DictionaryParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-dictionary" });
 
-            DictionaryParameter actual = _systemUnderTest
-                .ParseDictionaryParameter();
+        var actual = sut
+            .ParseDictionaryParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-        [NamedFact]
-        public void DictionaryParameterParserTests_Args_is_empty_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: Array.Empty<string>());
+    [Theory, AutoMoqData]
+    public void DictionaryParameterParserTests_Args_has_DictionaryParameter_Without_File_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        DictionaryParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-dictionary=" });
 
-            DictionaryParameter actual = _systemUnderTest
-                .ParseDictionaryParameter();
+        var actual = sut
+            .ParseDictionaryParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-        [NamedFact]
-        public void DictionaryParameterParserTests_Args_has_DictionaryParameter_with_no_equal_sign_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(m => m.GetCommandLineArgs())
-                .Returns(new[] {"-dictionary"});
+    [Theory, AutoMoqData]
+    public void DictionaryParameterParserTests_Args_has_DictionaryParameter_With_File_bla_txt_Expect_FileName_bla_txt(
+        [Frozen] Mock<IEnvironment> environment,
+        DictionaryParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-dictionary=bla.txt" });
 
-            DictionaryParameter actual = _systemUnderTest
-                .ParseDictionaryParameter();
+        var actual = sut.ParseDictionaryParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
-
-        [NamedFact]
-        public void DictionaryParameterParserTests_Args_has_DictionaryParameter_Without_File_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(m => m.GetCommandLineArgs())
-                .Returns(new[] { "-dictionary=" });
-
-            DictionaryParameter actual = _systemUnderTest
-                .ParseDictionaryParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
-
-        [NamedFact]
-        public void DictionaryParameterParserTests_Args_has_DictionaryParameter_With_File_bla_txt_Expect_FileName_bla_txt()
-        {
-            _mockEnvironment
-                .Setup(m => m.GetCommandLineArgs())
-                .Returns(new[] { "-dictionary=bla.txt" });
-
-            DictionaryParameter actual = _systemUnderTest
-                .ParseDictionaryParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: "bla.txt", actual: actual.FileName);
-        }
+        actual.Should().NotBeNull();
+        actual.FileName.Should().Be("bla.txt");
     }
 }

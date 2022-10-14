@@ -20,7 +20,7 @@ namespace WordCount.Helpers
             }
 
             return distinctWords
-                .Except(second: dictionaryWords)
+                .Except(dictionaryWords)
                 .Count();
         }
     }

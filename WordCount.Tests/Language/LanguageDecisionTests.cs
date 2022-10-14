@@ -1,181 +1,160 @@
-﻿using Autofac;
+﻿using AutoFixture.Xunit2;
+using FluentAssertions;
 using Moq;
 using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Implementations.Language;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
-using WordCount.Models.Results;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests.Language
+namespace WordCount.Tests.Language;
+
+public class LanguageDecisionTests
 {
-    public class LanguageDecisionTests
+    [Theory, AutoMoqData]
+    public void LanguageDecisionTests_Parameter_is_present_and_language_de_expect_de(
+        [Frozen] Mock<ILanguageParameterParser> languageParameterParser,
+        LanguageDecision sut)
     {
-        private readonly Mock<IAppSettingsReader> _mockAppSettingsReader;
-        private readonly Mock<ILanguageParameterParser> _mockLanguageParameterParser;
-        private readonly Mock<IConsole> _mockConsole;
-        private readonly LanguageDecision _systemUnderTest;
+        languageParameterParser
+            .Setup(m => m.ParseLanguageParameter())
+            .Returns(new LanguageParameter { IsPresent = true, Language = "de" });
 
-        public LanguageDecisionTests()
-        {
-            _mockAppSettingsReader = new Mock<IAppSettingsReader>();
-            _mockLanguageParameterParser = new Mock<ILanguageParameterParser>();
-            _mockConsole = new Mock<IConsole>();
+        var actual = sut.DecideLanguage();
 
-            ContainerBuilder containerBuilder = new ContainerBuilder();
+        actual.Should().NotBeNull();
+        actual.Language.Should().Be("de");
+    }
 
-            containerBuilder
-                .RegisterInstance(instance: _mockAppSettingsReader.Object)
-                .As<IAppSettingsReader>();
+    [Theory, AutoMoqData]
+    public void LanguageDecisionTests_Parameter_is_not_present_and_app_settings_has_no_value_expect_en(
+        [Frozen] Mock<ILanguageParameterParser> languageParameterParser,
+        [Frozen] Mock<IAppSettingsReader> appSettingsReader,
+        LanguageDecision sut)
+    {
+        languageParameterParser
+            .Setup(m => m.ParseLanguageParameter())
+            .Returns(new LanguageParameter { IsPresent = false });
 
-            containerBuilder
-                .RegisterInstance(instance: _mockLanguageParameterParser.Object)
-                .As<ILanguageParameterParser>();
+        appSettingsReader
+            .SetupGet(m => m.DefaultLanguage)
+            .Returns(() => null);
 
-            containerBuilder
-                .RegisterInstance(instance: _mockConsole.Object)
-                .As<IConsole>();
+        var actual = sut.DecideLanguage();
 
-            containerBuilder
-                .RegisterType<LanguageDecision>();
+        actual.Should().NotBeNull();
+        actual.Language.Should().Be("en");
+    }
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<LanguageDecision>();
-        }
+    [Theory, AutoMoqData]
+    public void LanguageDecisionTests_Parameter_is_not_present_and_app_settings_has_de_expect_de(
+        [Frozen] Mock<ILanguageParameterParser> languageParameterParser,
+        [Frozen] Mock<IAppSettingsReader> appSettingsReader,
+        LanguageDecision sut)
+    {
+        languageParameterParser
+            .Setup(m => m.ParseLanguageParameter())
+            .Returns(new LanguageParameter { IsPresent = false });
 
-        [NamedFact]
-        public void LanguageDecisionTests_Parameter_is_present_and_language_de_expect_de()
-        {
-            _mockLanguageParameterParser
-                .Setup(expression: m => m.ParseLanguageParameter())
-                .Returns(value: new LanguageParameter { IsPresent = true, Language = "de" });
+        appSettingsReader
+            .SetupGet(m => m.DefaultLanguage)
+            .Returns("de");
 
-            DecideLanguageResult actual = _systemUnderTest.DecideLanguage();
+        var actual = sut.DecideLanguage();
 
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: "de", actual: actual.Language);
-        }
+        actual.Should().NotBeNull();
+        actual.Language.Should().Be("de");
+    }
 
-        [NamedFact]
-        public void LanguageDecisionTests_Parameter_is_not_present_and_app_settings_has_no_value_expect_en()
-        {
-            _mockLanguageParameterParser
-                .Setup(expression: m => m.ParseLanguageParameter())
-                .Returns(value: new LanguageParameter { IsPresent = false });
+    [Theory, AutoMoqData]
+    public void LanguageDecisionTests_Parameter_is_present_and_has_language_it_expect_en_and_console_not_supported_language(
+        [Frozen] Mock<ILanguageParameterParser> languageParameterParser,
+        [Frozen] Mock<IConsole> console,
+        LanguageDecision sut)
+    {
+        languageParameterParser
+            .Setup(m => m.ParseLanguageParameter())
+            .Returns(new LanguageParameter { IsPresent = true, Language = "it" });
 
-            _mockAppSettingsReader
-                .SetupGet(m => m.DefaultLanguage)
-                .Returns(value: null);
+        var actual = sut.DecideLanguage();
 
-            DecideLanguageResult actual = _systemUnderTest.DecideLanguage();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: "en", actual: actual.Language);
-        }
-
-        [NamedFact]
-        public void LanguageDecisionTests_Parameter_is_not_present_and_app_settings_has_de_expect_de()
-        {
-            _mockLanguageParameterParser
-                .Setup(expression: m => m.ParseLanguageParameter())
-                .Returns(value: new LanguageParameter { IsPresent = false });
-
-            _mockAppSettingsReader
-                .SetupGet(m => m.DefaultLanguage)
-                .Returns(value: "de");
-
-            DecideLanguageResult actual = _systemUnderTest.DecideLanguage();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: "de", actual: actual.Language);
-        }
-
-        [NamedFact]
-        public void LanguageDecisionTests_Parameter_is_present_and_has_language_it_expect_en_and_console_not_supported_language()
-        {
-            _mockLanguageParameterParser
-                .Setup(m => m.ParseLanguageParameter())
-                .Returns(new LanguageParameter { IsPresent = true, Language = "it" });
-
-            DecideLanguageResult actual = _systemUnderTest.DecideLanguage();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal("en", actual.Language);
-
+        actual.Should().NotBeNull();
+        actual.Language.Should().Be("en");
             
-            _mockConsole
-                .Verify(v => v.WriteLine("Language \"it\" not supported."), Times.Once);
-        }
+        console.Verify(v => v.WriteLine("Language \"it\" not supported."), Times.Once);
+    }
 
-        [NamedFact]
-        public void LanguageDecisionTests_appsetting_has_default_language_it_expect_en_and_console_not_supported_language()
-        {
-            _mockLanguageParameterParser
-                .Setup(m => m.ParseLanguageParameter())
-                .Returns(new LanguageParameter { IsPresent = false });
+    [Theory, AutoMoqData]
+    public void LanguageDecisionTests_appsetting_has_default_language_it_expect_en_and_console_not_supported_language(
+        [Frozen] Mock<ILanguageParameterParser> languageParameterParser,
+        [Frozen] Mock<IAppSettingsReader> appSettingsReader,
+        [Frozen] Mock<IConsole> console,
+        LanguageDecision sut)
+    {
+        languageParameterParser
+            .Setup(m => m.ParseLanguageParameter())
+            .Returns(new LanguageParameter { IsPresent = false });
 
-            _mockAppSettingsReader
-                .SetupGet(m => m.DefaultLanguage)
-                .Returns("it");
+        appSettingsReader
+            .SetupGet(m => m.DefaultLanguage)
+            .Returns("it");
 
-            DecideLanguageResult actual = _systemUnderTest.DecideLanguage();
+        var actual = sut.DecideLanguage();
 
-            Assert.NotNull(@object: actual);
-            Assert.Equal("en", actual.Language);
+        actual.Should().NotBeNull();
+        actual.Language.Should().Be("en");
 
-            _mockConsole
-                .Verify(v => v.WriteLine("Language \"it\" not supported."), Times.Once);
-        }
+        console.Verify(v => v.WriteLine("Language \"it\" not supported."), Times.Once);
+    }
 
+    [Theory, AutoMoqData]
+    public void LanguageDecisionTests_parameter_has_it_appsetting_has_es_expect_en_and_console_not_supported_language_it(
+        [Frozen] Mock<ILanguageParameterParser> languageParameterParser,
+        [Frozen] Mock<IAppSettingsReader> appSettingsReader,
+        [Frozen] Mock<IConsole> console,
+        LanguageDecision sut)
+    {
+        languageParameterParser
+            .Setup(m => m.ParseLanguageParameter())
+            .Returns(new LanguageParameter { IsPresent = true, Language = "it" });
 
+        appSettingsReader
+            .SetupGet(m => m.DefaultLanguage)
+            .Returns("es");
 
-        [NamedFact]
-        public void LanguageDecisionTests_parameter_has_it_appsetting_has_es_expect_en_and_console_not_supported_language_it()
-        {
-            _mockLanguageParameterParser
-                .Setup(m => m.ParseLanguageParameter())
-                .Returns(new LanguageParameter { IsPresent = true, Language = "it" });
+        var actual = sut.DecideLanguage();
 
-            _mockAppSettingsReader
-                .SetupGet(m => m.DefaultLanguage)
-                .Returns("es");
+        actual.Should().NotBeNull();
+        actual.Language.Should().Be("en");
 
-            DecideLanguageResult actual = _systemUnderTest.DecideLanguage();
+        console.Verify(v => v.WriteLine("Language \"it\" not supported."), Times.Once);
+    }
 
-            Assert.NotNull(@object: actual);
-            Assert.Equal("en", actual.Language);
+    [Theory, AutoMoqData]
+    public void LanguageDecisionTests_CachingTest(
+        [Frozen] Mock<ILanguageParameterParser> languageParameterParser,
+        [Frozen] Mock<IAppSettingsReader> appSettingsReader,
+        LanguageDecision sut)
+    {
+        languageParameterParser
+            .Setup(m => m.ParseLanguageParameter())
+            .Returns(new LanguageParameter { IsPresent = false });
 
-            _mockConsole
-                .Verify(v => v.WriteLine("Language \"it\" not supported."), Times.Once);
-        }
+        appSettingsReader
+            .SetupGet(m => m.DefaultLanguage)
+            .Returns("de");
 
-        [NamedFact]
-        public void LanguageDecisionTests_CachingTest()
-        {
-            _mockLanguageParameterParser
-                .Setup(expression: m => m.ParseLanguageParameter())
-                .Returns(value: new LanguageParameter { IsPresent = false });
+        var actual = sut.DecideLanguage();
 
-            _mockAppSettingsReader
-                .SetupGet(m => m.DefaultLanguage)
-                .Returns(value: "de");
+        actual.Should().NotBeNull();
+        Assert.Equal("de", actual.Language);
 
-            DecideLanguageResult actual = _systemUnderTest.DecideLanguage();
+        actual = sut.DecideLanguage();
+        actual.Should().NotBeNull();
+        actual.Language.Should().Be("de");
 
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: "de", actual: actual.Language);
-
-            actual = _systemUnderTest.DecideLanguage();
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: "de", actual: actual.Language);
-
-            _mockAppSettingsReader
-                .VerifyGet(v => v.DefaultLanguage, Times.Once);
-            _mockLanguageParameterParser
-                .Verify(v => v.ParseLanguageParameter(), Times.Once);
-        }
+        appSettingsReader.VerifyGet(v => v.DefaultLanguage, Times.Once);
+        languageParameterParser.Verify(v => v.ParseLanguageParameter(), Times.Once);
     }
 }

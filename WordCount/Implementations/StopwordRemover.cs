@@ -15,9 +15,9 @@ namespace WordCount.Implementations
 
         public StopwordRemoverResult RemoveStopwords(List<string> words)
         {
-            List<string> stopwords = StopwordLoader.GetStopwords();
-            List<string> newWordsList = new List<string>(collection: words);
-            newWordsList.RemoveAll(match: stopwords.Contains);
+            var stopwords = StopwordLoader.GetStopwords();
+            var newWordsList = new List<string>(words);
+            newWordsList.RemoveAll(stopwords.Contains);
             
             return new StopwordRemoverResult
             {

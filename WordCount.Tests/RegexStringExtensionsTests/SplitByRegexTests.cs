@@ -1,24 +1,23 @@
 ﻿using System.Collections.Generic;
+using FluentAssertions;
 using Xunit;
 using WordCount.Extensions;
-using WordCount.Tests.XUnitHelpers;
 
-namespace WordCount.Tests.RegexStringExtensionsTests
+namespace WordCount.Tests.RegexStringExtensionsTests;
+
+public class SplitByRegexTests
 {
-    public class SplitByRegexTests
+    [Fact]
+    public void SplitByRegexTests_Pattern_a_zA_Z_text_Hello_World_Expect_2_Words_Hello_and_World()
     {
-        [NamedFact]
-        public void SplitByRegexTests_Pattern_a_zA_Z_text_Hello_World_Expect_2_Words_Hello_and_World()
-        {
-            const string regexPattern = @"[a-zA-Z]{1,}";
+        const string regexPattern = @"[a-zA-Z]{1,}";
 
-            const string text = "Hello World";
+        const string text = "Hello World";
 
-            List<string> actual = text.SplitByRegex(pattern: regexPattern);
+        var actual = text.SplitByRegex(regexPattern);
 
-            List<string> expected = new List<string> {"Hello", "World"};
+        var expected = new List<string> {"Hello", "World"};
 
-            Assert.Equal(expected: expected, actual: actual);
-        }
+        actual.Should().BeEquivalentTo(expected);
     }
 }

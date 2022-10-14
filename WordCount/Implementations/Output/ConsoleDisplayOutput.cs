@@ -18,25 +18,25 @@ namespace WordCount.Implementations.Output
             LanguageResource = languageResource;
         }
 
-        public void Write(string text) => Console.Write(text: text);
+        public void Write(string text) => Console.Write(text);
 
         public void WriteResource(string resourceIdent, params object[] placeholderValues)
         {
-            string resourceValue = LanguageResource.GetResourceStringById(resourceIdent: resourceIdent);
-            Console.Write(text: resourceValue, values: placeholderValues);
+            var resourceValue = LanguageResource.GetResourceStringById(resourceIdent);
+            Console.Write(resourceValue, placeholderValues);
         }
 
         public void WriteResourceLine(string resourceIdent, params object[] placeholderValues)
         {
-            string resourceValue = LanguageResource.GetResourceStringById(resourceIdent: resourceIdent);
-            Console.WriteLine(text: resourceValue, values: placeholderValues);
+            var resourceValue = LanguageResource.GetResourceStringById(resourceIdent);
+            Console.WriteLine(resourceValue, placeholderValues);
         }
 
         public void WriteErrorResourceLine(string resourceIdent, params object[] placeholderValues)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            string resourceValue = LanguageResource.GetResourceStringById(resourceIdent: resourceIdent);
-            Console.WriteLine(text: resourceValue, values: placeholderValues);
+            var resourceValue = LanguageResource.GetResourceStringById(resourceIdent);
+            Console.WriteLine(resourceValue, placeholderValues);
             Console.ResetColor();
         }
 
@@ -45,10 +45,10 @@ namespace WordCount.Implementations.Output
         public void WriteErrorLine(string errorMessage)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(text: errorMessage);
+            Console.WriteLine(errorMessage);
             Console.ResetColor();
         }
 
-        public void WriteLine(string text) => Console.WriteLine(text: text);
+        public void WriteLine(string text) => Console.WriteLine(text);
     }
 }

@@ -1,73 +1,51 @@
-﻿using Autofac;
-using Moq;
+﻿using Moq;
 using System.Collections.Generic;
+using AutoFixture.Xunit2;
+using FluentAssertions;
 using WordCount.Implementations;
 using WordCount.Interfaces;
-using WordCount.Models.Results;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests
+namespace WordCount.Tests;
+
+public class StopwordRemoverTests
 {
-    public class StopwordRemoverTests
+    [Theory, AutoMoqData]
+    public void StopwordRemoverTests_Analyze_Stopword_a_Mary_has_a_little_lamb_Expect_4_Words_with_Stopword_a(
+        [Frozen] Mock<IStopwordLoader> stopwordLoader,
+        StopwordRemover sut)
     {
-        private Mock<IStopwordLoader> _mockStopwordLoader;
-        private readonly StopwordRemover _systemUnderTest;
+        var values = new List<string> { "Mary", "had", "a", "little", "lamb" };
 
-        public StopwordRemoverTests()
-        {
-            _mockStopwordLoader = new Mock<IStopwordLoader>();
+        stopwordLoader
+            .Setup(m => m.GetStopwords())
+            .Returns(new List<string> { "a" });
 
-            var containerBuilder = new ContainerBuilder();
+        var actual = sut.RemoveStopwords(values);
 
-            containerBuilder
-                .RegisterInstance(_mockStopwordLoader.Object)
-                .As<IStopwordLoader>()
-                .SingleInstance();
+        var expected = new List<string> { "Mary", "had", "little", "lamb" };
 
-            containerBuilder
-                .RegisterType<StopwordRemover>()
-                .SingleInstance();
+        actual.Should().NotBeNull();
+        actual.Words.Should().BeEquivalentTo(expected);
+    }
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<StopwordRemover>();
-        }
+    [Theory, AutoMoqData]
+    public void StopwordRemoverTests_Analyze_Stopword_a_Mary_has_a_little_lamb_Expect_5_Words_without_Stopwords(
+        [Frozen] Mock<IStopwordLoader> stopwordLoader,
+        StopwordRemover sut)
+    {
+        var values = new List<string> { "Mary", "had", "a", "little", "lamb" };
 
-        [NamedFact]
-        public void StopwordRemoverTests_Analyze_Stopword_a_Mary_has_a_little_lamb_Expect_4_Words_with_Stopword_a()
-        {
-            List<string> values = new List<string> { "Mary", "had", "a", "little", "lamb" };
+        stopwordLoader
+            .Setup(m => m.GetStopwords())
+            .Returns(new List<string>());
 
-            _mockStopwordLoader
-                .Setup(m => m.GetStopwords())
-                .Returns(value: new List<string> { "a" });
+        var expected = new List<string> { "Mary", "had", "a", "little", "lamb" };
 
-            StopwordRemoverResult actual = _systemUnderTest.RemoveStopwords(words: values);
+        var actual = sut.RemoveStopwords(values);
 
-            List<string> expected = new List<string> { "Mary", "had", "little", "lamb" };
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: expected, actual: actual.Words);
-        }
-
-        [NamedFact]
-        public void StopwordRemoverTests_Analyze_Stopword_a_Mary_has_a_little_lamb_Expect_5_Words_without_Stopwords()
-        {
-            List<string> values = new List<string> { "Mary", "had", "a", "little", "lamb" };
-
-            _mockStopwordLoader
-                .Setup(m => m.GetStopwords())
-                .Returns(new List<string>());
-
-            List<string> expected = new List<string> { "Mary", "had", "a", "little", "lamb" };
-
-            StopwordRemoverResult actual = _systemUnderTest.RemoveStopwords(words: values);
-
-            Assert.NotNull(actual);
-            Assert.NotNull(@object: actual.Words);
-            Assert.NotEmpty(collection: actual.Words);
-            Assert.Equal(expected: expected, actual: actual.Words);
-        }
+        actual.Should().NotBeNull();
+        actual.Words.Should().NotBeNullOrEmpty();
+        actual.Words.Should().BeEquivalentTo(expected);
     }
 }

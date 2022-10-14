@@ -1,134 +1,108 @@
 ﻿using System;
-using Autofac;
 using Moq;
 using System.IO.Abstractions;
+using AutoFixture.Xunit2;
+using FluentAssertions;
 using WordCount.Implementations;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
 using WordCount.Models.Parameters;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests
+namespace WordCount.Tests;
+
+public class TextFileLoaderTests
 {
-    public class TextFileLoaderTests
+    [Theory, AutoMoqData]
+    public void TextFileLoaderTests_FileNotExist_True_Expect_Output_and_return_empty_string(
+        [Frozen] Mock<ISourceFileParameterParser> sourceFileParameterParser,
+        [Frozen] Mock<IFileSystem> fileSystem,
+        [Frozen] Mock<IDisplayOutput> displayOutput,
+        TextFileLoader sut)
     {
-        private readonly Mock<IFileSystem> _mockFileSystem;
-        private readonly Mock<IDisplayOutput> _mockDisplayOutput;
-        private readonly Mock<ISourceFileParameterParser> _mockSourceFileParameterParser;
-        private readonly TextFileLoader _systemUnderTest;
+        sourceFileParameterParser
+            .Setup(m => m.ParseSourceFileParameter())
+            .Returns(new SourceFileParameter
+            {
+                IsPresent = true,
+                FileName = "datei1.txt"
+            });
 
-        public TextFileLoaderTests()
-        {
-            _mockFileSystem = new Mock<IFileSystem>();
-            _mockDisplayOutput = new Mock<IDisplayOutput>();
-            _mockSourceFileParameterParser = new Mock<ISourceFileParameterParser>();
+        fileSystem
+            .Setup(m => m.File.Exists(It.IsAny<string>()))
+            .Returns(false);
 
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder
-                .RegisterInstance(_mockFileSystem.Object)
-                .As<IFileSystem>();
+        var actual = sut.ReadTextFile();
 
-            containerBuilder
-                .RegisterInstance(_mockDisplayOutput.Object)
-                .As<IDisplayOutput>();
+        actual.Should().BeEmpty();
 
-            containerBuilder
-                .RegisterInstance(instance: _mockSourceFileParameterParser.Object)
-                .As<ISourceFileParameterParser>();
+        displayOutput.Verify(v => v.WriteErrorResourceLine("FILE_NOT_FOUND", "datei1.txt"), Times.Once);
+    }
 
-            containerBuilder
-                .RegisterType<TextFileLoader>();
+    [Theory, AutoMoqData]
+    public void TextFileLoaderTests_ReadAllText_Bla_Expect_Bla(
+        [Frozen] Mock<ISourceFileParameterParser> sourceFileParameterParser,
+        [Frozen] Mock<IFileSystem> fileSystem,
+        TextFileLoader sut)
+    {
+        sourceFileParameterParser
+            .Setup(m => m.ParseSourceFileParameter())
+            .Returns(new SourceFileParameter() { IsPresent = true, FileName = It.IsAny<string>() });
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<TextFileLoader>();
-        }
+        fileSystem
+            .Setup(m => m.File.ReadAllText(It.IsAny<string>()))
+            .Returns("Bla");
 
-        [NamedFact]
-        public void TextFileLoaderTests_FileNotExist_True_Expect_Output_and_return_empty_string()
-        {
-            _mockSourceFileParameterParser
-                .Setup(m => m.ParseSourceFileParameter())
-                .Returns(new SourceFileParameter
-                {
-                    IsPresent = true,
-                    FileName = "datei1.txt"
-                });
+        fileSystem
+            .Setup(m => m.File.Exists(It.IsAny<string>()))
+            .Returns(true);
 
-            _mockFileSystem
-                .Setup(m => m.File.Exists(It.IsAny<string>()))
-                .Returns(false);
+        var actual = sut.ReadTextFile();
 
-            string actual = _systemUnderTest.ReadTextFile();
+        actual.Should().Be("Bla");
+    }
 
-            Assert.Equal(
-                expected: string.Empty,
-                actual: actual);
+    [Theory, AutoMoqData]
+    public void TextFileLoaderTests_Text_mit_neuer_Zeile_und_Bindestrich_zu_Text_ohne_Bindestrich_und_vollem_Wort(
+        [Frozen] Mock<ISourceFileParameterParser> sourceFileParameterParser,
+        [Frozen] Mock<IFileSystem> fileSystem,
+        TextFileLoader sut)
+    {
+        var inputText = $"Das ist ein lan-{Environment.NewLine}ger Text";
 
-            _mockDisplayOutput
-                .Verify(v => v.WriteErrorResourceLine("FILE_NOT_FOUND", "datei1.txt"), Times.Once);
-        }
+        sourceFileParameterParser
+            .Setup(m => m.ParseSourceFileParameter())
+            .Returns(new SourceFileParameter() {IsPresent = true, FileName = It.IsAny<string>()});
 
-        [NamedFact]
-        public void TextFileLoaderTests_ReadAllText_Bla_Expect_Bla()
-        {
-            _mockSourceFileParameterParser
-                .Setup(m => m.ParseSourceFileParameter())
-                .Returns(new SourceFileParameter() { IsPresent = true, FileName = It.IsAny<string>() });
+        fileSystem
+            .Setup(m => m.File.Exists(It.IsAny<string>()))
+            .Returns(true);
 
-            _mockFileSystem
-                .Setup(expression: m => m.File.ReadAllText(It.IsAny<string>()))
-                .Returns(value: "Bla");
+        fileSystem
+            .Setup(m => m.File.ReadAllText(It.IsAny<string>()))
+            .Returns(inputText);
 
-            _mockFileSystem
-                .Setup(m => m.File.Exists(It.IsAny<string>()))
-                .Returns(true);
+        var actual = sut.ReadTextFile();
 
-            string actual = _systemUnderTest.ReadTextFile();
+        const string expected = "Das ist ein langer Text";
 
-            Assert.Equal(expected: "Bla", actual: actual);
-        }
+        actual.Should().Be(expected);
+    }
 
-        [NamedFact]
-        public void TextFileLoaderTests_Text_mit_neuer_Zeile_und_Bindestrich_zu_Text_ohne_Bindestrich_und_vollem_Wort()
-        {
-            string inputText = $"Das ist ein lan-{Environment.NewLine}ger Text";
+    [Theory, AutoMoqData]
+    public void TextFileLoaderTests_Parameter_is_not_present_do_not_call_file_exist(
+        [Frozen] Mock<ISourceFileParameterParser> sourceFileParameterParser,
+        [Frozen] Mock<IFileSystem> fileSystem,
+        TextFileLoader sut)
+    {
+        sourceFileParameterParser
+            .Setup(m => m.ParseSourceFileParameter())
+            .Returns(new SourceFileParameter() {IsPresent = false});
 
-            _mockSourceFileParameterParser
-                .Setup(m => m.ParseSourceFileParameter())
-                .Returns(new SourceFileParameter() {IsPresent = true, FileName = It.IsAny<string>()});
+        var actual = sut.ReadTextFile();
 
-            _mockFileSystem
-                .Setup(m => m.File.Exists(It.IsAny<string>()))
-                .Returns(true);
+        actual.Should().BeEmpty();
 
-            _mockFileSystem
-                .Setup(m => m.File.ReadAllText(It.IsAny<string>()))
-                .Returns(inputText);
-
-            string actual = _systemUnderTest.ReadTextFile();
-
-            string expected = "Das ist ein langer Text";
-
-            Assert.Equal(
-                expected: expected,
-                actual: actual);
-        }
-
-        [NamedFact]
-        public void TextFileLoaderTests_Parameter_is_not_present_do_not_call_file_exist()
-        {
-            _mockSourceFileParameterParser
-                .Setup(m => m.ParseSourceFileParameter())
-                .Returns(new SourceFileParameter() {IsPresent = false});
-
-            string actual = _systemUnderTest.ReadTextFile();
-
-            Assert.Equal(string.Empty, actual);
-
-            _mockFileSystem
-                .Verify(v => v.File.Exists(It.IsAny<string>()), Times.Never);
-        }
+        fileSystem.Verify(v => v.File.Exists(It.IsAny<string>()), Times.Never);
     }
 }

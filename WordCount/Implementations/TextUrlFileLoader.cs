@@ -1,7 +1,6 @@
 ﻿using WordCount.Abstractions.SystemAbstractions.Net.Http;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
-using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations
 {
@@ -20,10 +19,10 @@ namespace WordCount.Implementations
 
         public string ReadTextFile()
         {
-            TextUrlParameter textUrlParameter = TextUrlParameterParser.ParseTextUrlParameter();
+            var textUrlParameter = TextUrlParameterParser.ParseTextUrlParameter();
 
             return textUrlParameter.IsPresent ?
-                HttpClient.ReadString(url: textUrlParameter.Url).Result
+                HttpClient.ReadString(textUrlParameter.Url).Result
                 : null;
         }
     }

@@ -1,115 +1,82 @@
 ﻿using System.Globalization;
-using Autofac;
+using AutoFixture.Xunit2;
 using Moq;
 using WordCount.Implementations.Output;
 using WordCount.Interfaces.Language;
 using WordCount.Interfaces.Output;
 using WordCount.Models.Results;
-using WordCount.Tests.XUnitHelpers;
+using Xunit;
 
-namespace WordCount.Tests
+namespace WordCount.Tests;
+
+public class StatisticsOutputTests
 {
-    public class StatisticsOutputTests
+    [Theory, AutoMoqData]
+    public void StatisticsOutputTests_WriteNumberOfWords(
+        [Frozen] Mock<ILanguageResource> languageResource,
+        [Frozen] Mock<IDisplayOutput> displayOutput,
+        StatisticsOutput sut)
     {
-        private readonly Mock<IDisplayOutput> _mockDisplayOutput;
-        private readonly Mock<ILanguageResource> _mockLanguageResource;
-        private readonly Mock<ILanguageDecision> _mockLanguageDecision;
-        private readonly StatisticsOutput _systemUnderTest;
+        languageResource
+            .Setup(m => m.GetResourceStringById("NUMBER_OF_WORDS"))
+            .Returns("Anzahl Wörter");
 
-        public StatisticsOutputTests()
-        {
-            _mockDisplayOutput = new Mock<IDisplayOutput>();
-            _mockLanguageDecision = new Mock<ILanguageDecision>();
-            _mockLanguageResource = new Mock<ILanguageResource>();
+        sut.WriteNumberOfWords(2, 20);
 
-            ContainerBuilder containerBuilder = new ContainerBuilder();
+        displayOutput.Verify(v => v.WriteLine("- Anzahl Wörter....... 2"), Times.Once);
+    }
 
-            containerBuilder
-                .RegisterInstance(instance: _mockDisplayOutput.Object)
-                .As<IDisplayOutput>();
+    [Theory, AutoMoqData]
+    public void StatisticsOutputTests_WriteNumberOfUniqeWords(
+        [Frozen] Mock<ILanguageResource> languageResource,
+        [Frozen] Mock<IDisplayOutput> displayOutput,
+        StatisticsOutput sut)
+    {
+        languageResource
+            .Setup(m => m.GetResourceStringById("UNIQUE"))
+            .Returns("Eindeutig");
 
-            containerBuilder
-                .RegisterInstance(instance: _mockLanguageDecision.Object)
-                .As<ILanguageDecision>();
+        sut.WriteNumberOfUniqeWords(2, 20);
 
-            containerBuilder
-                .RegisterInstance(instance: _mockLanguageResource.Object)
-                .As<ILanguageResource>();
+        displayOutput.Verify(v => v.WriteLine("- Eindeutig........... 2"), Times.Once);
+    }
 
-            containerBuilder
-                .RegisterType<StatisticsOutput>();
+    [Theory, AutoMoqData]
+    public void StatisticsOutputTests_WriteAverageWordLength(
+        [Frozen] Mock<ILanguageResource> languageResource,
+        [Frozen] Mock<IDisplayOutput> displayOutput,
+        [Frozen] Mock<ILanguageDecision> languageDecision,
+        StatisticsOutput sut)
+    {
+        languageResource
+            .Setup(m => m.GetResourceStringById("AVERAGE_WORD_LENGTH"))
+            .Returns("Durchschnittliche Wortlänge");
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<StatisticsOutput>();
-        }
+        languageResource
+            .Setup(m => m.GetResourceStringById("CHARACTERS"))
+            .Returns("Zeichen");
 
-        [NamedFact]
-        public void StatisticsOutputTests_WriteNumberOfWords()
-        {
-            _mockLanguageResource
-                .Setup(m => m.GetResourceStringById("NUMBER_OF_WORDS"))
-                .Returns("Anzahl Wörter");
+        languageDecision
+            .Setup(m => m.DecideLanguage())
+            .Returns(new DecideLanguageResult {Culture = CultureInfo.GetCultureInfo("de-DE")});
 
-            _systemUnderTest.WriteNumberOfWords(
-                numberOfWords: 2,
-                maxCountOfFillingPoints: 20);
+        sut.WriteAverageWordLength(2.52, 30);
 
-            _mockDisplayOutput
-                .Verify(v => v.WriteLine("- Anzahl Wörter....... 2"), Times.Once);
-        }
+        displayOutput.Verify(v => v.WriteLine("- Durchschnittliche Wortlänge... 2,52 Zeichen"), Times.Once);
+    }
 
-        [NamedFact]
-        public void StatisticsOutputTests_WriteNumberOfUniqeWords()
-        {
-            _mockLanguageResource
-                .Setup(m => m.GetResourceStringById("UNIQUE"))
-                .Returns("Eindeutig");
+    [Theory, AutoMoqData]
+    public void StatisticsOutputTests_WriteNumberOfChapters(
+        [Frozen] Mock<ILanguageResource> languageResource,
+        [Frozen] Mock<IDisplayOutput> displayOutput,
+        StatisticsOutput sut)
+    {
+        languageResource
+            .Setup(m => m.GetResourceStringById("CHAPTERS"))
+            .Returns("Kapitel");
 
-            _systemUnderTest.WriteNumberOfUniqeWords(
-                numberOfUniqeWords: 2,
-                maxCountOfFillingPoints: 20);
+        sut.WriteNumberOfChapters(3, 20);
 
-            _mockDisplayOutput
-                .Verify(v => v.WriteLine("- Eindeutig........... 2"), Times.Once);
-        }
-
-        [NamedFact]
-        public void StatisticsOutputTests_WriteAverageWordLength()
-        {
-            _mockLanguageResource
-                .Setup(m => m.GetResourceStringById("AVERAGE_WORD_LENGTH"))
-                .Returns("Durchschnittliche Wortlänge");
-
-            _mockLanguageResource
-                .Setup(m => m.GetResourceStringById("CHARACTERS"))
-                .Returns("Zeichen");
-
-            _mockLanguageDecision
-                .Setup(m => m.DecideLanguage())
-                .Returns(new DecideLanguageResult {Culture = CultureInfo.GetCultureInfo("de-DE")});
-
-            _systemUnderTest.WriteAverageWordLength(
-                averageWordLength: 2.52,
-                maxCountOfFillingPoints: 30);
-
-            _mockDisplayOutput
-                .Verify(v => v.WriteLine("- Durchschnittliche Wortlänge... 2,52 Zeichen"), Times.Once);
-        }
-
-        [NamedFact]
-        public void StatisticsOutputTests_WriteNumberOfChapters()
-        {
-            _mockLanguageResource
-                .Setup(m => m.GetResourceStringById("CHAPTERS"))
-                .Returns("Kapitel");
-
-            _systemUnderTest.WriteNumberOfChapters(
-                numberOfChapters: 3,
-                maxCountOfFillingPoints: 20);
-
-            _mockDisplayOutput
-                .Verify(v => v.WriteLine("- Kapitel............. 3"), Times.Once);
-        }
+        displayOutput.Verify(v => v.WriteLine("- Kapitel............. 3"), Times.Once);
     }
 }

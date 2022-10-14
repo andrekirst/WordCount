@@ -17,14 +17,14 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public TextUrlParameter ParseTextUrlParameter()
         {
-            return CachedValue(toCachingValue: () =>
+            return CachedValue(() =>
             {
-                string[] args = Environment.GetCommandLineArgs();
-                string texturlParameter =
-                    args?.FirstOfMatchingRegex(pattern: @"-texturl=[a-zA-z.]{1,}") ?? string.Empty;
-                string[] parameterSplitByEqualSign = texturlParameter.Split('=');
+                var args = Environment.GetCommandLineArgs();
+                var texturlParameter =
+                    args?.FirstOfMatchingRegex(@"-texturl=[a-zA-z.]{1,}") ?? string.Empty;
+                var parameterSplitByEqualSign = texturlParameter.Split('=');
 
-                bool isPresent =
+                var isPresent =
                     texturlParameter.IsFilled() &&
                     parameterSplitByEqualSign.LastOrDefault().IsValidUrl();
 

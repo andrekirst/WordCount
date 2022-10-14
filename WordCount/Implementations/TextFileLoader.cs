@@ -25,27 +25,27 @@ namespace WordCount.Implementations
 
         public string ReadTextFile()
         {
-            SourceFileParameter sourceFileParameter = SourceFileParameterParser.ParseSourceFileParameter();
+            var sourceFileParameter = SourceFileParameterParser.ParseSourceFileParameter();
 
             if (!sourceFileParameter.IsPresent)
             {
                 return string.Empty;
             }
 
-            string fileName = sourceFileParameter.FileName;
+            var fileName = sourceFileParameter.FileName;
 
-            if (FileSystem.File.Exists(path: fileName))
+            if (FileSystem.File.Exists(fileName))
             {
-                return FileSystem.File.ReadAllText(path: fileName)
+                return FileSystem.File.ReadAllText(fileName)
                     .Replace(
-                    oldValue: $"-{Environment.NewLine}",
-                    newValue: string.Empty);
+                    $"-{Environment.NewLine}",
+                    string.Empty);
             }
 
             DisplayOutput
                 .WriteErrorResourceLine(
-                    resourceIdent: "FILE_NOT_FOUND",
-                    placeholderValues: fileName);
+                    "FILE_NOT_FOUND",
+                    fileName);
             return string.Empty;
         }
     }

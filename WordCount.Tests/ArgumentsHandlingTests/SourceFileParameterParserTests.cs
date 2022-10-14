@@ -1,116 +1,104 @@
-﻿using Autofac;
-using Moq;
+﻿using Moq;
 using System;
+using AutoFixture.Xunit2;
+using FluentAssertions;
 using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Implementations.ArgumentsHandling;
-using WordCount.Models.Parameters;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests.ArgumentsHandlingTests
+namespace WordCount.Tests.ArgumentsHandlingTests;
+
+public class SourceFileParameterParserTests
 {
-    public class SourceFileParameterParserTests
+    [Theory, AutoMoqData]
+    public void SourceFileParameterParserTests_Args_is_empty_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        SourceFileParameterParser sut)
     {
-        private readonly Mock<IEnvironment> _mockEnvironment;
-        private readonly SourceFileParameterParser _systemUnderTest;
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(Array.Empty<string>());
 
-        public SourceFileParameterParserTests()
-        {
-            _mockEnvironment = new Mock<IEnvironment>();
+        var actual = sut.ParseSourceFileParameter();
 
-            var containerBuilder = new ContainerBuilder();
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-            containerBuilder
-                .RegisterInstance(instance: _mockEnvironment.Object)
-                .As<IEnvironment>();
+    [Theory, AutoMoqData]
+    public void SourceFileParameterParserTests_Args_is_null_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        SourceFileParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(() => null);
 
-            containerBuilder
-                .RegisterType<SourceFileParameterParser>();
+        var actual = sut.ParseSourceFileParameter();
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<SourceFileParameterParser>();
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-        [NamedFact]
-        public void SourceFileParameterParserTests_Args_is_empty_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: Array.Empty<string>());
+    [Theory, AutoMoqData]
+    public void SourceFileParameterParserTests_Args_has_FileName_Expect_Is_Present_True(
+        [Frozen] Mock<IEnvironment> environment,
+        SourceFileParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "bla.txt" });
 
-            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
+        var actual = sut.ParseSourceFileParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeTrue();
+    }
 
-        [NamedFact]
-        public void SourceFileParameterParserTests_Args_is_null_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: null);
+    [Theory, AutoMoqData]
+    public void SourceFileParameterParserTests_Args_has_FileName_bla_txt_Expect_Is_FileName_bla_txt(
+        [Frozen] Mock<IEnvironment> environment,
+        SourceFileParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "bla.txt" });
 
-            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
+        var actual = sut.ParseSourceFileParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
+        actual.Should().NotBeNull();
+        actual.FileName.Should().Be("bla.txt");
+    }
 
-        [NamedFact]
-        public void SourceFileParameterParserTests_Args_has_FileName_Expect_Is_Present_True()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "bla.txt" });
+    [Theory, AutoMoqData]
+    public void SourceFileParameterParserTests_Args_has_IndexParameter_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        SourceFileParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-index" });
 
-            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
+        var actual = sut.ParseSourceFileParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.True(condition: actual.IsPresent);
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-        [NamedFact]
-        public void SourceFileParameterParserTests_Args_has_FileName_bla_txt_Expect_Is_FileName_bla_txt()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "bla.txt" });
+    [Theory, AutoMoqData]
+    public void SourceFileParameterParserTests_Args_are_lang_pramater_and_file_parameter_expect_is_present_and_filename(
+        [Frozen] Mock<IEnvironment> environment,
+        SourceFileParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-lang=de", "sample.txt" });
 
-            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
+        var actual = sut.ParseSourceFileParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.Equal(
-                expected: "bla.txt",
-                actual: actual.FileName);
-        }
-
-        [NamedFact]
-        public void SourceFileParameterParserTests_Args_has_IndexParameter_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "-index" });
-
-            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
-
-        [NamedFact]
-        public void SourceFileParameterParserTests_Args_are_lang_pramater_and_file_parameter_expect_is_present_and_filename()
-        {
-            _mockEnvironment
-                .Setup(m => m.GetCommandLineArgs())
-                .Returns(value: new[] {"-lang=de", "sample.txt"});
-
-            SourceFileParameter actual = _systemUnderTest.ParseSourceFileParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.True(condition: actual.IsPresent);
-            Assert.Equal(expected: "sample.txt", actual: actual.FileName);
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeTrue();
+        // TODO Extra Test
+        actual.FileName.Should().Be("sample.txt");
     }
 }

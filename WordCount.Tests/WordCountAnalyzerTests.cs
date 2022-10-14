@@ -1,246 +1,236 @@
 ﻿using System;
 using Moq;
 using System.Collections.Generic;
-using Autofac;
+using AutoFixture.Xunit2;
+using FluentAssertions;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Models.Results;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests
+namespace WordCount.Tests;
+
+public class WordCountAnalyzerTests
 {
-    public class WordCountAnalyzerTests
+    [Theory, AutoMoqData]
+    public void WordCountAnalyzerTests_Analyze_Text_Bla_bla_Expect_2_Words(
+        [Frozen] Mock<IStopwordRemover> stopwordRemover,
+        [Frozen] Mock<ITextSplit> textSplit,
+        WordCountAnalyzer sut)
     {
-        private readonly Mock<ITextSplit> _mockTextSplit;
-        private readonly Mock<IStopwordRemover> _mockStopwordRemover;
+        const string text = "Bla bla";
+        var mockTextSplitResulValues = new List<string> { "Bla", "bla" };
 
-        private readonly WordCountAnalyzer _systemUnderTest;
+        stopwordRemover
+            .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
+            .Returns(new StopwordRemoverResult { Words = mockTextSplitResulValues });
 
-        public WordCountAnalyzerTests()
-        {
-            _mockTextSplit = new Mock<ITextSplit>();
-            _mockStopwordRemover = new Mock<IStopwordRemover>();
+        textSplit
+            .Setup(m => m.Split(text))
+            .Returns(new TextSplitResult(mockTextSplitResulValues));
 
-            ContainerBuilder containerBuilder = new ContainerBuilder();
-            containerBuilder
-                .RegisterInstance(instance: _mockTextSplit.Object)
-                .As<ITextSplit>()
-                .SingleInstance();
+        var actual = sut.Analyze(text);
 
-            containerBuilder
-                .RegisterInstance(_mockStopwordRemover.Object)
-                .As<IStopwordRemover>()
-                .SingleInstance();
+        actual.NumberOfWords.Should().Be(2);
+    }
 
-            containerBuilder
-                .RegisterType<WordCountAnalyzer>()
-                .SingleInstance();
+    [Theory, AutoMoqData]
+    public void WordCountAnalyzerTests_Analyze_Stopword_a_This_is_a_Text_Expect_3_Words(
+        [Frozen] Mock<IStopwordRemover> stopwordRemover,
+        [Frozen] Mock<ITextSplit> textSplit,
+        WordCountAnalyzer sut)
+    {
+        const string text = "This is a Text";
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<WordCountAnalyzer>();
-        }
+        var values = new List<string> { "This", "is", "a", "Text" };
 
-        [NamedFact]
-        public void WordCountAnalyzerTests_Analyze_Text_Bla_bla_Expect_2_Words()
-        {
-            string text = "Bla bla";
-            List<string> mockTextSplitResulValues = new List<string> { "Bla", "bla" };
+        textSplit
+            .Setup(m => m.Split(text))
+            .Returns(new TextSplitResult(values));
 
-            _mockStopwordRemover
-                .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
-                .Returns(value: new StopwordRemoverResult { Words = mockTextSplitResulValues });
+        stopwordRemover
+            .Setup(m => m.RemoveStopwords(values))
+            .Returns(new StopwordRemoverResult
+            {
+                Words = new List<string> { "This", "is", "Text" }
+            });
 
-            _mockTextSplit
-                .Setup(m => m.Split(text))
-                .Returns(new TextSplitResult(mockTextSplitResulValues));
+        var actual = sut.Analyze(text);
 
-            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
+        actual.NumberOfWords.Should().Be(3);
+    }
 
-            Assert.Equal(expected: 2, actual: actual.NumberOfWords);
-        }
+    [Theory, AutoMoqData]
+    public void WordCountAnalyzerTests_Analyze_empty_strings_Expect_0_Words(
+        Mock<ITextSplit> textSplit,
+        WordCountAnalyzer sut)
+    {
+        const string inputtext = "";
+        textSplit
+            .Setup(m => m.Split(inputtext))
+            .Returns(new TextSplitResult(new List<string>()));
 
-        [NamedFact]
-        public void WordCountAnalyzerTests_Analyze_Stopword_a_This_is_a_Text_Expect_3_Words()
-        {
-            const string text = "This is a Text";
+        var actual = sut.Analyze(inputtext);
 
-            List<string> values = new List<string> { "This", "is", "a", "Text" };
+        actual.NumberOfWords.Should().Be(0);
+    }
 
-            _mockTextSplit
-                .Setup(m => m.Split(text))
-                .Returns(new TextSplitResult(values));
+    [Theory, AutoMoqData]
+    public void WordCountAnalyzerTests_Long_text_Bla_bla_bla_Expect_Number_of_Words_3(
+        [Frozen] Mock<IStopwordRemover> stopwordRemover,
+        [Frozen] Mock<ITextSplit> textSplit,
+        WordCountAnalyzer sut)
+    {
+        const string text = "Bla bla bla";
+        var mockValues = new List<string> { "Bla", "bla", "bla" };
+        var mockValuesStopwordsRemoved = new List<string> { "Bla", "bla", "bla" };
 
-            _mockStopwordRemover
-                .Setup(m => m.RemoveStopwords(values))
-                .Returns(new StopwordRemoverResult
-                {
-                    Words = new List<string> { "This", "is", "Text" }
-                });
+        textSplit
+            .Setup(m => m.Split(text))
+            .Returns(new TextSplitResult(mockValues));
 
-            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
+        stopwordRemover
+            .Setup(m => m.RemoveStopwords(mockValues))
+            .Returns(new StopwordRemoverResult { Words = mockValuesStopwordsRemoved });
 
-            Assert.Equal(expected: 3, actual: actual.NumberOfWords);
-        }
+        var actual = sut.Analyze(text);
 
-        [Theory]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData(null)]
-        public void WordCountAnalyzerTests_Analyze_empty_strings_Expect_0_Words(
-            string inputtext)
-        {
-            _mockTextSplit
-                .Setup(m => m.Split(inputtext))
-                .Returns(new TextSplitResult(new List<string>()));
+        actual.NumberOfWords.Should().Be(3);
+    }
 
-            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: inputtext);
+    [Theory, AutoMoqData]
+    public void WordCountAnalyzerTests_Long_text_Bla_bla_bla_Expect_Number_of_unique_Words_2(
+        [Frozen] Mock<IStopwordRemover> stopwordRemover,
+        [Frozen] Mock<ITextSplit> textSplit,
+        WordCountAnalyzer sut)
+    {
+        const string text = "Bla bla bla";
 
-            Assert.Equal(expected: 0, actual: actual.NumberOfWords);
-        }
+        var mockValues = new List<string> { "Bla", "bla", "bla" };
 
-        [NamedFact]
-        public void WordCountAnalyzerTests_Long_text_Bla_bla_bla_Expect_Number_of_Words_3()
-        {
-            const string text = "Bla bla bla";
-            List<string> mockValues = new List<string> { "Bla", "bla", "bla" };
-            List<string> mockValuesStopwordsRemoved = new List<string> { "Bla", "bla", "bla" };
+        textSplit
+            .Setup(m => m.Split(text))
+            .Returns(new TextSplitResult(mockValues));
 
-            _mockTextSplit
-                .Setup(m => m.Split(text))
-                .Returns(value: new TextSplitResult(mockValues));
+        stopwordRemover
+            .Setup(m => m.RemoveStopwords(mockValues))
+            .Returns(new StopwordRemoverResult { Words = mockValues });
 
-            _mockStopwordRemover
-                .Setup(m => m.RemoveStopwords(mockValues))
-                .Returns(new StopwordRemoverResult { Words = mockValuesStopwordsRemoved });
+        var actual = sut.Analyze(text);
 
-            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
+        actual.NumberOfUniqueWords.Should().Be(2);
+    }
 
-            Assert.Equal(expected: 3, actual: actual.NumberOfWords);
-        }
+    [Theory, AutoMoqData]
+    public void WordCountAnalyzerTests_Text_Bla_bla_bla_Expect_Average_word_Length_3(
+        [Frozen] Mock<IStopwordRemover> stopwordRemover,
+        [Frozen] Mock<ITextSplit> textSplit,
+        WordCountAnalyzer sut)
+    {
+        const string text = "Bla bla bla";
 
-        [NamedFact]
-        public void WordCountAnalyzerTests_Long_text_Bla_bla_bla_Expect_Number_of_unique_Words_2()
-        {
-            const string text = "Bla bla bla";
+        var mockValues = new List<string> { "Bla", "bla", "bla" };
 
-            List<string> mockValues = new List<string> { "Bla", "bla", "bla" };
+        textSplit
+            .Setup(m => m.Split(text))
+            .Returns(new TextSplitResult(mockValues));
 
-            _mockTextSplit
-                .Setup(expression: m => m.Split(text))
-                .Returns(value: new TextSplitResult(mockValues));
+        stopwordRemover
+            .Setup(m => m.RemoveStopwords(mockValues))
+            .Returns(new StopwordRemoverResult { Words = mockValues });
 
-            _mockStopwordRemover
-                .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult { Words = mockValues });
+        var actual = sut.Analyze(text);
 
-            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
+        actual.AverageWordLength.Should().Be(3.0);
+    }
 
-            Assert.Equal(expected: 2, actual: actual.NumberOfUniqueWords);
-        }
+    [Theory, AutoMoqData]
+    public void WordCountAnalyzerTests_Text_Bla_bla_bla_Expect_distinct_Words_Bla_bla(
+        [Frozen] Mock<IStopwordRemover> stopwordRemover,
+        [Frozen] Mock<ITextSplit> textSplit,
+        WordCountAnalyzer sut)
+    {
+        const string text = "Bla bla bla";
 
-        [NamedFact]
-        public void WordCountAnalyzerTests_Text_Bla_bla_bla_Expect_Average_word_Length_3()
-        {
-            string text = "Bla bla bla";
+        var mockValues = new List<string> { "Bla", "bla", "bla" };
 
-            List<string> mockValues = new List<string> { "Bla", "bla", "bla" };
+        textSplit
+            .Setup(m => m.Split(text))
+            .Returns(new TextSplitResult(mockValues));
 
-            _mockTextSplit
-                .Setup(m => m.Split(text))
-                .Returns(value: new TextSplitResult(mockValues));
+        stopwordRemover
+            .Setup(m => m.RemoveStopwords(mockValues))
+            .Returns(new StopwordRemoverResult { Words = mockValues });
 
-            _mockStopwordRemover
-                .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult { Words = mockValues });
+        var expected = new List<string> { "Bla", "bla" };
 
-            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
+        var actual = sut.Analyze(text);
 
-            Assert.Equal(expected: 3.0, actual: actual.AverageWordLength);
-        }
+        actual.DistinctWords.Should().BeEquivalentTo(expected);
+    }
 
-        [NamedFact]
-        public void WordCountAnalyzerTests_Text_Bla_bla_bla_Expect_distinct_Words_Bla_bla()
-        {
-            const string text = "Bla bla bla";
+    [Theory, AutoMoqData]
+    public void WordCountAnalyzerTests_Text_a_Stopword_a_Expect_All_Values_in_Result_0(
+        [Frozen] Mock<IStopwordRemover> stopwordRemover,
+        [Frozen] Mock<ITextSplit> textSplit,
+        WordCountAnalyzer sut)
+    {
+        stopwordRemover
+            .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
+            .Returns(new StopwordRemoverResult());
 
-            List<string> mockValues = new List<string> { "Bla", "bla", "bla" };
+        textSplit
+            .Setup(m => m.Split("a."))
+            .Returns(new TextSplitResult(new List<string> { "a" }));
 
-            _mockTextSplit
-                .Setup(expression: m => m.Split(text))
-                .Returns(value: new TextSplitResult(mockValues));
+        var actual = sut.Analyze("a.");
 
-            _mockStopwordRemover
-                .Setup(expression: m => m.RemoveStopwords(mockValues))
-                .Returns(value: new StopwordRemoverResult { Words = mockValues });
+        actual.Should().NotBeNull();
+        actual.AverageWordLength.Should().Be(0.0);
+        actual.NumberOfUniqueWords.Should().Be(0);
+        actual.NumberOfWords.Should().Be(0);
+    }
 
-            List<string> expected = new List<string> { "Bla", "bla" };
+    [Theory, AutoMoqData]
+    public void WordCountAnalyzerTests_Text_with_2_Linebreaks_Expect_2_chapters(
+        [Frozen] Mock<IStopwordRemover> stopwordRemover,
+        [Frozen] Mock<ITextSplit> textSplit,
+        WordCountAnalyzer sut)
+    {
+        textSplit
+            .Setup(m => m.Split(It.IsAny<string>()))
+            .Returns(new TextSplitResult(new List<string> { "asd" }));
 
-            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: text);
+        stopwordRemover
+            .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
+            .Returns(new StopwordRemoverResult { Words = new List<string> { "asd" } });
 
-            Assert.Equal(expected: expected, actual: actual.DistinctWords);
-        }
+        var inputText =
+            $"Das ist das erste Kapitel.{Environment.NewLine}{Environment.NewLine}Das ist das zweite Kapitel.";
 
-        [NamedFact]
-        public void WordCountAnalyzerTests_Text_a_Stopword_a_Expect_All_Values_in_Result_0()
-        {
-            _mockStopwordRemover
-                .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
-                .Returns(value: new StopwordRemoverResult());
+        var actual = sut.Analyze(inputText);
 
-            _mockTextSplit
-                .Setup(m => m.Split("a."))
-                .Returns(value: new TextSplitResult(new List<string> { "a" }));
+        actual.NumberOfChapters.Should().Be(2);
+    }
 
-            WordCountAnalyzerResult actual = _systemUnderTest.Analyze("a.");
+    [Theory, AutoMoqData]
+    public void WordCountAnalyzerTests_Text_with_1_Linebreak_Expect_1_chapters(
+        [Frozen] Mock<IStopwordRemover> stopwordRemover,
+        [Frozen] Mock<ITextSplit> textSplit,
+        WordCountAnalyzer sut)
+    {
+        textSplit
+            .Setup(m => m.Split(It.IsAny<string>()))
+            .Returns(new TextSplitResult(new List<string> { "asd" }));
 
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: 0.0, actual: actual.AverageWordLength);
-            Assert.Equal(expected: 0, actual: actual.NumberOfUniqueWords);
-            Assert.Equal(expected: 0, actual: actual.NumberOfWords);
-        }
+        stopwordRemover
+            .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
+            .Returns(new StopwordRemoverResult { Words = new List<string> { "asd" } });
 
-        [NamedFact]
-        public void WordCountAnalyzerTests_Text_with_2_Linebreaks_Expect_2_chapters()
-        {
-            _mockTextSplit
-                .Setup(m => m.Split(It.IsAny<string>()))
-                .Returns(new TextSplitResult(new List<string>() {"asd"}));
+        var inputText = $"Das ist das erste Kapitel.{Environment.NewLine}Das ist das zweite Kapitel.";
 
-            _mockStopwordRemover
-                .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
-                .Returns(new StopwordRemoverResult() {Words = new List<string>() {"asd"}});
+        var actual = sut.Analyze(inputText);
 
-            string inputText =
-                $"Das ist das erste Kapitel.{Environment.NewLine}{Environment.NewLine}Das ist das zweite Kapitel.";
-
-            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: inputText);
-
-            Assert.Equal(
-                expected: 2,
-                actual: actual.NumberOfChapters);
-        }
-
-        [NamedFact]
-        public void WordCountAnalyzerTests_Text_with_1_Linebreak_Expect_1_chapters()
-        {
-            _mockTextSplit
-                .Setup(m => m.Split(It.IsAny<string>()))
-                .Returns(new TextSplitResult(new List<string>() { "asd" }));
-
-            _mockStopwordRemover
-                .Setup(m => m.RemoveStopwords(It.IsAny<List<string>>()))
-                .Returns(new StopwordRemoverResult() { Words = new List<string>() { "asd" } });
-
-            string inputText =
-                $"Das ist das erste Kapitel.{Environment.NewLine}Das ist das zweite Kapitel.";
-
-            WordCountAnalyzerResult actual = _systemUnderTest.Analyze(text: inputText);
-
-            Assert.Equal(
-                expected: 1,
-                actual: actual.NumberOfChapters);
-        }
+        actual.NumberOfChapters.Should().Be(1);
     }
 }

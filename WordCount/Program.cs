@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Autofac;
-using System.IO.Abstractions;
-using System.Reflection;
-using WordCount.AutofacModules;
+using Microsoft.Extensions.DependencyInjection;
+using WordCount.Implementations;
 using WordCount.Interfaces;
 
 namespace WordCount
@@ -12,32 +10,20 @@ namespace WordCount
     {
         public static int Main()
         {
-            IInteractor interactor = CreateInteractor();
+            var interactor = CreateInteractor();
 
             return interactor.Execute();
         }
 
         private static IInteractor CreateInteractor()
         {
-            ContainerBuilder containerBuilder = new ContainerBuilder();
+            var services = new ServiceCollection();
 
-#if DEBUG
-            containerBuilder
-                    .RegisterModule<LogRequestsModule>(); 
-#endif
+            services.AddSingleton<IInteractor, Interactor>();
 
-            var executingAssembly = Assembly.GetExecutingAssembly();
-            var externalFileSystemAssembly = Assembly.GetAssembly(type: typeof(IFileSystem));
+            var serviceProvider = services.BuildServiceProvider();
 
-            containerBuilder.RegisterAssemblyTypes(
-                    executingAssembly,
-                    externalFileSystemAssembly)
-                .AsImplementedInterfaces()
-                .SingleInstance();
-
-            return containerBuilder
-                .Build()
-                .Resolve<IInteractor>();
+            return serviceProvider.GetRequiredService<IInteractor>();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace WordCount.Implementations
 
         public InputTextResult GetInputText()
         {
-            string text = TextFileLoader.ReadTextFile();
+            var text = TextFileLoader.ReadTextFile();
             if (text.IsFilled())
             {
                 return new InputTextResult
@@ -49,7 +49,7 @@ namespace WordCount.Implementations
             }
 
             DisplayOutput.WriteResource(
-                resourceIdent: "ENTER_TEXT");
+                "ENTER_TEXT");
 
             text = Console.ReadLine();
             return new InputTextResult

@@ -25,17 +25,17 @@ namespace WordCount.Implementations.Language
 
         public string GetResourceStringById(string resourceIdent)
         {
-            DecideLanguageResult languageDecision = LanguageDecision.DecideLanguage();
+            var languageDecision = LanguageDecision.DecideLanguage();
 
-            string mappedLanguageCulture = LanguageToCultureMapping.Mappings[key: languageDecision.Language];
+            var mappedLanguageCulture = LanguageToCultureMapping.Mappings[languageDecision.Language];
 
-            System.Globalization.CultureInfo currentCultureInfo = CultureInfo.GetCultureInfo(culture: mappedLanguageCulture);
+            var currentCultureInfo = CultureInfo.GetCultureInfo(mappedLanguageCulture);
 
             return ResourceManager.GetString(
-                name: resourceIdent,
-                cultureInfo: currentCultureInfo);
+                resourceIdent,
+                currentCultureInfo);
         }
 
-        public int DetectLongestResourceString(string[] resourceIdents) => resourceIdents.Max(selector: s => GetResourceStringById(resourceIdent: s).Length);
+        public int DetectLongestResourceString(string[] resourceIdents) => resourceIdents.Max(s => GetResourceStringById(s).Length);
     }
 }

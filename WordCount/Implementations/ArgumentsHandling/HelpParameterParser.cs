@@ -17,9 +17,9 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public HelpParameter ParseHelpParameter()
         {
-            return CachedValue(toCachingValue: () =>
+            return CachedValue(() =>
             {
-                string[] args = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
+                var args = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
                 if (!args.Any())
                 {
                     return new HelpParameter()
@@ -28,8 +28,8 @@ namespace WordCount.Implementations.ArgumentsHandling
                     };
                 }
 
-                bool isPresent = args.Any(predicate: s => s.StartsWith(value: "-help") ||
-                                                          s.StartsWith(value: "-h"));
+                var isPresent = args.Any(s => s.StartsWith("-help") ||
+                                              s.StartsWith("-h"));
 
                 return new HelpParameter
                 {

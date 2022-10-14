@@ -22,26 +22,26 @@ namespace WordCount.Implementations.Output
 
         public void DisplayResult(WordCountAnalyzerResult result)
         {
-            DisplayOutput.WriteResourceLine(resourceIdent: "STATISTICS");
+            DisplayOutput.WriteResourceLine("STATISTICS");
 
-            int lengthOfMaxString = LanguageResource.DetectLongestResourceString(
-                resourceIdents: new[] { "NUMBER_OF_WORDS", "UNIQUE", "AVERAGE_WORD_LENGTH", "CHAPTERS" });
+            var lengthOfMaxString = LanguageResource.DetectLongestResourceString(
+                new[] { "NUMBER_OF_WORDS", "UNIQUE", "AVERAGE_WORD_LENGTH", "CHAPTERS" });
 
             StatisticsOutput.WriteNumberOfWords(
-                numberOfWords: result.NumberOfWords,
-                maxCountOfFillingPoints: lengthOfMaxString);
+                result.NumberOfWords,
+                lengthOfMaxString);
 
             StatisticsOutput.WriteNumberOfUniqeWords(
-                numberOfUniqeWords: result.NumberOfUniqueWords,
-                maxCountOfFillingPoints: lengthOfMaxString);
+                result.NumberOfUniqueWords,
+                lengthOfMaxString);
 
             StatisticsOutput.WriteAverageWordLength(
-                averageWordLength: result.AverageWordLength,
-                maxCountOfFillingPoints: lengthOfMaxString);
+                result.AverageWordLength,
+                lengthOfMaxString);
 
             StatisticsOutput.WriteNumberOfChapters(
-                numberOfChapters: result.NumberOfChapters,
-                maxCountOfFillingPoints: lengthOfMaxString);
+                result.NumberOfChapters,
+                lengthOfMaxString);
         }
     }
 }

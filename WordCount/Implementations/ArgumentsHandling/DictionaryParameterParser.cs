@@ -17,12 +17,12 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public DictionaryParameter ParseDictionaryParameter()
         {
-            return CachedValue(toCachingValue: () =>
+            return CachedValue(() =>
             {
-                string[] args = Environment.GetCommandLineArgs();
+                var args = Environment.GetCommandLineArgs();
 
-                string dictionaryParameter = args?.FirstOfMatchingRegex(pattern: @"-dictionary=[a-zA-z.]{1,}");
-                string[] parameterSplitByEqualSign = dictionaryParameter?.Split('=');
+                var dictionaryParameter = args?.FirstOfMatchingRegex(@"-dictionary=[a-zA-z.]{1,}");
+                var parameterSplitByEqualSign = dictionaryParameter?.Split('=');
 
                 return new DictionaryParameter
                 {

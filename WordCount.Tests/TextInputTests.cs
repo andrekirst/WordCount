@@ -1,116 +1,83 @@
-﻿using Autofac;
+﻿using AutoFixture.Xunit2;
+using FluentAssertions;
 using Moq;
 using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 using WordCount.Interfaces.Output;
-using WordCount.Models.Results;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests
+namespace WordCount.Tests;
+
+public class TextInputTests
 {
-    public class TextInputTests
+    [Theory, AutoMoqData]
+    public void TextInputTests_TextFileLoader_returns_bla_Expect_HasEnteredText_false_and_Text_bla(
+        [Frozen] Mock<ITextFileLoader> textFileLoader,
+        TextInput sut)
     {
-        private readonly Mock<IConsole> _mockConsole;
-        private readonly Mock<ITextFileLoader> _mockTextFileLoader;
-        private readonly Mock<ITextUrlFileLoader> _mockTextUrlFileLoader;
-        private readonly Mock<IDisplayOutput> _mockDisplayOutput;
-        private readonly TextInput _systemUnderTest;
+        textFileLoader
+            .Setup(m => m.ReadTextFile())
+            .Returns("bla");
 
-        public TextInputTests()
-        {
-            _mockConsole = new Mock<IConsole>();
-            _mockTextFileLoader = new Mock<ITextFileLoader>();
-            _mockDisplayOutput = new Mock<IDisplayOutput>();
-            _mockTextUrlFileLoader = new Mock<ITextUrlFileLoader>();
+        var actual = sut.GetInputText();
 
-            var containerBuilder = new ContainerBuilder();
+        actual.Should().NotBeNull();
+        actual.Text.Should().Be("bla");
+        actual.HasEnteredConsoleText.Should().BeFalse();
+    }
 
-            containerBuilder
-                .RegisterInstance(instance: _mockConsole.Object)
-                .As<IConsole>();
+    [Theory, AutoMoqData]
+    public void TextInputTests_TextUrlFileLoader_returns_bla_Expect_HasEnteredText_false_and_Text_bla(
+        [Frozen] Mock<ITextFileLoader> textFileLoader,
+        TextInput sut)
+    {
+        textFileLoader
+            .Setup(m => m.ReadTextFile())
+            .Returns("bla");
 
-            containerBuilder
-                .RegisterInstance(instance: _mockTextFileLoader.Object)
-                .As<ITextFileLoader>();
+        var actual = sut.GetInputText();
 
-            containerBuilder
-                .RegisterInstance(instance: _mockDisplayOutput.Object)
-                .As<IDisplayOutput>();
+        actual.Should().NotBeNull();
+        actual.Text.Should().Be("bla");
+        actual.HasEnteredConsoleText.Should().BeFalse();
+    }
 
-            containerBuilder
-                .RegisterInstance(instance: _mockTextUrlFileLoader.Object)
-                .As<ITextUrlFileLoader>();
+    [Theory, AutoMoqData]
+    public void TextInputTests_ConsoleInput_bla_Expect_EnterText_and_content_bla_and_HasEnteredConsoleText_true(
+        [Frozen] Mock<IConsole> console,
+        [Frozen] Mock<IDisplayOutput> displayOutput,
+        TextInput sut)
+    {
+        console
+            .Setup(m => m.ReadLine())
+            .Returns("bla");
 
-            containerBuilder
-                .RegisterType<TextInput>();
+        var actual = sut.GetInputText();
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<TextInput>();
-        }
+        actual.Should().NotBeNull();
+        actual.Text.Should().Be("bla");
+        actual.HasEnteredConsoleText.Should().BeTrue();
 
-        [NamedFact]
-        public void TextInputTests_TextFileLoader_returns_bla_Expect_HasEnteredText_false_and_Text_bla()
-        {
-            _mockTextFileLoader
-                .Setup(expression: m => m.ReadTextFile())
-                .Returns(value: "bla");
+        displayOutput.Verify(v => v.WriteResource("ENTER_TEXT"), Times.Once);
+    }
 
-            InputTextResult actual = _systemUnderTest.GetInputText();
+    [Theory, AutoMoqData]
+    public void TextInputTests_ConsoleInput_empty_Expect_EnterText_and_content_empty_and_HasEnteredConsoleText_false(
+        [Frozen] Mock<IConsole> console,
+        [Frozen] Mock<IDisplayOutput> displayOutput,
+        TextInput sut)
+    {
+        console
+            .Setup(m => m.ReadLine())
+            .Returns(string.Empty);
 
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: "bla", actual: actual.Text);
-            Assert.False(condition: actual.HasEnteredConsoleText);
-        }
+        var actual = sut.GetInputText();
 
-        [NamedFact]
-        public void TextInputTests_TextUrlFileLoader_returns_bla_Expect_HasEnteredText_false_and_Text_bla()
-        {
-            _mockTextUrlFileLoader
-                .Setup(expression: m => m.ReadTextFile())
-                .Returns(value: "bla");
+        actual.Should().NotBeNull();
+        actual.Text.Should().BeEmpty();
+        actual.HasEnteredConsoleText.Should().BeFalse();
 
-            InputTextResult actual = _systemUnderTest.GetInputText();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: "bla", actual: actual.Text);
-            Assert.False(condition: actual.HasEnteredConsoleText);
-        }
-
-        [NamedFact]
-        public void TextInputTests_ConsoleInput_bla_Expect_EnterText_and_content_bla_and_HasEnteredConsoleText_true()
-        {
-            _mockConsole
-                .Setup(expression: m => m.ReadLine())
-                .Returns(value: "bla");
-
-            InputTextResult actual = _systemUnderTest.GetInputText();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: "bla", actual: actual.Text);
-            Assert.True(condition: actual.HasEnteredConsoleText);
-
-            _mockDisplayOutput
-                .Verify(v => v.WriteResource("ENTER_TEXT"), Times.Once);
-        }
-
-        [NamedFact]
-        public void TextInputTests_ConsoleInput_empty_Expect_EnterText_and_content_empty_and_HasEnteredConsoleText_false()
-        {
-            _mockConsole
-                .Setup(expression: m => m.ReadLine())
-                .Returns(value: string.Empty);
-
-            InputTextResult actual = _systemUnderTest.GetInputText();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(expected: string.Empty, actual: actual.Text);
-            Assert.False(condition: actual.HasEnteredConsoleText);
-
-            _mockDisplayOutput
-                .Verify(v => v.WriteResource("ENTER_TEXT"), Times.Once);
-        }
+        displayOutput.Verify(v => v.WriteResource("ENTER_TEXT"), Times.Once);
     }
 }

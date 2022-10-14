@@ -4,7 +4,6 @@ using WordCount.Extensions;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
-using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations
 {
@@ -26,28 +25,26 @@ namespace WordCount.Implementations
 
         public List<string> ReadWords()
         {
-            DictionaryParameter dictionaryParameter = DictionaryParameterParser.ParseDictionaryParameter();
+            var dictionaryParameter = DictionaryParameterParser.ParseDictionaryParameter();
 
-            string path = dictionaryParameter.FileName;
+            var path = dictionaryParameter.FileName;
 
-            if (dictionaryParameter.IsPresent &&
-                !FileSystem.File.Exists(path: path))
+            switch (dictionaryParameter.IsPresent)
             {
-                DisplayOutput.WriteErrorResourceLine(
-                    resourceIdent: "FILE_NOT_FOUND",
-                    placeholderValues: path);
-                return new List<string>();
+                case true when
+                    !FileSystem.File.Exists(path):
+                    DisplayOutput.WriteErrorResourceLine(
+                        "FILE_NOT_FOUND",
+                        path);
+                    return new List<string>();
+                case false:
+                    return new List<string>();
+                default:
+                    return FileSystem
+                        .File
+                        .ReadAllLines(path)
+                        .ToEmptyIfNullList();
             }
-
-            if (!dictionaryParameter.IsPresent)
-            {
-                return new List<string>();
-            }
-
-            return FileSystem
-                .File
-                .ReadAllLines(path: path)
-                .ToEmptyIfNullList();
         }
     }
 }

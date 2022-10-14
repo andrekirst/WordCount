@@ -1,7 +1,6 @@
 ﻿using WordCount.Abstractions.SystemAbstractions.Reflection;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
-using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations.Output
 {
@@ -23,21 +22,20 @@ namespace WordCount.Implementations.Output
 
         public bool ShowHelpIfRequested()
         {
-            HelpParameter helpParameter = HelpParameterParser.ParseHelpParameter();
+            var helpParameter = HelpParameterParser.ParseHelpParameter();
 
-            bool isPresent = helpParameter.IsPresent;
+            var isPresent = helpParameter.IsPresent;
 
-            if (isPresent)
-            {
-                DisplayOutput.WriteLine(text: $"{Assembly.Name} - {Assembly.Version}");
-                DisplayOutput.WriteLine(text: string.Empty);
-                DisplayOutput.WriteLine(text: "-h | -help : Display this help");
-                DisplayOutput.WriteLine(text: "-index : Display the index of the analyzed Text");
-                DisplayOutput.WriteLine(text: "-dictionary=file : Uses the dictionary with the given file");
-                DisplayOutput.WriteLine(text: "-stopwordlist=file : Uses the stopword with the given file. Default: stopword.txt");
-                DisplayOutput.WriteLine(text: "-texturl=url : Takes the text file from an url");
-                DisplayOutput.WriteLine(text: "-lang=language : Supported languages: de, en. Default: en");
-            }
+            if (!isPresent) return helpParameter.IsPresent;
+            
+            DisplayOutput.WriteLine($"{Assembly.Name} - {Assembly.Version}");
+            DisplayOutput.WriteLine(string.Empty);
+            DisplayOutput.WriteLine("-h | -help : Display this help");
+            DisplayOutput.WriteLine("-index : Display the index of the analyzed Text");
+            DisplayOutput.WriteLine("-dictionary=file : Uses the dictionary with the given file");
+            DisplayOutput.WriteLine("-stopwordlist=file : Uses the stopword with the given file. Default: stopword.txt");
+            DisplayOutput.WriteLine("-texturl=url : Takes the text file from an url");
+            DisplayOutput.WriteLine("-lang=language : Supported languages: de, en. Default: en");
 
             return helpParameter.IsPresent;
         }

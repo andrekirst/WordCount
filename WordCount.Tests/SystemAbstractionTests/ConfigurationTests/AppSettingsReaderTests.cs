@@ -1,53 +1,34 @@
-﻿using Autofac;
-using Moq;
+﻿using Moq;
 using System.Collections.Specialized;
+using AutoFixture.Xunit2;
+using FluentAssertions;
 using WordCount.Abstractions.SystemAbstractions.Configuration;
 using WordCount.Implementations;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests.SystemAbstractionTests.ConfigurationTests
+namespace WordCount.Tests.SystemAbstractionTests.ConfigurationTests;
+
+public class AppSettingsReaderTests
 {
-    public class AppSettingsReaderTests
-    {
-        private readonly Mock<IConfigurationManager> _mockConfigurationManager;
-        private readonly AppSettingsReader _systemUnderTest;
+    //[Theory, AutoMoqData]
+    //public void AppSettingsReaderTests_DefaultLanguage_Expect_key_call_defaultLanguage(
+    //    string language,
+    //    [Frozen] Mock<IConfigurationManager> configurationManager,
+    //    AppSettingsReader sut)
+    //{
+    //    var nameValueCollection = new NameValueCollection
+    //    {
+    //        { "defaultLanguage", language }
+    //    };
+        
+    //    configurationManager
+    //        .SetupGet(m => m.AppSettings)
+    //        .Returns(nameValueCollection);
 
-        public AppSettingsReaderTests()
-        {
-            _mockConfigurationManager = new Mock<IConfigurationManager>();
+    //    var actual = sut.DefaultLanguage;
 
-            ContainerBuilder containerBuilder = new ContainerBuilder();
+    //    actual.Should().Be(language);
 
-            containerBuilder
-                .RegisterInstance(instance: _mockConfigurationManager.Object)
-                .As<IConfigurationManager>();
-
-            containerBuilder
-                .RegisterType<AppSettingsReader>();
-
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<AppSettingsReader>();
-        }
-
-        [NamedFact]
-        public void AppSettingsReaderTests_DefaultLanguage_Expect_key_call_defaultLanguage()
-        {
-            NameValueCollection nameValueCollection = new NameValueCollection
-            {
-                { "defaultLanguage", "de" }
-            };
-            _mockConfigurationManager
-                .SetupGet(expression: m => m.AppSettings)
-                .Returns(value: nameValueCollection);
-
-            string actual = _systemUnderTest.DefaultLanguage;
-
-            Assert.Equal(expected: "de", actual: actual);
-
-            _mockConfigurationManager
-                .Verify(expression: v => v.AppSettings, times: Times.Once);
-        }
-    }
+    //    configurationManager.Verify(v => v.AppSettings, Times.Once);
+    //}
 }

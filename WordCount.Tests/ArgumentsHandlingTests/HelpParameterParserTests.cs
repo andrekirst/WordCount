@@ -1,99 +1,87 @@
-﻿using Autofac;
+﻿using System;
+using AutoFixture.Xunit2;
+using FluentAssertions;
 using Moq;
 using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Implementations.ArgumentsHandling;
-using WordCount.Models.Parameters;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests.ArgumentsHandlingTests
+namespace WordCount.Tests.ArgumentsHandlingTests;
+
+public class HelpParameterParserTests
 {
-    public class HelpParameterParserTests
+    [Theory, AutoMoqData]
+    public void HelpParameterParserTests_args_is_empty_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        HelpParameterParser sut)
     {
-        private readonly Mock<IEnvironment> _mockEnvironment;
-        private readonly HelpParameterParser _systemUnderTest;
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(Array.Empty<string>);
 
-        public HelpParameterParserTests()
-        {
-            _mockEnvironment = new Mock<IEnvironment>();
+        var actual = sut.ParseHelpParameter();
 
-            ContainerBuilder containerBuilder = new ContainerBuilder();
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-            containerBuilder
-                .RegisterInstance(instance: _mockEnvironment.Object)
-                .As<IEnvironment>();
+    [Theory, AutoMoqData]
+    public void HelpParameterParserTests_args_is_null_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        HelpParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(() => null);
 
-            containerBuilder
-                .RegisterType<HelpParameterParser>();
+        var actual = sut.ParseHelpParameter();
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<HelpParameterParser>();
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-        [NamedFact]
-        public void HelpParameterParserTests_args_is_empty_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new string[0]);
+    [Theory, AutoMoqData]
+    public void HelpParameterParserTests_args_have_sourcefile_but_no_help_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        HelpParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "mytext.txt" });
 
-            HelpParameter actual = _systemUnderTest.ParseHelpParameter();
+        var actual = sut.ParseHelpParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-        [NamedFact]
-        public void HelpParameterParserTests_args_is_null_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: null);
+    [Theory, AutoMoqData]
+    public void HelpParameterParserTests_args_have_help_Expect_IsPresent_True(
+        [Frozen] Mock<IEnvironment> environment,
+        HelpParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-help" });
 
-            HelpParameter actual = _systemUnderTest.ParseHelpParameter();
+        var actual = sut.ParseHelpParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeTrue();
+    }
 
-        [NamedFact]
-        public void HelpParameterParserTests_args_have_sourcefile_but_no_help_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] {"mytext.txt"});
+    [Theory, AutoMoqData]
+    public void HelpParameterParserTests_args_have_h_Expect_IsPresent_True(
+        [Frozen] Mock<IEnvironment> environment,
+        HelpParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-h" });
 
-            HelpParameter actual = _systemUnderTest.ParseHelpParameter();
+        var actual = sut.ParseHelpParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
-
-        [NamedFact]
-        public void HelpParameterParserTests_args_have_help_Expect_IsPresent_True()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "-help" });
-
-            HelpParameter actual = _systemUnderTest.ParseHelpParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.True(condition: actual.IsPresent);
-        }
-
-        [NamedFact]
-        public void HelpParameterParserTests_args_have_h_Expect_IsPresent_True()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "-h" });
-
-            HelpParameter actual = _systemUnderTest.ParseHelpParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.True(condition: actual.IsPresent);
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeTrue();
     }
 }

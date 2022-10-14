@@ -1,61 +1,63 @@
 ﻿using System.Collections.Generic;
+using FluentAssertions;
 using WordCount.Helpers;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests.EnumerableHelpersTests
+namespace WordCount.Tests.EnumerableHelpersTests;
+
+public class CountUnknownWordsTests
 {
-    public class CountUnknownWordsTests
+    [Fact]
+    public void CountUnknownWordsTests_IEnumerables_null_Expect_0()
     {
-        [NamedFact]
-        public void CountUnknownWordsTests_IEnumerables_null_Expect_0()
-        {
-            int actual = EnumerableHelpers.CountUnknownWords(
-                distinctWords: null,
-                dictionaryWords: null);
+        var actual = EnumerableHelpers.CountUnknownWords(null, null);
 
-            Assert.Equal(expected: 0, actual: actual);
-        }
+        actual.Should().Be(0);
+    }
 
-        [NamedFact]
-        public void CountUnknownWordsTests_distinctWords_null_DictionaryWords_1_Entry_Expect_0()
-        {
-            int actual = EnumerableHelpers.CountUnknownWords(
-                distinctWords: null,
-                dictionaryWords: new List<string> { "eintrag1" });
+    [Theory, AutoMoqData]
+    public void CountUnknownWordsTests_distinctWords_null_DictionaryWords_1_Entry_Expect_0(
+        List<string> dictionaryWords)
+    {
+        var actual = EnumerableHelpers.CountUnknownWords(
+            null,
+            dictionaryWords);
 
-            Assert.Equal(expected: 0, actual: actual);
-        }
+        actual.Should().Be(0);
+    }
 
-        [NamedFact]
-        public void CountUnknownWordsTests_distinctWords_1_Eintrag_DictionaryWords_null_Expect_1()
-        {
-            int actual = EnumerableHelpers.CountUnknownWords(
-                distinctWords: new List<string> { "eintrag1" },
-                dictionaryWords: null);
+    [Theory, AutoMoqData]
+    public void CountUnknownWordsTests_distinctWords_1_Eintrag_DictionaryWords_null_Expect_1(
+        List<string> distinctWords)
+    {
+        var actual = EnumerableHelpers.CountUnknownWords(
+            distinctWords,
+            null);
 
-            Assert.Equal(expected: 1, actual: actual);
-        }
+        actual.Should().Be(distinctWords.Count);
+    }
 
 
-        [NamedFact]
-        public void CountUnknownWordsTests_same_values_in_lists_Expect_0()
-        {
-            int actual = EnumerableHelpers.CountUnknownWords(
-                distinctWords: new List<string> { "eintrag1" },
-                dictionaryWords: new List<string> { "eintrag1" });
+    [Theory, AutoMoqData]
+    public void CountUnknownWordsTests_same_values_in_lists_Expect_0(
+        List<string> list)
+    {
+        var actual = EnumerableHelpers.CountUnknownWords(
+            list,
+            list);
 
-            Assert.Equal(expected: 0, actual: actual);
-        }
+        actual.Should().Be(0);
+    }
 
-        [NamedFact]
-        public void CountUnknownWordsTests_distinctWords_abc_dictionaryWords_def_Expect_1()
-        {
-            int actual = EnumerableHelpers.CountUnknownWords(
-                distinctWords: new List<string> { "abc" },
-                dictionaryWords: new List<string> { "def" });
+    [Theory, AutoMoqData]
+    public void CountUnknownWordsTests_distinctWords_abc_dictionaryWords_def_Expect_1(
+        List<string> distinctWords,
+        List<string> dictionaryWords)
+    {
+        var actual = EnumerableHelpers.CountUnknownWords(
+            distinctWords,
+            dictionaryWords);
 
-            Assert.Equal(expected: 1, actual: actual);
-        }
+        actual.Should().Be(dictionaryWords.Count);
     }
 }

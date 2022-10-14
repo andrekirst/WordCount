@@ -19,16 +19,16 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public LanguageParameter ParseLanguageParameter()
         {
-            return CachedValue(toCachingValue: () =>
+            return CachedValue(() =>
             {
-                string[] commandLineArgs = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
+                var commandLineArgs = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
 
-                string languageParameter =
-                    commandLineArgs.FirstOfMatchingRegex(pattern: "^-lang=[a-zA-Z]{1,}$") ?? string.Empty;
+                var languageParameter =
+                    commandLineArgs.FirstOfMatchingRegex("^-lang=[a-zA-Z]{1,}$") ?? string.Empty;
 
-                string[] splittedByEqualSign = languageParameter.Split('=');
+                var splittedByEqualSign = languageParameter.Split('=');
 
-                string language = splittedByEqualSign.LastOrDefault() ?? string.Empty;
+                var language = splittedByEqualSign.LastOrDefault() ?? string.Empty;
 
                 return new LanguageParameter
                 {

@@ -30,50 +30,49 @@ namespace WordCount.Implementations.Output
 
         public void OutputIndex(IndexOutputRequest indexOutputRequest)
         {
-            IndexParameter indexParameter = IndexParameterParser.ParseIndexParameter();
-            DictionaryParameter dictionaryParameter = DictionaryParameterParser.ParseDictionaryParameter();
+            var indexParameter = IndexParameterParser.ParseIndexParameter();
+            var dictionaryParameter = DictionaryParameterParser.ParseDictionaryParameter();
 
-            if (indexParameter.IsPresent)
+            if (!indexParameter.IsPresent) return;
+            
+            var dictionaryWords = DictionaryFileLoader.ReadWords();
+
+            var unknwonWordsCount = EnumerableHelpers.CountUnknownWords(
+                indexOutputRequest.DistinctWords,
+                dictionaryWords);
+
+            if (dictionaryParameter.IsPresent)
             {
-                List<string> dictionaryWords = DictionaryFileLoader.ReadWords();
-
-                int unknwonWordsCount = EnumerableHelpers.CountUnknownWords(
-                    distinctWords: indexOutputRequest.DistinctWords,
-                    dictionaryWords: dictionaryWords);
-
-                if (dictionaryParameter.IsPresent)
-                {
-                    DisplayOutput.WriteResourceLine(
-                        resourceIdent: "INDEX_WITH_UNKNOWN",
-                        placeholderValues: unknwonWordsCount);
-                }
-                else
-                {
-                    DisplayOutput.WriteResourceLine(
-                        resourceIdent: "INDEX");
-                }
-
-                DisplayWords(
-                    distinctWords: indexOutputRequest.DistinctWords,
-                    dictionaryWords: dictionaryWords);
+                DisplayOutput.WriteResourceLine(
+                    "INDEX_WITH_UNKNOWN",
+                    unknwonWordsCount);
             }
+            else
+            {
+                DisplayOutput.WriteResourceLine(
+                    "INDEX");
+            }
+
+            DisplayWords(
+                indexOutputRequest.DistinctWords,
+                dictionaryWords);
         }
 
         private void DisplayWords(
-            List<string> distinctWords,
-            List<string> dictionaryWords)
+            IEnumerable<string> distinctWords,
+            ICollection<string> dictionaryWords)
         {
-            bool checkAgainstDictionary = dictionaryWords != null && dictionaryWords.Any();
-            IEnumerable<string> sortedListOfDistinctWords = distinctWords.OrderBy(keySelector: s => s);
+            var checkAgainstDictionary = dictionaryWords != null && dictionaryWords.Any();
+            IEnumerable<string> sortedListOfDistinctWords = distinctWords.OrderBy(s => s);
 
-            foreach (string distinctWord in sortedListOfDistinctWords)
+            foreach (var distinctWord in sortedListOfDistinctWords)
             {
-                string word = distinctWord;
-                if (checkAgainstDictionary && !dictionaryWords.Contains(item: distinctWord))
+                var word = distinctWord;
+                if (checkAgainstDictionary && !dictionaryWords.Contains(distinctWord))
                 {
                     word += "*";
                 }
-                DisplayOutput.WriteLine(text: word);
+                DisplayOutput.WriteLine(word);
             }
         }
     }

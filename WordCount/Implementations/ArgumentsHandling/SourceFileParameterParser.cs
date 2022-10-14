@@ -18,14 +18,14 @@ namespace WordCount.Implementations.ArgumentsHandling
 
         public SourceFileParameter ParseSourceFileParameter()
         {
-            return CachedValue(toCachingValue: () =>
+            return CachedValue(() =>
             {
-                string[] commandLineArgs = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
+                var commandLineArgs = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
 
-                string fileName = commandLineArgs
-                                      .FirstOrDefault(predicate: s => !s.StartsWith(value: "-")) ?? string.Empty;
+                var fileName = commandLineArgs
+                                      .FirstOrDefault(s => !s.StartsWith("-")) ?? string.Empty;
 
-                bool isPresent = fileName.IsFilled();
+                var isPresent = fileName.IsFilled();
 
                 return new SourceFileParameter
                 {

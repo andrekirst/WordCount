@@ -6,7 +6,7 @@ namespace WordCount.Abstractions.SystemAbstractions
     [ExcludeFromCodeCoverage]
     public class Console : IConsole
     {
-        public void WriteLine(string text, params object[] values) => System.Console.WriteLine(format: text, arg: values);
+        public void WriteLine(string text, params object[] values) => System.Console.WriteLine(text, values);
 
         public ConsoleColor ForegroundColor
         {
@@ -18,12 +18,12 @@ namespace WordCount.Abstractions.SystemAbstractions
 
         public void ResetColor() => System.Console.ResetColor();
 
-        public void Write(string text) => System.Console.Write(value: text);
+        public void Write(string text) => System.Console.Write(text);
 
-        public void Write(string text, params object[] values) => System.Console.Write(format: text, arg: values);
+        public void Write(string text, params object[] values) => System.Console.Write(text, values);
 
         public void WriteLine() => System.Console.WriteLine();
 
-        public void WriteLine(string text) => System.Console.WriteLine(value: text);
+        public void WriteLine(string text) => System.Console.WriteLine(text);
     }
 }

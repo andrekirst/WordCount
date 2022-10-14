@@ -2,7 +2,6 @@
 using WordCount.Extensions;
 using WordCount.Interfaces.Output;
 using WordCount.Models.Requests;
-using WordCount.Models.Results;
 
 namespace WordCount.Implementations
 {
@@ -30,14 +29,14 @@ namespace WordCount.Implementations
 
         public int Execute()
         {
-            bool hasRequestedHelp = HelpOutput.ShowHelpIfRequested();
+            var hasRequestedHelp = HelpOutput.ShowHelpIfRequested();
 
             if (hasRequestedHelp)
             {
                 return 1;
             }
 
-            InputTextResult inputTextResult = TextInput.GetInputText();
+            var inputTextResult = TextInput.GetInputText();
 
             if (inputTextResult.Text.IsNullOrEmpty())
             {
@@ -45,16 +44,16 @@ namespace WordCount.Implementations
             }
             do
             {
-                WordCountAnalyzerResult analyzeResult = WordCountAnalyzer.Analyze(text: inputTextResult.Text);
+                var analyzeResult = WordCountAnalyzer.Analyze(inputTextResult.Text);
 
-                WordCountAnalyzerOutput.DisplayResult(result: analyzeResult);
+                WordCountAnalyzerOutput.DisplayResult(analyzeResult);
 
-                IndexOutputRequest indexOutputRequest = new IndexOutputRequest
+                var indexOutputRequest = new IndexOutputRequest
                 {
                     DistinctWords = analyzeResult.DistinctWords
                 };
 
-                IndexOutput.OutputIndex(indexOutputRequest: indexOutputRequest);
+                IndexOutput.OutputIndex(indexOutputRequest);
 
                 inputTextResult = TextInput.GetInputText();
             } while (inputTextResult.HasEnteredConsoleText);

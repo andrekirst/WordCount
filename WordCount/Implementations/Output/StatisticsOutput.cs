@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using WordCount.Interfaces.Language;
+﻿using WordCount.Interfaces.Language;
 using WordCount.Interfaces.Output;
 using WordCount.Extensions;
 
@@ -23,43 +22,43 @@ namespace WordCount.Implementations.Output
 
         public void WriteNumberOfWords(int numberOfWords, int maxCountOfFillingPoints)
         {
-            string resourceValue = LanguageResource.GetResourceStringById(resourceIdent: "NUMBER_OF_WORDS");
-            string output = resourceValue.FillRightWithPoints(totalWidth: maxCountOfFillingPoints);
+            var resourceValue = LanguageResource.GetResourceStringById("NUMBER_OF_WORDS");
+            var output = resourceValue.FillRightWithPoints(maxCountOfFillingPoints);
 
             output = $"- {output} {numberOfWords}";
-            DisplayOutput.WriteLine(text: output);
+            DisplayOutput.WriteLine(output);
         }
 
         public void WriteNumberOfUniqeWords(int numberOfUniqeWords, int maxCountOfFillingPoints)
         {
-            string resourceValue = LanguageResource.GetResourceStringById(resourceIdent: "UNIQUE");
-            string output = resourceValue.FillRightWithPoints(totalWidth: maxCountOfFillingPoints);
+            var resourceValue = LanguageResource.GetResourceStringById("UNIQUE");
+            var output = resourceValue.FillRightWithPoints(maxCountOfFillingPoints);
 
             output = $"- {output} {numberOfUniqeWords}";
-            DisplayOutput.WriteLine(text: output);
+            DisplayOutput.WriteLine(output);
         }
 
         public void WriteAverageWordLength(double averageWordLength, int maxCountOfFillingPoints)
         {
-            CultureInfo currentCulture = LanguageDecision.DecideLanguage().Culture;
+            var currentCulture = LanguageDecision.DecideLanguage().Culture;
 
-            string resourceValueAverageWordLength = LanguageResource.GetResourceStringById(resourceIdent: "AVERAGE_WORD_LENGTH");
-            string resourceValueCharacters = LanguageResource.GetResourceStringById(resourceIdent: "CHARACTERS");
-            string output = resourceValueAverageWordLength.FillRightWithPoints(totalWidth: maxCountOfFillingPoints);
+            var resourceValueAverageWordLength = LanguageResource.GetResourceStringById("AVERAGE_WORD_LENGTH");
+            var resourceValueCharacters = LanguageResource.GetResourceStringById("CHARACTERS");
+            var output = resourceValueAverageWordLength.FillRightWithPoints(maxCountOfFillingPoints);
 
-            string averageWordLengthAsString = averageWordLength.ToString(format: "N2", provider: currentCulture);
+            var averageWordLengthAsString = averageWordLength.ToString("N2", currentCulture);
 
             output = $"- {output} {averageWordLengthAsString} {resourceValueCharacters}";
-            DisplayOutput.WriteLine(text: output);
+            DisplayOutput.WriteLine(output);
         }
 
         public void WriteNumberOfChapters(int numberOfChapters, int maxCountOfFillingPoints)
         {
-            string resourceValue = LanguageResource.GetResourceStringById(resourceIdent: "CHAPTERS");
-            string output = resourceValue.FillRightWithPoints(totalWidth: maxCountOfFillingPoints);
+            var resourceValue = LanguageResource.GetResourceStringById("CHAPTERS");
+            var output = resourceValue.FillRightWithPoints(maxCountOfFillingPoints);
 
             output = $"- {output} {numberOfChapters}";
-            DisplayOutput.WriteLine(text: output);
+            DisplayOutput.WriteLine(output);
         }
     }
 }

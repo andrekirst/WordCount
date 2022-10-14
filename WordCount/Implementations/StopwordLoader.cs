@@ -4,7 +4,6 @@ using System.Linq;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
-using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations
 {
@@ -29,16 +28,16 @@ namespace WordCount.Implementations
 
         public List<string> GetStopwords()
         {
-            StopwordListParameter stopwordListParameter = StopwordListParameterParser.ParseStopwordListParameter();
-            LanguageParameter languageParameter = LanguageParameterParser.ParseLanguageParameter();
+            var stopwordListParameter = StopwordListParameterParser.ParseStopwordListParameter();
+            var languageParameter = LanguageParameterParser.ParseLanguageParameter();
 
-            bool isStopwordListParameterPresent = stopwordListParameter.IsPresent;
+            var isStopwordListParameterPresent = stopwordListParameter.IsPresent;
 
-            string fileName = isStopwordListParameterPresent ?
+            var fileName = isStopwordListParameterPresent ?
                 stopwordListParameter.FileName :
                 $"stopwords.{languageParameter.Language}.txt";
 
-            if (!FileSystem.File.Exists(path: fileName))
+            if (!FileSystem.File.Exists(fileName))
             {
                 return new List<string>();
             }
@@ -46,13 +45,13 @@ namespace WordCount.Implementations
             if (isStopwordListParameterPresent)
             {
                 DisplayOutput.WriteResourceLine(
-                    resourceIdent: "USED_STOPWORDLIST",
-                    placeholderValues: fileName);
+                    "USED_STOPWORDLIST",
+                    fileName);
             }
 
             return FileSystem
                 .File
-                .ReadAllLines(path: fileName)
+                .ReadAllLines(fileName)
                 .ToList();
         }
     }

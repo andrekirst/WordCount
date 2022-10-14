@@ -1,135 +1,109 @@
 ﻿using System;
-using Autofac;
+using AutoFixture.Xunit2;
+using FluentAssertions;
 using Moq;
 using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Implementations.ArgumentsHandling;
-using WordCount.Models.Parameters;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests.ArgumentsHandlingTests
+namespace WordCount.Tests.ArgumentsHandlingTests;
+
+public class LanguageParameterParserTests
 {
-    public class LanguageParameterParserTests
+    [Theory, AutoMoqData]
+    public void LanguageParameterParserTests_args_is_null_expect_ispresent_false(
+        [Frozen] Mock<IEnvironment> environment,
+        LanguageParameterParser sut)
     {
-        private readonly Mock<IEnvironment> _mockEnvironment;
-        private readonly Mock<IConsole> _mockConsole;
-        private readonly LanguageParameterParser _systemUnderTest;
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(() => null);
 
-        public LanguageParameterParserTests()
-        {
-            _mockEnvironment = new Mock<IEnvironment>();
-            _mockConsole = new Mock<IConsole>();
+        var actual = sut.ParseLanguageParameter();
 
-            ContainerBuilder containerBuilder = new ContainerBuilder();
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-            containerBuilder
-                .RegisterInstance(instance: _mockEnvironment.Object)
-                .As<IEnvironment>();
+    [Theory, AutoMoqData]
+    public void LanguageParameterParserTests_args_is_empty_expect_ispresent_false(
+        [Frozen] Mock<IEnvironment> environment,
+        LanguageParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(Array.Empty<string>());
 
-            containerBuilder
-                .RegisterInstance(instance: _mockConsole.Object)
-                .As<IConsole>();
+        var actual = sut.ParseLanguageParameter();
 
-            containerBuilder
-                .RegisterType<LanguageParameterParser>();
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<LanguageParameterParser>();
-        }
+    [Theory, AutoMoqData]
+    public void LanguageParameterParserTests_args_has_valid_language_parameter_expect_ispresent_true(
+        [Frozen] Mock<IEnvironment> environment,
+        LanguageParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-lang=de" });
 
-        [NamedFact]
-        public void LanguageParameterParserTests_args_is_null_expect_ispresent_false()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: null);
+        var actual = sut.ParseLanguageParameter();
 
-            LanguageParameter actual = _systemUnderTest.ParseLanguageParameter();
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeTrue();
+    }
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
+    [Theory, AutoMoqData]
+    public void LanguageParameterParserTests_args_has_valid_de_language_parameter_expect_language_de(
+        [Frozen] Mock<IEnvironment> environment,
+        LanguageParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-lang=de" });
 
-        [NamedFact]
-        public void LanguageParameterParserTests_args_is_empty_expect_ispresent_false()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: Array.Empty<string>());
+        var actual = sut.ParseLanguageParameter();
 
-            LanguageParameter actual = _systemUnderTest.ParseLanguageParameter();
+        actual.Should().NotBeNull();
+        actual.Language.Should().Be("de");
+    }
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
+    [Theory, AutoMoqData]
+    public void LanguageParameterParserTests_Double_Test_FromCache(
+        [Frozen] Mock<IEnvironment> environment,
+        LanguageParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-lang=it" });
 
-        [NamedFact]
-        public void LanguageParameterParserTests_args_has_valid_language_parameter_expect_ispresent_true()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] {"-lang=de"});
+        var actual = sut.ParseLanguageParameter();
 
-            LanguageParameter actual = _systemUnderTest.ParseLanguageParameter();
+        actual.Should().NotBeNull();
+        actual.Language.Should().Be("it");
 
-            Assert.NotNull(@object: actual);
-            Assert.True(condition: actual.IsPresent);
-        }
+        actual = sut.ParseLanguageParameter();
 
-        [NamedFact]
-        public void LanguageParameterParserTests_args_has_valid_de_language_parameter_expect_language_de()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "-lang=de" });
+        actual.Should().NotBeNull();
+        actual.Language.Should().Be("it");
 
-            LanguageParameter actual = _systemUnderTest.ParseLanguageParameter();
+        environment.Verify(v => v.GetCommandLineArgs(), Times.Once);
+    }
 
-            Assert.NotNull(@object: actual);
-            Assert.Equal(
-                expected: "de",
-                actual: actual.Language);
-        }
+    [Theory, AutoMoqData]
+    public void LanguageParameterParserTests_parameter_is_not_present_expect_language_empty(
+        [Frozen] Mock<IEnvironment> environment,
+        LanguageParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(Array.Empty<string>());
 
-        [NamedFact]
-        public void LanguageParameterParserTests_Double_Test_FromCache()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "-lang=it" });
+        var actual = sut.ParseLanguageParameter();
 
-            LanguageParameter actual = _systemUnderTest.ParseLanguageParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(
-                expected: "it",
-                actual: actual.Language);
-
-            actual = _systemUnderTest.ParseLanguageParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(
-                expected: "it",
-                actual: actual.Language);
-
-            _mockEnvironment
-                .Verify(v => v.GetCommandLineArgs(), Times.Once);
-        }
-
-        [NamedFact]
-        public void LanguageParameterParserTests_parameter_is_not_present_expect_language_empty()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: Array.Empty<string>());
-
-            LanguageParameter actual = _systemUnderTest.ParseLanguageParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.Equal(
-                expected: string.Empty,
-                actual: actual.Language);
-        }
+        actual.Should().NotBeNull();
+        actual.Language.Should().BeEmpty();
     }
 }

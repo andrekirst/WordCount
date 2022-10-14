@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
 using WordCount.Interfaces;
 using WordCount.Models.Results;
 
@@ -21,22 +20,22 @@ namespace WordCount.Implementations
 
         public WordCountAnalyzerResult Analyze(string text)
         {
-            TextSplitResult textSplitResult = TextSplit.Split(text: text);
+            var textSplitResult = TextSplit.Split(text);
 
             if (!textSplitResult.WordsAvailable)
             {
                 return new WordCountAnalyzerResult();
             }
 
-            StopwordRemoverResult stopwordRemoverResult = StopwordRemover.RemoveStopwords(words: textSplitResult.Words);
+            var stopwordRemoverResult = StopwordRemover.RemoveStopwords(textSplitResult.Words);
 
-            List<string> words = stopwordRemoverResult.Words;
-            List<string> distinctWords = words.Distinct().ToList();
+            var words = stopwordRemoverResult.Words;
+            var distinctWords = words.Distinct().ToList();
 
-            int numberOfWords = words.Count;
-            int numberOfUniqueWords = distinctWords.Count;
-            double averageWordLength = words.Any() ? words.Average(selector: s => s.Length) : 0.0;
-            int numberOfchapters = text.Split(separator: new[] {Environment.NewLine + Environment.NewLine}, options: StringSplitOptions.None).Count();
+            var numberOfWords = words.Count;
+            var numberOfUniqueWords = distinctWords.Count;
+            var averageWordLength = words.Any() ? words.Average(s => s.Length) : 0.0;
+            var numberOfchapters = text.Split(new[] { Environment.NewLine + Environment.NewLine }, StringSplitOptions.None).Count();
 
             return new WordCountAnalyzerResult
             {

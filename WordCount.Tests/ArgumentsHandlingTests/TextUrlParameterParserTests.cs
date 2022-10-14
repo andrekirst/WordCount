@@ -1,95 +1,82 @@
-﻿using Autofac;
-using Moq;
+﻿using Moq;
 using System;
+using AutoFixture.Xunit2;
+using FluentAssertions;
 using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Implementations.ArgumentsHandling;
-using WordCount.Models.Parameters;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests.ArgumentsHandlingTests
+namespace WordCount.Tests.ArgumentsHandlingTests;
+
+public class TextUrlParameterParserTests
 {
-    public class TextUrlParameterParserTests
+    [Theory, AutoMoqData]
+    public void TextUrlParameterParserTests_Args_is_empty_Expect_IsPresent_False(
+        [Frozen ]Mock<IEnvironment> environment,
+        TextUrlParameterParser sut)
     {
-        private readonly Mock<IEnvironment> _mockEnvironment;
-        private readonly TextUrlParameterParser _systemUnderTest;
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(Array.Empty<string>());
 
-        public TextUrlParameterParserTests()
-        {
-            _mockEnvironment = new Mock<IEnvironment>();
+        var actual = sut.ParseTextUrlParameter();
 
-            ContainerBuilder containerBuilder = new ContainerBuilder();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-            containerBuilder
-                .RegisterInstance(instance: _mockEnvironment.Object)
-                .As<IEnvironment>();
+    [Theory, AutoMoqData]
+    public void TextUrlParameterParserTests_Args_is_null_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        TextUrlParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(() => null);
 
-            containerBuilder
-                .RegisterType<TextUrlParameterParser>();
+        var actual = sut.ParseTextUrlParameter();
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<TextUrlParameterParser>();
-        }
+        actual.IsPresent.Should().BeFalse();
+    }
 
-        [NamedFact]
-        public void TextUrlParameterParserTests_Args_is_empty_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(m => m.GetCommandLineArgs())
-                .Returns(Array.Empty<string>());
+    [Theory, AutoMoqData]
+    public void TextUrlParameterParserTests_Args_has_texturl_equalsign_wwwaddress_Expect_IsPresent_True(
+        [Frozen] Mock<IEnvironment> environment,
+        TextUrlParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-texturl=http://www.google.de" });
 
-            TextUrlParameter actual = _systemUnderTest.ParseTextUrlParameter();
+        var actual = sut.ParseTextUrlParameter();
 
-            Assert.False(condition: actual.IsPresent);
-        }
+        actual.IsPresent.Should().BeTrue();
+    }
 
-        [NamedFact]
-        public void TextUrlParameterParserTests_Args_is_null_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(m => m.GetCommandLineArgs())
-                .Returns(value: null);
+    [Theory, AutoMoqData]
+    public void TextUrlParameterParserTests_Args_has_texturl_equalsign_url_Expect_url(
+        [Frozen] Mock<IEnvironment> environment,
+        TextUrlParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-texturl=http://www.google.de" });
 
-            TextUrlParameter actual = _systemUnderTest.ParseTextUrlParameter();
+        var actual = sut.ParseTextUrlParameter();
 
-            Assert.False(condition: actual.IsPresent);
-        }
+        actual.Url.Should().Be("http://www.google.de");
+    }
 
-        [NamedFact]
-        public void TextUrlParameterParserTests_Args_has_texturl_equalsign_wwwaddress_Expect_IsPresent_True()
-        {
-            _mockEnvironment
-                .Setup(m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "-texturl=http://www.google.de" });
+    [Theory, AutoMoqData]
+    public void TextUrlParameterParserTests_Args_has_texturl_equalsign_invalid_wwwaddress_Expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        TextUrlParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-texturl=www.googlede" });
 
-            TextUrlParameter actual = _systemUnderTest.ParseTextUrlParameter();
+        var actual = sut.ParseTextUrlParameter();
 
-            Assert.True(condition: actual.IsPresent);
-        }
-
-        [NamedFact]
-        public void TextUrlParameterParserTests_Args_has_texturl_equalsign_url_Expect_url()
-        {
-            _mockEnvironment
-                .Setup(m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "-texturl=http://www.google.de" });
-
-            TextUrlParameter actual = _systemUnderTest.ParseTextUrlParameter();
-
-            Assert.Equal(expected: "http://www.google.de", actual: actual.Url);
-        }
-
-        [NamedFact]
-        public void TextUrlParameterParserTests_Args_has_texturl_equalsign_invalid_wwwaddress_Expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(m => m.GetCommandLineArgs())
-                .Returns(value: new[] { "-texturl=www.googlede" });
-
-            TextUrlParameter actual = _systemUnderTest.ParseTextUrlParameter();
-
-            Assert.False(condition: actual.IsPresent);
-        }
+        actual.IsPresent.Should().BeFalse();
     }
 }

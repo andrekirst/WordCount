@@ -12,9 +12,9 @@ namespace WordCount.Abstractions.SystemAbstractions.Net.Http
         {
             System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient
             {
-                BaseAddress = new Uri(uriString: url)
+                BaseAddress = new Uri(url)
             };
-            return httpClient.GetStringAsync(requestUri: url);
+            return httpClient.GetStringAsync(url);
         }
     }
 }

@@ -1,94 +1,69 @@
 ﻿using System.Threading.Tasks;
-using Autofac;
+using AutoFixture.Xunit2;
+using FluentAssertions;
 using Moq;
 using WordCount.Abstractions.SystemAbstractions.Net.Http;
 using WordCount.Implementations;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests
+namespace WordCount.Tests;
+
+public class TextUrlFileLoaderTests
 {
-    public class TextUrlFileLoaderTests
+    [Theory, AutoMoqData]
+    public void TextUrlFileLoaderTests_HttpClient_returns_abc_expect_abc(
+        [Frozen] Mock<ITextUrlParameterParser> textUrlParameterParser,
+        [Frozen] Mock<IHttpClient> httpClient,
+        TextUrlFileLoader sut)
     {
-        private readonly Mock<ITextUrlParameterParser> _mockTextUrlParameterParser;
-        private readonly Mock<IHttpClient> _mockHttpClient;
-        private readonly TextUrlFileLoader _systemUnderTest;
+        textUrlParameterParser
+            .Setup(m => m.ParseTextUrlParameter())
+            .Returns(new TextUrlParameter { IsPresent = true });
 
-        public TextUrlFileLoaderTests()
-        {
-            _mockTextUrlParameterParser = new Mock<ITextUrlParameterParser>();
-            _mockHttpClient = new Mock<IHttpClient>();
+        httpClient
+            .Setup(m => m.ReadString(It.IsAny<string>()))
+            .Returns(Task.FromResult("abc"));
 
-            ContainerBuilder containerBuilder = new ContainerBuilder();
+        var actual = sut.ReadTextFile();
 
-            containerBuilder
-                .RegisterInstance(instance: _mockHttpClient.Object)
-                .As<IHttpClient>();
+        actual.Should().Be("abc");
+    }
 
-            containerBuilder
-                .RegisterInstance(instance: _mockTextUrlParameterParser.Object)
-                .As<ITextUrlParameterParser>();
+    [Theory, AutoMoqData]
+    public void TextUrlFileLoaderTests_Parameter_Url_expect_in_call_of_readString(
+        [Frozen] Mock<ITextUrlParameterParser> textUrlParameterParser,
+        [Frozen] Mock<IHttpClient> httpClient,
+        TextUrlFileLoader sut)
+    {
+        textUrlParameterParser
+            .Setup(m => m.ParseTextUrlParameter())
+            .Returns(new TextUrlParameter
+            {
+                IsPresent = true,
+                Url = "http://textfiles.rolz.org/adventure/221baker.txt"
+            });
 
-            containerBuilder
-                .RegisterType<TextUrlFileLoader>();
+        sut.ReadTextFile();
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<TextUrlFileLoader>();
-        }
+        httpClient.Verify(v => v.ReadString("http://textfiles.rolz.org/adventure/221baker.txt"), Times.Once);
+    }
 
-        [NamedFact]
-        public void TextUrlFileLoaderTests_HttpClient_returns_abc_expect_abc()
-        {
-            _mockTextUrlParameterParser
-                .Setup(expression: m => m.ParseTextUrlParameter())
-                .Returns(value: new TextUrlParameter() {IsPresent = true});
+    [Theory, AutoMoqData]
+    public void TextUrlFileLoaderTests_Parameter_is_not_present_expect_null(
+        [Frozen] Mock<ITextUrlParameterParser> textUrlParameterParser,
+        [Frozen] Mock<IHttpClient> httpClient,
+        TextUrlFileLoader sut)
+    {
+        textUrlParameterParser
+            .Setup(m => m.ParseTextUrlParameter())
+            .Returns(new TextUrlParameter { IsPresent = false });
 
-            _mockHttpClient
-                .Setup(m => m.ReadString(It.IsAny<string>()))
-                .Returns(value: Task.FromResult("abc"));
+        var actual = sut.ReadTextFile();
 
-            string actual = _systemUnderTest.ReadTextFile();
+        actual.Should().BeNull();
 
-            Assert.Equal(expected: "abc", actual: actual);
-        }
-
-        [NamedFact]
-        public void TextUrlFileLoaderTests_Parameter_Url_expect_in_call_of_readString()
-        {
-            _mockTextUrlParameterParser
-                .Setup(m => m.ParseTextUrlParameter())
-                .Returns(new TextUrlParameter()
-                {
-                    IsPresent = true,
-                    Url = "http://textfiles.rolz.org/adventure/221baker.txt"
-                });
-
-            _systemUnderTest.ReadTextFile();
-
-            _mockHttpClient
-                .Verify(
-                    expression: v => v.ReadString("http://textfiles.rolz.org/adventure/221baker.txt"),
-                    times: Times.Once);
-        }
-
-        [NamedFact]
-        public void TextUrlFileLoaderTests_Parameter_is_not_present_expect_null()
-        {
-            _mockTextUrlParameterParser
-                .Setup(m => m.ParseTextUrlParameter())
-                .Returns(new TextUrlParameter() {IsPresent = false});
-
-            string actual = _systemUnderTest.ReadTextFile();
-
-            Assert.Null(@object: actual);
-
-            _mockHttpClient
-                .Verify(
-                    expression: v => v.ReadString(It.IsAny<string>()),
-                    times: Times.Never);
-        }
+        httpClient.Verify(v => v.ReadString(It.IsAny<string>()), Times.Never);
     }
 }

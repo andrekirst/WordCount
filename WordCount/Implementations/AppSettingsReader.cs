@@ -12,6 +12,6 @@ namespace WordCount.Implementations
             ConfigurationManager = configurationManager;
         }
 
-        public string DefaultLanguage => ConfigurationManager.AppSettings[name: "defaultLanguage"];
+        public string DefaultLanguage => ConfigurationManager.AppSettings["defaultLanguage"];
     }
 }

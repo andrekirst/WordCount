@@ -1,83 +1,67 @@
-﻿using Autofac;
-using Moq;
+﻿using Moq;
 using System;
+using AutoFixture.Xunit2;
+using FluentAssertions;
 using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Implementations.ArgumentsHandling;
-using WordCount.Models.Parameters;
-using WordCount.Tests.XUnitHelpers;
 using Xunit;
 
-namespace WordCount.Tests.ArgumentsHandlingTests
+namespace WordCount.Tests.ArgumentsHandlingTests;
+
+public class IndexParameterParserTests
 {
-    public class IndexParameterParserTests
+    [Theory, AutoMoqData]
+    public void IndexParameterParserTests_Args_have_no_index_Parameter_Expect_IsPresent_False(
+        IndexParameterParser sut)
     {
-        private readonly Mock<IEnvironment> _mockEnvironment;
-        private readonly IndexParameterParser _systemUnderTest;
+        var actual = sut.ParseIndexParameter();
 
-        public IndexParameterParserTests()
-        {
-            _mockEnvironment = new Mock<IEnvironment>();
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-            ContainerBuilder containerBuilder = new ContainerBuilder();
+    [Theory, AutoMoqData]
+    public void IndexParameterParserTests_Args_is_null_expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        IndexParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(() => null);
 
-            containerBuilder
-                .RegisterInstance(instance: _mockEnvironment.Object)
-                .As<IEnvironment>();
+        var actual = sut.ParseIndexParameter();
 
-            containerBuilder
-                .RegisterType<IndexParameterParser>();
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-            _systemUnderTest = containerBuilder
-                .Build()
-                .Resolve<IndexParameterParser>();
-        }
+    [Theory, AutoMoqData]
+    public void IndexParameterParserTests_Args_is_empty_expect_IsPresent_False(
+        [Frozen] Mock<IEnvironment> environment,
+        IndexParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(Array.Empty<string>());
 
-        [NamedFact]
-        public void IndexParameterParserTests_Args_have_no_index_Parameter_Expect_IsPresent_False()
-        {
-            IndexParameter actual = _systemUnderTest.ParseIndexParameter();
+        var actual = sut.ParseIndexParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeFalse();
+    }
 
-        [NamedFact]
-        public void IndexParameterParserTests_Args_is_null_expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: null);
+    [Theory, AutoMoqData]
+    public void IndexParameterParserTests_Args_has_index_Parameter_expect_IsPresent_True(
+        [Frozen] Mock<IEnvironment> environment,
+        IndexParameterParser sut)
+    {
+        environment
+            .Setup(m => m.GetCommandLineArgs())
+            .Returns(new[] { "-index" });
 
-            IndexParameter actual = _systemUnderTest.ParseIndexParameter();
+        var actual = sut.ParseIndexParameter();
 
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
-
-        [NamedFact]
-        public void IndexParameterParserTests_Args_is_empty_expect_IsPresent_False()
-        {
-            _mockEnvironment
-                .Setup(expression: m => m.GetCommandLineArgs())
-                .Returns(value: Array.Empty<string>());
-
-            IndexParameter actual = _systemUnderTest.ParseIndexParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.False(condition: actual.IsPresent);
-        }
-
-        [NamedFact]
-        public void IndexParameterParserTests_Args_has_index_Parameter_expect_IsPresent_True()
-        {
-            _mockEnvironment
-                .Setup(m => m.GetCommandLineArgs())
-                .Returns(new[] {"-index"});
-
-            IndexParameter actual = _systemUnderTest.ParseIndexParameter();
-
-            Assert.NotNull(@object: actual);
-            Assert.True(condition: actual.IsPresent);
-        }
+        actual.Should().NotBeNull();
+        actual.IsPresent.Should().BeTrue();
     }
 }

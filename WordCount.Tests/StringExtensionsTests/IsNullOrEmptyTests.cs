@@ -1,24 +1,21 @@
-﻿using WordCount.Extensions;
-using WordCount.Tests.XUnitHelpers;
+﻿using FluentAssertions;
+using WordCount.Extensions;
 using Xunit;
 
-namespace WordCount.Tests.StringExtensionsTests
+namespace WordCount.Tests.StringExtensionsTests;
+
+public class IsNullOrEmptyTests
 {
-    public class IsNullOrEmptyTests
+    [Theory]
+    [InlineData("", true)]
+    [InlineData(" ", true)]
+    [InlineData(null, true)]
+    [InlineData("text", false)]
+    public void IsNullOrEmptyTests_Parameter_Test_with_input_Text_and_expected_value(
+        string inputText,
+        bool expectedValue)
     {
-        [NamedTheory]
-        [InlineData("", true)]
-        [InlineData(" ", true)]
-        [InlineData(null, true)]
-        [InlineData("text", false)]
-        public void IsNullOrEmptyTests_Parameter_Test_with_input_Text_and_expected_value(
-            string inputText,
-            bool expectedValue)
-        {
-            bool actual = inputText.IsNullOrEmpty();
-            Assert.Equal(
-                expected: expectedValue,
-                actual: actual);
-        }
+        var actual = inputText.IsNullOrEmpty();
+        actual.Should().Be(expectedValue);
     }
 }
