@@ -1,7 +1,6 @@
-﻿namespace WordCount.Models.Parameters
+﻿namespace WordCount.Models.Parameters;
+
+public class DictionaryParameter : BaseParameter
 {
-    public class DictionaryParameter : BaseParameter
-    {
-        public string FileName { get; set; }
-    }
+    public string FileName { get; set; }
 }

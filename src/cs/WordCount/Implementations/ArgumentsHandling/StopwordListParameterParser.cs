@@ -4,32 +4,24 @@ using WordCount.Extensions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
-namespace WordCount.Implementations.ArgumentsHandling
+namespace WordCount.Implementations.ArgumentsHandling;
+
+public class StopwordListParameterParser(IEnvironment environment) : BaseParameterParser<StopwordListParameter>, IStopwordListParameterParser
 {
-    public class StopwordListParameterParser : BaseParameterParser<StopwordListParameter>, IStopwordListParameterParser
+    public StopwordListParameter ParseStopwordListParameter()
     {
-        private IEnvironment Environment { get; }
-
-        public StopwordListParameterParser(IEnvironment environment)
+        return CachedValue(() =>
         {
-            Environment = environment;
-        }
+            var args = environment.GetCommandLineArgs();
 
-        public StopwordListParameter ParseStopwordListParameter()
-        {
-            return CachedValue(() =>
+            var dictionaryParameter = args?.FirstOfMatchingRegex(@"-stopwordlist=[a-zA-z.]{1,}");
+            var parameterSplitByEqualSign = dictionaryParameter?.Split('=');
+
+            return new StopwordListParameter
             {
-                var args = Environment.GetCommandLineArgs();
-
-                var dictionaryParameter = args?.FirstOfMatchingRegex(@"-stopwordlist=[a-zA-z.]{1,}");
-                var parameterSplitByEqualSign = dictionaryParameter?.Split('=');
-
-                return new StopwordListParameter
-                {
-                    IsPresent = dictionaryParameter?.IsFilled() ?? false,
-                    FileName = parameterSplitByEqualSign?.LastOrDefault()
-                };
-            });
-        }
+                IsPresent = dictionaryParameter?.IsFilled() ?? false,
+                FileName = parameterSplitByEqualSign?.LastOrDefault()
+            };
+        });
     }
 }

@@ -1,41 +1,32 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
-namespace WordCount.Implementations.ArgumentsHandling
+namespace WordCount.Implementations.ArgumentsHandling;
+
+public class HelpParameterParser(IEnvironment environment) : BaseParameterParser<HelpParameter>, IHelpParameterParser
 {
-    public class HelpParameterParser : BaseParameterParser<HelpParameter>, IHelpParameterParser
+    public HelpParameter ParseHelpParameter()
     {
-        private IEnvironment Environment { get; }
-
-        public HelpParameterParser(IEnvironment environment)
+        return CachedValue(() =>
         {
-            Environment = environment;
-        }
-
-        public HelpParameter ParseHelpParameter()
-        {
-            return CachedValue(() =>
+            var args = environment.GetCommandLineArgs() ?? [];
+            if (!args.Any())
             {
-                var args = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
-                if (!args.Any())
+                return new HelpParameter()
                 {
-                    return new HelpParameter()
-                    {
-                        IsPresent = false
-                    };
-                }
-
-                var isPresent = args.Any(s => s.StartsWith("-help") ||
-                                              s.StartsWith("-h"));
-
-                return new HelpParameter
-                {
-                    IsPresent = isPresent
+                    IsPresent = false
                 };
-            });
-        }
+            }
+
+            var isPresent = args.Any(s => s.StartsWith("-help") ||
+                                          s.StartsWith("-h"));
+
+            return new HelpParameter
+            {
+                IsPresent = isPresent
+            };
+        });
     }
 }

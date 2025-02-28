@@ -2,63 +2,51 @@
 using WordCount.Interfaces.Output;
 using WordCount.Extensions;
 
-namespace WordCount.Implementations.Output
+namespace WordCount.Implementations.Output;
+
+public class StatisticsOutput(
+    IDisplayOutput displayOutput,
+    ILanguageResource languageResource,
+    ILanguageDecision languageDecision) : IStatisticsOutput
 {
-    public class StatisticsOutput : IStatisticsOutput
+    public void WriteNumberOfWords(int numberOfWords, int maxCountOfFillingPoints)
     {
-        private IDisplayOutput DisplayOutput { get; }
-        private ILanguageResource LanguageResource { get; }
-        private ILanguageDecision LanguageDecision { get; }
+        var resourceValue = languageResource.GetResourceStringById("NUMBER_OF_WORDS");
+        var output = resourceValue.FillRightWithPoints(maxCountOfFillingPoints);
 
-        public StatisticsOutput(
-            IDisplayOutput displayOutput,
-            ILanguageResource languageResource,
-            ILanguageDecision languageDecision)
-        {
-            DisplayOutput = displayOutput;
-            LanguageResource = languageResource;
-            LanguageDecision = languageDecision;
-        }
+        output = $"- {output} {numberOfWords}";
+        displayOutput.WriteLine(output);
+    }
 
-        public void WriteNumberOfWords(int numberOfWords, int maxCountOfFillingPoints)
-        {
-            var resourceValue = LanguageResource.GetResourceStringById("NUMBER_OF_WORDS");
-            var output = resourceValue.FillRightWithPoints(maxCountOfFillingPoints);
+    public void WriteNumberOfUniqeWords(int numberOfUniqeWords, int maxCountOfFillingPoints)
+    {
+        var resourceValue = languageResource.GetResourceStringById("UNIQUE");
+        var output = resourceValue.FillRightWithPoints(maxCountOfFillingPoints);
 
-            output = $"- {output} {numberOfWords}";
-            DisplayOutput.WriteLine(output);
-        }
+        output = $"- {output} {numberOfUniqeWords}";
+        displayOutput.WriteLine(output);
+    }
 
-        public void WriteNumberOfUniqeWords(int numberOfUniqeWords, int maxCountOfFillingPoints)
-        {
-            var resourceValue = LanguageResource.GetResourceStringById("UNIQUE");
-            var output = resourceValue.FillRightWithPoints(maxCountOfFillingPoints);
+    public void WriteAverageWordLength(double averageWordLength, int maxCountOfFillingPoints)
+    {
+        var currentCulture = languageDecision.DecideLanguage().Culture;
 
-            output = $"- {output} {numberOfUniqeWords}";
-            DisplayOutput.WriteLine(output);
-        }
+        var resourceValueAverageWordLength = languageResource.GetResourceStringById("AVERAGE_WORD_LENGTH");
+        var resourceValueCharacters = languageResource.GetResourceStringById("CHARACTERS");
+        var output = resourceValueAverageWordLength.FillRightWithPoints(maxCountOfFillingPoints);
 
-        public void WriteAverageWordLength(double averageWordLength, int maxCountOfFillingPoints)
-        {
-            var currentCulture = LanguageDecision.DecideLanguage().Culture;
+        var averageWordLengthAsString = averageWordLength.ToString("N2", currentCulture);
 
-            var resourceValueAverageWordLength = LanguageResource.GetResourceStringById("AVERAGE_WORD_LENGTH");
-            var resourceValueCharacters = LanguageResource.GetResourceStringById("CHARACTERS");
-            var output = resourceValueAverageWordLength.FillRightWithPoints(maxCountOfFillingPoints);
+        output = $"- {output} {averageWordLengthAsString} {resourceValueCharacters}";
+        displayOutput.WriteLine(output);
+    }
 
-            var averageWordLengthAsString = averageWordLength.ToString("N2", currentCulture);
+    public void WriteNumberOfChapters(int numberOfChapters, int maxCountOfFillingPoints)
+    {
+        var resourceValue = languageResource.GetResourceStringById("CHAPTERS");
+        var output = resourceValue.FillRightWithPoints(maxCountOfFillingPoints);
 
-            output = $"- {output} {averageWordLengthAsString} {resourceValueCharacters}";
-            DisplayOutput.WriteLine(output);
-        }
-
-        public void WriteNumberOfChapters(int numberOfChapters, int maxCountOfFillingPoints)
-        {
-            var resourceValue = LanguageResource.GetResourceStringById("CHAPTERS");
-            var output = resourceValue.FillRightWithPoints(maxCountOfFillingPoints);
-
-            output = $"- {output} {numberOfChapters}";
-            DisplayOutput.WriteLine(output);
-        }
+        output = $"- {output} {numberOfChapters}";
+        displayOutput.WriteLine(output);
     }
 }

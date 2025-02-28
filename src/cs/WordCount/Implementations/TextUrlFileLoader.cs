@@ -2,28 +2,18 @@
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 
-namespace WordCount.Implementations
+namespace WordCount.Implementations;
+
+public class TextUrlFileLoader(
+    ITextUrlParameterParser textUrlParameterParser,
+    IHttpClient httpClient) : ITextUrlFileLoader
 {
-    public class TextUrlFileLoader : ITextUrlFileLoader
+    public string ReadTextFile()
     {
-        private ITextUrlParameterParser TextUrlParameterParser { get; }
-        private IHttpClient HttpClient { get; }
+        var textUrlParameter = textUrlParameterParser.ParseTextUrlParameter();
 
-        public TextUrlFileLoader(
-            ITextUrlParameterParser textUrlParameterParser,
-            IHttpClient httpClient)
-        {
-            TextUrlParameterParser = textUrlParameterParser;
-            HttpClient = httpClient;
-        }
-
-        public string ReadTextFile()
-        {
-            var textUrlParameter = TextUrlParameterParser.ParseTextUrlParameter();
-
-            return textUrlParameter.IsPresent ?
-                HttpClient.ReadString(textUrlParameter.Url).Result
-                : null;
-        }
+        return textUrlParameter.IsPresent
+            ? httpClient.ReadString(textUrlParameter.Url).Result
+            : null;
     }
 }

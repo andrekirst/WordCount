@@ -1,7 +1,6 @@
-﻿namespace WordCount.Models.Parameters
+﻿namespace WordCount.Models.Parameters;
+
+public abstract class BaseParameter
 {
-    public abstract class BaseParameter
-    {
-        public bool IsPresent { get; set; }
-    }
+    public bool IsPresent { get; set; }
 }

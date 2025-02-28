@@ -1,21 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
-namespace WordCount.Models.Results
+namespace WordCount.Models.Results;
+
+public class TextSplitResult
 {
-    public class TextSplitResult
+    public TextSplitResult()
     {
-        public TextSplitResult()
-        {
-        }
-
-        public TextSplitResult(List<string> words)
-        {
-            Words = words;
-        }
-
-        public List<string> Words { get; } = new List<string>();
-
-        public bool WordsAvailable => Words != null && Words.Any();
     }
+
+    public TextSplitResult(List<string> words)
+    {
+        Words = words;
+    }
+
+    public List<string> Words { get; } = [];
+
+    public bool WordsAvailable => Words != null && Words.Count != 0;
 }

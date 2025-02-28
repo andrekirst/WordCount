@@ -3,62 +3,46 @@ using WordCount.Extensions;
 using WordCount.Interfaces.Output;
 using WordCount.Models.Requests;
 
-namespace WordCount.Implementations
-{
-    public class Interactor : IInteractor
-    {
-        private ITextInput TextInput { get; }
-        private IWordCountAnalyzer WordCountAnalyzer { get; }
-        private IWordCountAnalyzerOutput WordCountAnalyzerOutput { get; }
-        private IIndexOutput IndexOutput { get; }
-        private IHelpOutput HelpOutput { get; }
+namespace WordCount.Implementations;
 
-        public Interactor(
-            ITextInput textInput,
-            IWordCountAnalyzer wordCountAnalyzer,
-            IWordCountAnalyzerOutput wordCountAnalyzerOutput,
-            IIndexOutput indexOutput,
-            IHelpOutput helpOutput)
+public class Interactor(
+    ITextInput textInput,
+    IWordCountAnalyzer wordCountAnalyzer,
+    IWordCountAnalyzerOutput wordCountAnalyzerOutput,
+    IIndexOutput indexOutput,
+    IHelpOutput helpOutput) : IInteractor
+{
+    public int Execute()
+    {
+        var hasRequestedHelp = helpOutput.ShowHelpIfRequested();
+
+        if (hasRequestedHelp)
         {
-            TextInput = textInput;
-            WordCountAnalyzer = wordCountAnalyzer;
-            WordCountAnalyzerOutput = wordCountAnalyzerOutput;
-            IndexOutput = indexOutput;
-            HelpOutput = helpOutput;
+            return 1;
         }
 
-        public int Execute()
+        var inputTextResult = textInput.GetInputText();
+
+        if (inputTextResult.Text.IsNullOrEmpty())
         {
-            var hasRequestedHelp = HelpOutput.ShowHelpIfRequested();
-
-            if (hasRequestedHelp)
-            {
-                return 1;
-            }
-
-            var inputTextResult = TextInput.GetInputText();
-
-            if (inputTextResult.Text.IsNullOrEmpty())
-            {
-                return 0;
-            }
-            do
-            {
-                var analyzeResult = WordCountAnalyzer.Analyze(inputTextResult.Text);
-
-                WordCountAnalyzerOutput.DisplayResult(analyzeResult);
-
-                var indexOutputRequest = new IndexOutputRequest
-                {
-                    DistinctWords = analyzeResult.DistinctWords
-                };
-
-                IndexOutput.OutputIndex(indexOutputRequest);
-
-                inputTextResult = TextInput.GetInputText();
-            } while (inputTextResult.HasEnteredConsoleText);
-
             return 0;
         }
+        do
+        {
+            var analyzeResult = wordCountAnalyzer.Analyze(inputTextResult.Text);
+
+            wordCountAnalyzerOutput.DisplayResult(analyzeResult);
+
+            var indexOutputRequest = new IndexOutputRequest
+            {
+                DistinctWords = analyzeResult.DistinctWords
+            };
+
+            indexOutput.OutputIndex(indexOutputRequest);
+
+            inputTextResult = textInput.GetInputText();
+        } while (inputTextResult.HasEnteredConsoleText);
+
+        return 0;
     }
 }

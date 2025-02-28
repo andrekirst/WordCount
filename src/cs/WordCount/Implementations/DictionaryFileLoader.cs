@@ -5,46 +5,38 @@ using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
 
-namespace WordCount.Implementations
+namespace WordCount.Implementations;
+
+public class DictionaryFileLoader(
+    IFileSystem fileSystem,
+    IDisplayOutput displayOutput,
+    IDictionaryParameterParser dictionaryParameterParser) : IDictionaryFileLoader
 {
-    public class DictionaryFileLoader : IDictionaryFileLoader
+    private IFileSystem FileSystem { get; } = fileSystem;
+    private IDisplayOutput DisplayOutput { get; } = displayOutput;
+    private IDictionaryParameterParser DictionaryParameterParser { get; } = dictionaryParameterParser;
+
+    public List<string> ReadWords()
     {
-        private IFileSystem FileSystem { get; }
-        private IDisplayOutput DisplayOutput { get; }
-        private IDictionaryParameterParser DictionaryParameterParser { get; }
+        var dictionaryParameter = DictionaryParameterParser.ParseDictionaryParameter();
 
-        public DictionaryFileLoader(
-            IFileSystem fileSystem,
-            IDisplayOutput displayOutput,
-            IDictionaryParameterParser dictionaryParameterParser)
+        var path = dictionaryParameter.FileName;
+
+        switch (dictionaryParameter.IsPresent)
         {
-            FileSystem = fileSystem;
-            DisplayOutput = displayOutput;
-            DictionaryParameterParser = dictionaryParameterParser;
-        }
-
-        public List<string> ReadWords()
-        {
-            var dictionaryParameter = DictionaryParameterParser.ParseDictionaryParameter();
-
-            var path = dictionaryParameter.FileName;
-
-            switch (dictionaryParameter.IsPresent)
-            {
-                case true when
-                    !FileSystem.File.Exists(path):
-                    DisplayOutput.WriteErrorResourceLine(
-                        "FILE_NOT_FOUND",
-                        path);
-                    return new List<string>();
-                case false:
-                    return new List<string>();
-                default:
-                    return FileSystem
-                        .File
-                        .ReadAllLines(path)
-                        .ToEmptyIfNullList();
-            }
+            case true when
+                !FileSystem.File.Exists(path):
+                DisplayOutput.WriteErrorResourceLine(
+                    "FILE_NOT_FOUND",
+                    path);
+                return [];
+            case false:
+                return [];
+            default:
+                return FileSystem
+                    .File
+                    .ReadAllLines(path)
+                    .ToEmptyIfNullList();
         }
     }
 }

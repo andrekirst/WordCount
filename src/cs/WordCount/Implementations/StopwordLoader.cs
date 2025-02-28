@@ -5,54 +5,38 @@ using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
 
-namespace WordCount.Implementations
+namespace WordCount.Implementations;
+
+public class StopwordLoader(
+    IFileSystem fileSystem,
+    IStopwordListParameterParser stopwordListParameterParser,
+    IDisplayOutput displayOutput,
+    ILanguageParameterParser languageParameterParser) : IStopwordLoader
 {
-    public class StopwordLoader : IStopwordLoader
+    public List<string> GetStopwords()
     {
-        private IFileSystem FileSystem { get; }
-        private IStopwordListParameterParser StopwordListParameterParser { get; }
-        private IDisplayOutput DisplayOutput { get; }
-        private ILanguageParameterParser LanguageParameterParser { get; }
+        var stopwordListParameter = stopwordListParameterParser.ParseStopwordListParameter();
+        var languageParameter = languageParameterParser.ParseLanguageParameter();
 
-        public StopwordLoader(
-            IFileSystem fileSystem,
-            IStopwordListParameterParser stopwordListParameterParser,
-            IDisplayOutput displayOutput,
-            ILanguageParameterParser languageParameterParser)
+        var isStopwordListParameterPresent = stopwordListParameter.IsPresent;
+
+        var fileName = isStopwordListParameterPresent ?
+            stopwordListParameter.FileName :
+            $"stopwords.{languageParameter.Language}.txt";
+
+        if (!fileSystem.File.Exists(fileName))
         {
-            FileSystem = fileSystem;
-            StopwordListParameterParser = stopwordListParameterParser;
-            DisplayOutput = displayOutput;
-            LanguageParameterParser = languageParameterParser;
+            return [];
         }
 
-        public List<string> GetStopwords()
+        if (isStopwordListParameterPresent)
         {
-            var stopwordListParameter = StopwordListParameterParser.ParseStopwordListParameter();
-            var languageParameter = LanguageParameterParser.ParseLanguageParameter();
-
-            var isStopwordListParameterPresent = stopwordListParameter.IsPresent;
-
-            var fileName = isStopwordListParameterPresent ?
-                stopwordListParameter.FileName :
-                $"stopwords.{languageParameter.Language}.txt";
-
-            if (!FileSystem.File.Exists(fileName))
-            {
-                return new List<string>();
-            }
-
-            if (isStopwordListParameterPresent)
-            {
-                DisplayOutput.WriteResourceLine(
-                    "USED_STOPWORDLIST",
-                    fileName);
-            }
-
-            return FileSystem
-                .File
-                .ReadAllLines(fileName)
-                .ToList();
+            displayOutput.WriteResourceLine("USED_STOPWORDLIST", fileName);
         }
+
+        return fileSystem
+            .File
+            .ReadAllLines(fileName)
+            .ToList();
     }
 }

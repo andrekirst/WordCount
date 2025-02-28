@@ -1,6 +1,5 @@
-﻿namespace WordCount.Models.Parameters
+﻿namespace WordCount.Models.Parameters;
+
+public class IndexParameter : BaseParameter
 {
-    public class IndexParameter : BaseParameter
-    {
-    }
 }

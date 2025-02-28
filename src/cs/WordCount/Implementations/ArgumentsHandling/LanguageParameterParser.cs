@@ -5,37 +5,29 @@ using WordCount.Extensions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
-namespace WordCount.Implementations.ArgumentsHandling
+namespace WordCount.Implementations.ArgumentsHandling;
+
+public class LanguageParameterParser(
+    IEnvironment environment) : BaseParameterParser<LanguageParameter>, ILanguageParameterParser
 {
-    public class LanguageParameterParser : BaseParameterParser<LanguageParameter>, ILanguageParameterParser
+    public LanguageParameter ParseLanguageParameter()
     {
-        private IEnvironment Environment { get; }
-
-        public LanguageParameterParser(
-            IEnvironment environment)
+        return CachedValue(() =>
         {
-            Environment = environment;
-        }
+            var commandLineArgs = environment.GetCommandLineArgs() ?? Array.Empty<string>();
 
-        public LanguageParameter ParseLanguageParameter()
-        {
-            return CachedValue(() =>
+            var languageParameter =
+                commandLineArgs.FirstOfMatchingRegex("^-lang=[a-zA-Z]{1,}$") ?? string.Empty;
+
+            var splittedByEqualSign = languageParameter.Split('=');
+
+            var language = splittedByEqualSign.LastOrDefault() ?? string.Empty;
+
+            return new LanguageParameter
             {
-                var commandLineArgs = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
-
-                var languageParameter =
-                    commandLineArgs.FirstOfMatchingRegex("^-lang=[a-zA-Z]{1,}$") ?? string.Empty;
-
-                var splittedByEqualSign = languageParameter.Split('=');
-
-                var language = splittedByEqualSign.LastOrDefault() ?? string.Empty;
-
-                return new LanguageParameter
-                {
-                    IsPresent = languageParameter.IsFilled(),
-                    Language = language
-                };
-            });
-        }
+                IsPresent = languageParameter.IsFilled(),
+                Language = language
+            };
+        });
     }
 }

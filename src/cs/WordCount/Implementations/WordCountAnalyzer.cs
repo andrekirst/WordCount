@@ -3,48 +3,38 @@ using System.Linq;
 using WordCount.Interfaces;
 using WordCount.Models.Results;
 
-namespace WordCount.Implementations
+namespace WordCount.Implementations;
+
+public class WordCountAnalyzer(
+    ITextSplit textSplit,
+    IStopwordRemover stopwordRemover) : IWordCountAnalyzer
 {
-    public class WordCountAnalyzer : IWordCountAnalyzer
+    public WordCountAnalyzerResult Analyze(string text)
     {
-        private ITextSplit TextSplit { get; }
-        private IStopwordRemover StopwordRemover { get; }
+        var textSplitResult = textSplit.Split(text);
 
-        public WordCountAnalyzer(
-            ITextSplit textSplit,
-            IStopwordRemover stopwordRemover)
+        if (!textSplitResult.WordsAvailable)
         {
-            TextSplit = textSplit;
-            StopwordRemover = stopwordRemover;
+            return new WordCountAnalyzerResult();
         }
 
-        public WordCountAnalyzerResult Analyze(string text)
+        var stopwordRemoverResult = stopwordRemover.RemoveStopwords(textSplitResult.Words);
+
+        var words = stopwordRemoverResult.Words;
+        var distinctWords = words.Distinct().ToList();
+
+        var numberOfWords = words.Count;
+        var numberOfUniqueWords = distinctWords.Count;
+        var averageWordLength = words.Count != 0 ? words.Average(s => s.Length) : 0.0;
+        var numberOfchapters = text.Split([Environment.NewLine + Environment.NewLine], StringSplitOptions.None).Length;
+
+        return new WordCountAnalyzerResult
         {
-            var textSplitResult = TextSplit.Split(text);
-
-            if (!textSplitResult.WordsAvailable)
-            {
-                return new WordCountAnalyzerResult();
-            }
-
-            var stopwordRemoverResult = StopwordRemover.RemoveStopwords(textSplitResult.Words);
-
-            var words = stopwordRemoverResult.Words;
-            var distinctWords = words.Distinct().ToList();
-
-            var numberOfWords = words.Count;
-            var numberOfUniqueWords = distinctWords.Count;
-            var averageWordLength = words.Any() ? words.Average(s => s.Length) : 0.0;
-            var numberOfchapters = text.Split(new[] { Environment.NewLine + Environment.NewLine }, StringSplitOptions.None).Count();
-
-            return new WordCountAnalyzerResult
-            {
-                NumberOfWords = numberOfWords,
-                NumberOfUniqueWords = numberOfUniqueWords,
-                AverageWordLength = averageWordLength,
-                DistinctWords = distinctWords,
-                NumberOfChapters = numberOfchapters
-            };
-        }
+            NumberOfWords = numberOfWords,
+            NumberOfUniqueWords = numberOfUniqueWords,
+            AverageWordLength = averageWordLength,
+            DistinctWords = distinctWords,
+            NumberOfChapters = numberOfchapters
+        };
     }
 }

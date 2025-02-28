@@ -1,7 +1,6 @@
-﻿namespace WordCount.Models.Parameters
+﻿namespace WordCount.Models.Parameters;
+
+public class TextUrlParameter : BaseParameter
 {
-    public class TextUrlParameter : BaseParameter
-    {
-        public string Url { get; set; }
-    }
+    public string Url { get; set; }
 }

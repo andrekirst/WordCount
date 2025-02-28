@@ -2,42 +2,30 @@
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
 
-namespace WordCount.Implementations.Output
+namespace WordCount.Implementations.Output;
+
+public class HelpOutput(
+    IDisplayOutput displayOutput,
+    IHelpParameterParser helpParameterParser,
+    IAssembly assembly) : IHelpOutput
 {
-    public class HelpOutput : IHelpOutput
+    public bool ShowHelpIfRequested()
     {
-        private IDisplayOutput DisplayOutput { get; }
-        private IHelpParameterParser HelpParameterParser { get; }
-        private IAssembly Assembly { get; }
+        var helpParameter = helpParameterParser.ParseHelpParameter();
 
-        public HelpOutput(
-            IDisplayOutput displayOutput,
-            IHelpParameterParser helpParameterParser,
-            IAssembly assembly)
-        {
-            DisplayOutput = displayOutput;
-            HelpParameterParser = helpParameterParser;
-            Assembly = assembly;
-        }
+        var isPresent = helpParameter.IsPresent;
 
-        public bool ShowHelpIfRequested()
-        {
-            var helpParameter = HelpParameterParser.ParseHelpParameter();
+        if (!isPresent) return helpParameter.IsPresent;
+        
+        displayOutput.WriteLine($"{assembly.Name} - {assembly.Version}");
+        displayOutput.WriteLine(string.Empty);
+        displayOutput.WriteLine("-h | -help : Display this help");
+        displayOutput.WriteLine("-index : Display the index of the analyzed Text");
+        displayOutput.WriteLine("-dictionary=file : Uses the dictionary with the given file");
+        displayOutput.WriteLine("-stopwordlist=file : Uses the stopword with the given file. Default: stopword.txt");
+        displayOutput.WriteLine("-texturl=url : Takes the text file from an url");
+        displayOutput.WriteLine("-lang=language : Supported languages: de, en. Default: en");
 
-            var isPresent = helpParameter.IsPresent;
-
-            if (!isPresent) return helpParameter.IsPresent;
-            
-            DisplayOutput.WriteLine($"{Assembly.Name} - {Assembly.Version}");
-            DisplayOutput.WriteLine(string.Empty);
-            DisplayOutput.WriteLine("-h | -help : Display this help");
-            DisplayOutput.WriteLine("-index : Display the index of the analyzed Text");
-            DisplayOutput.WriteLine("-dictionary=file : Uses the dictionary with the given file");
-            DisplayOutput.WriteLine("-stopwordlist=file : Uses the stopword with the given file. Default: stopword.txt");
-            DisplayOutput.WriteLine("-texturl=url : Takes the text file from an url");
-            DisplayOutput.WriteLine("-lang=language : Supported languages: de, en. Default: en");
-
-            return helpParameter.IsPresent;
-        }
+        return helpParameter.IsPresent;
     }
 }

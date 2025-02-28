@@ -4,57 +4,46 @@ using WordCount.Helpers;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Language;
-using WordCount.Models.Parameters;
 using WordCount.Models.Results;
 
-namespace WordCount.Implementations.Language
+namespace WordCount.Implementations.Language;
+
+public class LanguageDecision(
+    IAppSettingsReader appSettingsReader,
+    ILanguageParameterParser languageParameterParser,
+    IConsole console) : ILanguageDecision
 {
-    public class LanguageDecision : ILanguageDecision
+    private const string DefaultFallbackLanguage = "en";
+    private DecideLanguageResult _cache;
+
+    public DecideLanguageResult DecideLanguage()
     {
-        private IAppSettingsReader AppSettingsReader { get; }
-        private ILanguageParameterParser LanguageParameterParser { get; }
-        private IConsole Console { get; }
-        private const string DefaultFallbackLanguage = "en";
-        private DecideLanguageResult _cache;
-
-        public LanguageDecision(
-            IAppSettingsReader appSettingsReader,
-            ILanguageParameterParser languageParameterParser,
-            IConsole console)
+        if (_cache != null)
         {
-            AppSettingsReader = appSettingsReader;
-            LanguageParameterParser = languageParameterParser;
-            Console = console;
+            return _cache;
         }
 
-        public DecideLanguageResult DecideLanguage()
+        var language = appSettingsReader.DefaultLanguage;
+
+        var languageParameter = languageParameterParser.ParseLanguageParameter();
+
+        if (languageParameter.IsPresent)
         {
-            if (_cache != null)
-            {
-                return _cache;
-            }
-
-            var language = AppSettingsReader.DefaultLanguage;
-
-            var languageParameter = LanguageParameterParser.ParseLanguageParameter();
-
-            if (languageParameter.IsPresent)
-            {
-                language = languageParameter.Language;
-            }
-
-            if (language.IsFilled() &&
-                !LanguageToCultureMapping.Mappings.ContainsKey(language))
-            {
-                Console.WriteLine($"Language \"{language}\" not supported.");
-                language = DefaultFallbackLanguage;
-            }
-
-            language = language.IsFilled() ? language : DefaultFallbackLanguage;
-            return _cache = new DecideLanguageResult
-            {
-                Language = language
-            };
+            language = languageParameter.Language;
         }
+
+        if (language.IsFilled() &&
+            !LanguageToCultureMapping.Mappings.ContainsKey(language))
+        {
+            console.WriteLine($"Language \"{language}\" not supported.");
+            language = DefaultFallbackLanguage;
+        }
+
+        language = language.IsFilled() ? language : DefaultFallbackLanguage;
+        
+        return _cache = new DecideLanguageResult
+        {
+            Language = language
+        };
     }
 }

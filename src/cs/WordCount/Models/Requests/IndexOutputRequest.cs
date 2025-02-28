@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace WordCount.Models.Requests
+namespace WordCount.Models.Requests;
+
+public class IndexOutputRequest
 {
-    public class IndexOutputRequest
-    {
-        public List<string> DistinctWords { get; set; }
-    }
+    public List<string> DistinctWords { get; set; }
 }

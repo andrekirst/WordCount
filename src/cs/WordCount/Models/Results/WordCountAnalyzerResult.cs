@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 
-namespace WordCount.Models.Results
+namespace WordCount.Models.Results;
+
+public class WordCountAnalyzerResult
 {
-    public class WordCountAnalyzerResult
-    {
-        public int NumberOfWords { get; set; }
+    public int NumberOfWords { get; set; }
 
-        public int NumberOfUniqueWords { get; set; }
+    public int NumberOfUniqueWords { get; set; }
 
-        public double AverageWordLength { get; set; }
+    public double AverageWordLength { get; set; }
 
-        public List<string> DistinctWords { get; set; }
+    public List<string> DistinctWords { get; set; }
 
-        public int NumberOfChapters { get; set; }
-    }
+    public int NumberOfChapters { get; set; }
 }

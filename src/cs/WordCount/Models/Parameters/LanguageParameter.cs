@@ -1,7 +1,6 @@
-﻿namespace WordCount.Models.Parameters
+﻿namespace WordCount.Models.Parameters;
+
+public class LanguageParameter : BaseParameter
 {
-    public class LanguageParameter : BaseParameter
-    {
-        public string Language { get; set; }
-    }
+    public string Language { get; set; }
 }

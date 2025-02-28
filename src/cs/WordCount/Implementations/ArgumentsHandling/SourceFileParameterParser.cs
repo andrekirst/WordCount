@@ -1,38 +1,31 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Extensions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
-namespace WordCount.Implementations.ArgumentsHandling
+namespace WordCount.Implementations.ArgumentsHandling;
+
+public class SourceFileParameterParser(IEnvironment environment) : BaseParameterParser<SourceFileParameter>, ISourceFileParameterParser
 {
-    public class SourceFileParameterParser : BaseParameterParser<SourceFileParameter>, ISourceFileParameterParser
+    private IEnvironment Environment { get; } = environment;
+
+    public SourceFileParameter ParseSourceFileParameter()
     {
-        private IEnvironment Environment { get; }
-
-        public SourceFileParameterParser(IEnvironment environment)
+        return CachedValue(() =>
         {
-            Environment = environment;
-        }
+            var commandLineArgs = Environment.GetCommandLineArgs() ?? [];
 
-        public SourceFileParameter ParseSourceFileParameter()
-        {
-            return CachedValue(() =>
+            var fileName = commandLineArgs
+                                  .FirstOrDefault(s => !s.StartsWith("-")) ?? string.Empty;
+
+            var isPresent = fileName.IsFilled();
+
+            return new SourceFileParameter
             {
-                var commandLineArgs = Environment.GetCommandLineArgs() ?? Array.Empty<string>();
-
-                var fileName = commandLineArgs
-                                      .FirstOrDefault(s => !s.StartsWith("-")) ?? string.Empty;
-
-                var isPresent = fileName.IsFilled();
-
-                return new SourceFileParameter
-                {
-                    IsPresent = isPresent,
-                    FileName = fileName
-                };
-            });
-        }
+                IsPresent = isPresent,
+                FileName = fileName
+            };
+        });
     }
 }

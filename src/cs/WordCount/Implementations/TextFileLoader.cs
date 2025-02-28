@@ -3,50 +3,34 @@ using System.IO.Abstractions;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
-using WordCount.Models.Parameters;
 
-namespace WordCount.Implementations
+namespace WordCount.Implementations;
+
+public class TextFileLoader(
+    IFileSystem fileSystem,
+    IDisplayOutput displayOutput,
+    ISourceFileParameterParser sourceFileParameterParser) : ITextFileLoader
 {
-    public class TextFileLoader : ITextFileLoader
+    public string ReadTextFile()
     {
-        private IFileSystem FileSystem { get; }
-        private IDisplayOutput DisplayOutput { get; }
-        private ISourceFileParameterParser SourceFileParameterParser { get; }
+        var sourceFileParameter = sourceFileParameterParser.ParseSourceFileParameter();
 
-        public TextFileLoader(
-            IFileSystem fileSystem,
-            IDisplayOutput displayOutput,
-            ISourceFileParameterParser sourceFileParameterParser)
+        if (!sourceFileParameter.IsPresent)
         {
-            FileSystem = fileSystem;
-            DisplayOutput = displayOutput;
-            SourceFileParameterParser = sourceFileParameterParser;
-        }
-
-        public string ReadTextFile()
-        {
-            var sourceFileParameter = SourceFileParameterParser.ParseSourceFileParameter();
-
-            if (!sourceFileParameter.IsPresent)
-            {
-                return string.Empty;
-            }
-
-            var fileName = sourceFileParameter.FileName;
-
-            if (FileSystem.File.Exists(fileName))
-            {
-                return FileSystem.File.ReadAllText(fileName)
-                    .Replace(
-                    $"-{Environment.NewLine}",
-                    string.Empty);
-            }
-
-            DisplayOutput
-                .WriteErrorResourceLine(
-                    "FILE_NOT_FOUND",
-                    fileName);
             return string.Empty;
         }
+
+        var fileName = sourceFileParameter.FileName;
+
+        if (fileSystem.File.Exists(fileName))
+        {
+            return fileSystem.File.ReadAllText(fileName)
+                .Replace(
+                $"-{Environment.NewLine}",
+                string.Empty);
+        }
+
+        displayOutput.WriteErrorResourceLine("FILE_NOT_FOUND", fileName);
+        return string.Empty;
     }
 }

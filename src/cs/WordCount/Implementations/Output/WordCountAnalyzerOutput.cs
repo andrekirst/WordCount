@@ -2,46 +2,23 @@
 using WordCount.Interfaces.Output;
 using WordCount.Models.Results;
 
-namespace WordCount.Implementations.Output
+namespace WordCount.Implementations.Output;
+
+public class WordCountAnalyzerOutput(
+    IDisplayOutput displayOutput,
+    IStatisticsOutput statisticsOutput,
+    ILanguageResource languageResource) : IWordCountAnalyzerOutput
 {
-    public class WordCountAnalyzerOutput : IWordCountAnalyzerOutput
+    public void DisplayResult(WordCountAnalyzerResult result)
     {
-        private IDisplayOutput DisplayOutput { get; }
-        private IStatisticsOutput StatisticsOutput { get; }
-        private ILanguageResource LanguageResource { get; }
+        displayOutput.WriteResourceLine("STATISTICS");
 
-        public WordCountAnalyzerOutput(
-            IDisplayOutput displayOutput,
-            IStatisticsOutput statisticsOutput,
-            ILanguageResource languageResource)
-        {
-            DisplayOutput = displayOutput;
-            StatisticsOutput = statisticsOutput;
-            LanguageResource = languageResource;
-        }
+        var lengthOfMaxString = languageResource.DetectLongestResourceString(
+            ["NUMBER_OF_WORDS", "UNIQUE", "AVERAGE_WORD_LENGTH", "CHAPTERS"]);
 
-        public void DisplayResult(WordCountAnalyzerResult result)
-        {
-            DisplayOutput.WriteResourceLine("STATISTICS");
-
-            var lengthOfMaxString = LanguageResource.DetectLongestResourceString(
-                new[] { "NUMBER_OF_WORDS", "UNIQUE", "AVERAGE_WORD_LENGTH", "CHAPTERS" });
-
-            StatisticsOutput.WriteNumberOfWords(
-                result.NumberOfWords,
-                lengthOfMaxString);
-
-            StatisticsOutput.WriteNumberOfUniqeWords(
-                result.NumberOfUniqueWords,
-                lengthOfMaxString);
-
-            StatisticsOutput.WriteAverageWordLength(
-                result.AverageWordLength,
-                lengthOfMaxString);
-
-            StatisticsOutput.WriteNumberOfChapters(
-                result.NumberOfChapters,
-                lengthOfMaxString);
-        }
+        statisticsOutput.WriteNumberOfWords(result.NumberOfWords, lengthOfMaxString);
+        statisticsOutput.WriteNumberOfUniqeWords(result.NumberOfUniqueWords, lengthOfMaxString);
+        statisticsOutput.WriteAverageWordLength(result.AverageWordLength, lengthOfMaxString);
+        statisticsOutput.WriteNumberOfChapters(result.NumberOfChapters, lengthOfMaxString);
     }
 }

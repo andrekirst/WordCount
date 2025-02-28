@@ -4,76 +4,56 @@ using WordCount.Helpers;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
-using WordCount.Models.Parameters;
 using WordCount.Models.Requests;
 
-namespace WordCount.Implementations.Output
+namespace WordCount.Implementations.Output;
+
+public class IndexOutput(
+    IDisplayOutput displayOutput,
+    IDictionaryFileLoader dictionaryFileLoader,
+    IIndexParameterParser indexParameterParser,
+    IDictionaryParameterParser dictionaryParameterParser) : IIndexOutput
 {
-    public class IndexOutput : IIndexOutput
+    public void OutputIndex(IndexOutputRequest indexOutputRequest)
     {
-        private IDisplayOutput DisplayOutput { get; }
-        private IDictionaryFileLoader DictionaryFileLoader { get; }
-        private IIndexParameterParser IndexParameterParser { get; }
-        private IDictionaryParameterParser DictionaryParameterParser { get; }
+        var indexParameter = indexParameterParser.ParseIndexParameter();
+        var dictionaryParameter = dictionaryParameterParser.ParseDictionaryParameter();
 
-        public IndexOutput(
-            IDisplayOutput displayOutput,
-            IDictionaryFileLoader dictionaryFileLoader,
-            IIndexParameterParser indexParameterParser,
-            IDictionaryParameterParser dictionaryParameterParser)
+        if (!indexParameter.IsPresent) return;
+        
+        var dictionaryWords = dictionaryFileLoader.ReadWords();
+
+        var unknwonWordsCount = EnumerableHelpers.CountUnknownWords(
+            indexOutputRequest.DistinctWords,
+            dictionaryWords);
+
+        if (dictionaryParameter.IsPresent)
         {
-            DisplayOutput = displayOutput;
-            DictionaryFileLoader = dictionaryFileLoader;
-            IndexParameterParser = indexParameterParser;
-            DictionaryParameterParser = dictionaryParameterParser;
+            displayOutput.WriteResourceLine("INDEX_WITH_UNKNOWN", unknwonWordsCount);
+        }
+        else
+        {
+            displayOutput.WriteResourceLine("INDEX");
         }
 
-        public void OutputIndex(IndexOutputRequest indexOutputRequest)
+        DisplayWords(indexOutputRequest.DistinctWords, dictionaryWords);
+    }
+
+    private void DisplayWords(
+        IEnumerable<string> distinctWords,
+        ICollection<string> dictionaryWords)
+    {
+        var checkAgainstDictionary = dictionaryWords != null && dictionaryWords.Count != 0;
+        IEnumerable<string> sortedListOfDistinctWords = distinctWords.OrderBy(s => s);
+
+        foreach (var distinctWord in sortedListOfDistinctWords)
         {
-            var indexParameter = IndexParameterParser.ParseIndexParameter();
-            var dictionaryParameter = DictionaryParameterParser.ParseDictionaryParameter();
-
-            if (!indexParameter.IsPresent) return;
-            
-            var dictionaryWords = DictionaryFileLoader.ReadWords();
-
-            var unknwonWordsCount = EnumerableHelpers.CountUnknownWords(
-                indexOutputRequest.DistinctWords,
-                dictionaryWords);
-
-            if (dictionaryParameter.IsPresent)
+            var word = distinctWord;
+            if (checkAgainstDictionary && !dictionaryWords.Contains(distinctWord))
             {
-                DisplayOutput.WriteResourceLine(
-                    "INDEX_WITH_UNKNOWN",
-                    unknwonWordsCount);
+                word += "*";
             }
-            else
-            {
-                DisplayOutput.WriteResourceLine(
-                    "INDEX");
-            }
-
-            DisplayWords(
-                indexOutputRequest.DistinctWords,
-                dictionaryWords);
-        }
-
-        private void DisplayWords(
-            IEnumerable<string> distinctWords,
-            ICollection<string> dictionaryWords)
-        {
-            var checkAgainstDictionary = dictionaryWords != null && dictionaryWords.Any();
-            IEnumerable<string> sortedListOfDistinctWords = distinctWords.OrderBy(s => s);
-
-            foreach (var distinctWord in sortedListOfDistinctWords)
-            {
-                var word = distinctWord;
-                if (checkAgainstDictionary && !dictionaryWords.Contains(distinctWord))
-                {
-                    word += "*";
-                }
-                DisplayOutput.WriteLine(word);
-            }
+            displayOutput.WriteLine(word);
         }
     }
 }

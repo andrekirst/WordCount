@@ -1,6 +1,5 @@
-﻿namespace WordCount.Models.Parameters
+﻿namespace WordCount.Models.Parameters;
+
+public class HelpParameter : BaseParameter
 {
-    public class HelpParameter : BaseParameter
-    {
-    }
 }

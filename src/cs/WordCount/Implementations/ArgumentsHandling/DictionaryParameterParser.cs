@@ -4,32 +4,24 @@ using WordCount.Extensions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
-namespace WordCount.Implementations.ArgumentsHandling
+namespace WordCount.Implementations.ArgumentsHandling;
+
+public class DictionaryParameterParser(IEnvironment environment) : BaseParameterParser<DictionaryParameter>, IDictionaryParameterParser
 {
-    public class DictionaryParameterParser : BaseParameterParser<DictionaryParameter>, IDictionaryParameterParser
+    public DictionaryParameter ParseDictionaryParameter()
     {
-        private IEnvironment Environment { get; }
-
-        public DictionaryParameterParser(IEnvironment environment)
+        return CachedValue(() =>
         {
-            Environment = environment;
-        }
+            var args = environment.GetCommandLineArgs();
 
-        public DictionaryParameter ParseDictionaryParameter()
-        {
-            return CachedValue(() =>
+            var dictionaryParameter = args?.FirstOfMatchingRegex(@"-dictionary=[a-zA-z.]{1,}");
+            var parameterSplitByEqualSign = dictionaryParameter?.Split('=');
+
+            return new DictionaryParameter
             {
-                var args = Environment.GetCommandLineArgs();
-
-                var dictionaryParameter = args?.FirstOfMatchingRegex(@"-dictionary=[a-zA-z.]{1,}");
-                var parameterSplitByEqualSign = dictionaryParameter?.Split('=');
-
-                return new DictionaryParameter
-                {
-                    IsPresent = dictionaryParameter?.IsFilled() ?? false,
-                    FileName = parameterSplitByEqualSign?.LastOrDefault()
-                };
-            });
-        }
+                IsPresent = dictionaryParameter?.IsFilled() ?? false,
+                FileName = parameterSplitByEqualSign?.LastOrDefault()
+            };
+        });
     }
 }
