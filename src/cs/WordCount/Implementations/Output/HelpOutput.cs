@@ -1,17 +1,20 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
+using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations.Output;
 
 public class HelpOutput(
     IDisplayOutput displayOutput,
-    IHelpParameterParser helpParameterParser) : IHelpOutput
+    IParameterParser<HelpParameter> helpParameterParser) : IHelpOutput
 {
     public bool ShowHelpIfRequested()
     {
         var assemblyName = Assembly.GetEntryAssembly().GetName();
-        var helpParameter = helpParameterParser.ParseHelpParameter();
+        var args = Environment.GetCommandLineArgs();
+        var helpParameter = helpParameterParser.ParseParameter(args);
 
         var isPresent = helpParameter.IsPresent;
 

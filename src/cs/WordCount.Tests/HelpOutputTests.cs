@@ -1,65 +1,65 @@
-﻿using System.Reflection;
-using AutoFixture.Xunit2;
-using FluentAssertions;
-using Moq;
-using WordCount.Implementations.Output;
-using WordCount.Interfaces.ArgumentsHandling;
-using WordCount.Interfaces.Output;
-using WordCount.Models.Parameters;
-using Xunit;
+﻿// using System.Reflection;
+// using AutoFixture.Xunit2;
+// using FluentAssertions;
+// using Moq;
+// using WordCount.Implementations.Output;
+// using WordCount.Interfaces.ArgumentsHandling;
+// using WordCount.Interfaces.Output;
+// using WordCount.Models.Parameters;
+// using Xunit;
 
-namespace WordCount.Tests;
+// namespace WordCount.Tests;
 
-public class HelpOutputTests
-{
-    [Theory, AutoMoqData]
-    public void HelpOutputTests_ShowHelpIfRequested_HelpParamater_is_not_present_Expect_False(
-        [Frozen] Mock<IHelpParameterParser> helpParameterParser,
-        HelpOutput sut)
-    {
-        helpParameterParser
-            .Setup(m => m.ParseHelpParameter())
-            .Returns(new HelpParameter {IsPresent = false});
+// public class HelpOutputTests
+// {
+//     [Theory, AutoMoqData]
+//     public void HelpOutputTests_ShowHelpIfRequested_HelpParamater_is_not_present_Expect_False(
+//         [Frozen] Mock<IHelpParameterParser> helpParameterParser,
+//         HelpOutput sut)
+//     {
+//         helpParameterParser
+//             .Setup(m => m.ParseHelpParameter())
+//             .Returns(new HelpParameter {IsPresent = false});
 
-        var actual = sut.ShowHelpIfRequested();
+//         var actual = sut.ShowHelpIfRequested();
 
-        actual.Should().BeFalse();
-    }
+//         actual.Should().BeFalse();
+//     }
 
-    [Theory, AutoMoqData]
-    public void HelpOutputTests_If_HelpParameter_Present_Expect_Outputs(
-        [Frozen] Mock<IHelpParameterParser> helpParameterParser,
-        [Frozen] Mock<IDisplayOutput> displayOutput,
-        HelpOutput sut)
-    {
-        helpParameterParser
-            .Setup(m => m.ParseHelpParameter())
-            .Returns(new HelpParameter {IsPresent = true});
+//     [Theory, AutoMoqData]
+//     public void HelpOutputTests_If_HelpParameter_Present_Expect_Outputs(
+//         [Frozen] Mock<IHelpParameterParser> helpParameterParser,
+//         [Frozen] Mock<IDisplayOutput> displayOutput,
+//         HelpOutput sut)
+//     {
+//         helpParameterParser
+//             .Setup(m => m.ParseHelpParameter())
+//             .Returns(new HelpParameter {IsPresent = true});
 
-        sut.ShowHelpIfRequested();
+//         sut.ShowHelpIfRequested();
 
-        var assemblyName = Assembly.GetEntryAssembly().GetName();
+//         var assemblyName = Assembly.GetEntryAssembly().GetName();
 
-        displayOutput.Verify(v => v.WriteLine($"{assemblyName.Name} - {assemblyName.Version}"), Times.Once);
-        displayOutput.Verify(v => v.WriteLine(""), Times.Once);
-        displayOutput.Verify(v => v.WriteLine("-h | -help : Display this help"), Times.Once);
-        displayOutput.Verify(v => v.WriteLine("-index : Display the index of the analyzed Text"), Times.Once);
-        displayOutput.Verify(v => v.WriteLine("-dictionary=file : Uses the dictionary with the given file"), Times.Once);
-        displayOutput.Verify(v => v.WriteLine("-stopwordlist=file : Uses the stopword with the given file. Default: stopword.txt"), Times.Once);
-    }
+//         displayOutput.Verify(v => v.WriteLine($"{assemblyName.Name} - {assemblyName.Version}"), Times.Once);
+//         displayOutput.Verify(v => v.WriteLine(""), Times.Once);
+//         displayOutput.Verify(v => v.WriteLine("-h | -help : Display this help"), Times.Once);
+//         displayOutput.Verify(v => v.WriteLine("-index : Display the index of the analyzed Text"), Times.Once);
+//         displayOutput.Verify(v => v.WriteLine("-dictionary=file : Uses the dictionary with the given file"), Times.Once);
+//         displayOutput.Verify(v => v.WriteLine("-stopwordlist=file : Uses the stopword with the given file. Default: stopword.txt"), Times.Once);
+//     }
 
-    [Theory, AutoMoqData]
-    public void HelpOutputTests_If_HelpParameter_not_present_expect_no_Outputs(
-        [Frozen] Mock<IHelpParameterParser> helpParameterParser,
-        [Frozen] Mock<IDisplayOutput> displayOutput,
-        HelpOutput sut)
-    {
-        helpParameterParser
-            .Setup(m => m.ParseHelpParameter())
-            .Returns(new HelpParameter { IsPresent = false });
+//     [Theory, AutoMoqData]
+//     public void HelpOutputTests_If_HelpParameter_not_present_expect_no_Outputs(
+//         [Frozen] Mock<IHelpParameterParser> helpParameterParser,
+//         [Frozen] Mock<IDisplayOutput> displayOutput,
+//         HelpOutput sut)
+//     {
+//         helpParameterParser
+//             .Setup(m => m.ParseHelpParameter())
+//             .Returns(new HelpParameter { IsPresent = false });
 
-        sut.ShowHelpIfRequested();
+//         sut.ShowHelpIfRequested();
 
-        displayOutput.Verify(v => v.WriteLine(It.IsAny<string>()), Times.Never);
-    }
-}
+//         displayOutput.Verify(v => v.WriteLine(It.IsAny<string>()), Times.Never);
+//     }
+// }

@@ -1,22 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
+using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations;
 
 public class StopwordLoader(
     IFileSystem fileSystem,
-    IStopwordListParameterParser stopwordListParameterParser,
+    IParameterParser<StopwordListParameter> stopwordListParameterParser,
     IDisplayOutput displayOutput,
-    ILanguageParameterParser languageParameterParser) : IStopwordLoader
+    IParameterParser<LanguageParameter> languageParameterParser) : IStopwordLoader
 {
     public List<string> GetStopwords()
     {
-        var stopwordListParameter = stopwordListParameterParser.ParseStopwordListParameter();
-        var languageParameter = languageParameterParser.ParseLanguageParameter();
+        var args = Environment.GetCommandLineArgs();
+        var stopwordListParameter = stopwordListParameterParser.ParseParameter(args);
+        var languageParameter = languageParameterParser.ParseParameter(args);
 
         var isStopwordListParameterPresent = stopwordListParameter.IsPresent;
 

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WordCount.Helpers;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
+using WordCount.Models.Parameters;
 using WordCount.Models.Requests;
 
 namespace WordCount.Implementations.Output;
@@ -11,13 +13,14 @@ namespace WordCount.Implementations.Output;
 public class IndexOutput(
     IDisplayOutput displayOutput,
     IDictionaryFileLoader dictionaryFileLoader,
-    IIndexParameterParser indexParameterParser,
-    IDictionaryParameterParser dictionaryParameterParser) : IIndexOutput
+    IParameterParser<IndexParameter> indexParameterParser,
+    IParameterParser<DictionaryParameter> dictionaryParameterParser) : IIndexOutput
 {
     public void OutputIndex(IndexOutputRequest indexOutputRequest)
     {
-        var indexParameter = indexParameterParser.ParseIndexParameter();
-        var dictionaryParameter = dictionaryParameterParser.ParseDictionaryParameter();
+        var args = Environment.GetCommandLineArgs();
+        var indexParameter = indexParameterParser.ParseParameter(args);
+        var dictionaryParameter = dictionaryParameterParser.ParseParameter(args);
 
         if (!indexParameter.IsPresent) return;
         

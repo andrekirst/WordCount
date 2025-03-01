@@ -1,17 +1,15 @@
 ﻿using System.Linq;
-using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations.ArgumentsHandling;
 
-public class HelpParameterParser(IEnvironment environment) : BaseParameterParser<HelpParameter>, IHelpParameterParser
+public class HelpParameterParser : BaseParameterParser<HelpParameter>, IParameterParser<HelpParameter>
 {
-    public HelpParameter ParseHelpParameter()
+    public HelpParameter ParseParameter(string[] args)
     {
         return CachedValue(() =>
         {
-            var args = environment.GetCommandLineArgs() ?? [];
             if (!args.Any())
             {
                 return new HelpParameter()

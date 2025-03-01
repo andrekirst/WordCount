@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Linq;
-using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations.ArgumentsHandling;
 
-public class IndexParameterParser(IEnvironment environment) : BaseParameterParser<IndexParameter>, IIndexParameterParser
+public class IndexParameterParser : BaseParameterParser<IndexParameter>, IParameterParser<IndexParameter>
 {
-    public IndexParameter ParseIndexParameter()
+    public IndexParameter ParseParameter(string[] args)
     {
         return CachedValue(() =>
-        {
-            var commandLineArgs = environment.GetCommandLineArgs() ?? Array.Empty<string>();
+        {            
             return new IndexParameter
             {
-                IsPresent = commandLineArgs.Contains("-index")
+                IsPresent = args.Contains("-index")
             };
         });
     }

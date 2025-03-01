@@ -3,17 +3,19 @@ using System.IO.Abstractions;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
+using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations;
 
 public class TextFileLoader(
     IFileSystem fileSystem,
     IDisplayOutput displayOutput,
-    ISourceFileParameterParser sourceFileParameterParser) : ITextFileLoader
+    IParameterParser<SourceFileParameter> sourceFileParameterParser) : ITextFileLoader
 {
     public string ReadTextFile()
     {
-        var sourceFileParameter = sourceFileParameterParser.ParseSourceFileParameter();
+        var args = Environment.GetCommandLineArgs();
+        var sourceFileParameter = sourceFileParameterParser.ParseParameter(args);
 
         if (!sourceFileParameter.IsPresent)
         {

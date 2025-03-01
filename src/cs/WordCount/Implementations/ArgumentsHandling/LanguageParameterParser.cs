@@ -1,26 +1,18 @@
-﻿using System;
-using System.Linq;
-using WordCount.Abstractions.SystemAbstractions;
+﻿using System.Linq;
 using WordCount.Extensions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations.ArgumentsHandling;
 
-public class LanguageParameterParser(
-    IEnvironment environment) : BaseParameterParser<LanguageParameter>, ILanguageParameterParser
+public class LanguageParameterParser : BaseParameterParser<LanguageParameter>, IParameterParser<LanguageParameter>
 {
-    public LanguageParameter ParseLanguageParameter()
+    public LanguageParameter ParseParameter(string[] args)
     {
         return CachedValue(() =>
         {
-            var commandLineArgs = environment.GetCommandLineArgs() ?? Array.Empty<string>();
-
-            var languageParameter =
-                commandLineArgs.FirstOfMatchingRegex("^-lang=[a-zA-Z]{1,}$") ?? string.Empty;
-
+            var languageParameter = args.FirstOfMatchingRegex("^-lang=[a-zA-Z]{1,}$") ?? string.Empty;
             var splittedByEqualSign = languageParameter.Split('=');
-
             var language = splittedByEqualSign.LastOrDefault() ?? string.Empty;
 
             return new LanguageParameter

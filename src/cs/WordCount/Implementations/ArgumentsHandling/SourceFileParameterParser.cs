@@ -1,23 +1,17 @@
 ﻿using System.Linq;
-using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Extensions;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Models.Parameters;
 
 namespace WordCount.Implementations.ArgumentsHandling;
 
-public class SourceFileParameterParser(IEnvironment environment) : BaseParameterParser<SourceFileParameter>, ISourceFileParameterParser
+public class SourceFileParameterParser : BaseParameterParser<SourceFileParameter>, IParameterParser<SourceFileParameter>
 {
-    private IEnvironment Environment { get; } = environment;
-
-    public SourceFileParameter ParseSourceFileParameter()
+    public SourceFileParameter ParseParameter(string[] args)
     {
         return CachedValue(() =>
         {
-            var commandLineArgs = Environment.GetCommandLineArgs() ?? [];
-
-            var fileName = commandLineArgs
-                                  .FirstOrDefault(s => !s.StartsWith("-")) ?? string.Empty;
+            var fileName = args.FirstOrDefault(s => !s.StartsWith("-")) ?? string.Empty;
 
             var isPresent = fileName.IsFilled();
 
