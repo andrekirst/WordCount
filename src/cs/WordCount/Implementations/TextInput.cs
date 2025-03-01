@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using WordCount.Abstractions.SystemAbstractions;
+﻿using System;
+using System.Threading.Tasks;
 using WordCount.Extensions;
 using WordCount.Interfaces;
 using WordCount.Interfaces.Output;
@@ -8,7 +8,6 @@ using WordCount.Models.Results;
 namespace WordCount.Implementations;
 
 public class TextInput(
-    IConsole console,
     ITextFileLoader textFileLoader,
     ITextUrlFileLoader textUrlFileLoader,
     IDisplayOutput displayOutput) : ITextInput
@@ -38,7 +37,7 @@ public class TextInput(
 
         displayOutput.WriteResource("ENTER_TEXT");
 
-        text = console.ReadLine();
+        text = Console.ReadLine();
         return new InputTextResult
         {
             HasEnteredConsoleText = text.IsFilled(),

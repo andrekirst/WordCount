@@ -1,4 +1,5 @@
-﻿using WordCount.Abstractions.SystemAbstractions;
+﻿using System;
+using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Extensions;
 using WordCount.Helpers;
 using WordCount.Interfaces;
@@ -10,8 +11,7 @@ namespace WordCount.Implementations.Language;
 
 public class LanguageDecision(
     IAppSettingsReader appSettingsReader,
-    ILanguageParameterParser languageParameterParser,
-    IConsole console) : ILanguageDecision
+    ILanguageParameterParser languageParameterParser) : ILanguageDecision
 {
     private const string DefaultFallbackLanguage = "en";
     private DecideLanguageResult _cache;
@@ -35,7 +35,7 @@ public class LanguageDecision(
         if (language.IsFilled() &&
             !LanguageToCultureMapping.Mappings.ContainsKey(language))
         {
-            console.WriteLine($"Language \"{language}\" not supported.");
+            Console.WriteLine($"Language \"{language}\" not supported.");
             language = DefaultFallbackLanguage;
         }
 
