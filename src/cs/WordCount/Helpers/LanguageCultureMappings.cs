@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 
-namespace WordCount.Helpers
+namespace WordCount.Helpers;
+
+public static class LanguageToCultureMapping
 {
-    public static class LanguageToCultureMapping
+    internal static readonly Dictionary<string, CultureInfo> Mappings = new()
     {
-        internal static readonly Dictionary<string, CultureInfo> Mappings = new()
-        {
-            { "en", CultureInfo.GetCultureInfo("en-US") },
-            { "de", CultureInfo.GetCultureInfo("de-DE") }
-        };
-    }
+        { Languages.English, CultureInfo.GetCultureInfo("en-US") },
+        { Languages.German, CultureInfo.GetCultureInfo("de-DE") }
+    };
 }

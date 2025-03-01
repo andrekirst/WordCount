@@ -1,30 +1,23 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using WordCount.Implementations;
 using WordCount.Interfaces;
 
-namespace WordCount
+namespace WordCount;
+
+public static class Program
 {
-    [ExcludeFromCodeCoverage]
-    public static class Program
+    public static async Task<int> Main()
     {
-        public static async Task<int> Main()
-        {
-            var interactor = CreateInteractor();
+        var builder = Host.CreateApplicationBuilder();
+        builder.Services.AddOptions<WordCountOptions>();
+        builder.Services.AddSingleton<IInteractor, Interactor>();
+        
+        var host = builder.Build();
 
-            return await interactor.Execute();
-        }
+        var interactor = host.Services.GetService<IInteractor>();
 
-        private static IInteractor CreateInteractor()
-        {
-            var services = new ServiceCollection();
-
-            services.AddSingleton<IInteractor, Interactor>();
-
-            var serviceProvider = services.BuildServiceProvider();
-
-            return serviceProvider.GetRequiredService<IInteractor>();
-        }
+        return await interactor.Execute();
     }
 }

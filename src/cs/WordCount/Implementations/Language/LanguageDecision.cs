@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Options;
 using WordCount.Extensions;
 using WordCount.Helpers;
 using WordCount.Interfaces;
@@ -10,10 +12,11 @@ using WordCount.Models.Results;
 namespace WordCount.Implementations.Language;
 
 public class LanguageDecision(
-    IAppSettingsReader appSettingsReader,
+    IOptions<WordCountOptions> options,
     IParameterParser<LanguageParameter> languageParameterParser) : ILanguageDecision
 {
-    private const string DefaultFallbackLanguage = "en";
+    private readonly WordCountOptions _options = options.Value;
+    private const string DefaultFallbackLanguage = Languages.English;
     private DecideLanguageResult _cache;
 
     public DecideLanguageResult DecideLanguage()
@@ -23,7 +26,7 @@ public class LanguageDecision(
             return _cache;
         }
 
-        var language = appSettingsReader.DefaultLanguage;
+        var language = _options.DefaultLanguage;
         var args = Environment.GetCommandLineArgs();
         var languageParameter = languageParameterParser.ParseParameter(args);
 
