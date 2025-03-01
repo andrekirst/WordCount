@@ -1,9 +1,5 @@
 ﻿using AutoFixture.Xunit2;
 using Moq;
-using WordCount.Implementations.Output;
-using WordCount.Interfaces.Language;
-using WordCount.Interfaces.Output;
-using WordCount.Models.Results;
 using Xunit;
 
 namespace WordCount.Tests;

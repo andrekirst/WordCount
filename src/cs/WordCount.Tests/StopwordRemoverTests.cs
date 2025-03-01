@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using AutoFixture.Xunit2;
 using FluentAssertions;
-using WordCount.Implementations;
-using WordCount.Interfaces;
 using Xunit;
 
 namespace WordCount.Tests;

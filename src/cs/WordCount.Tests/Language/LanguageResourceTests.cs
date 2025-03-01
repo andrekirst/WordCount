@@ -1,12 +1,4 @@
-﻿using AutoFixture.Xunit2;
-using FluentAssertions;
-using Moq;
-using WordCount.Implementations.Language;
-using WordCount.Interfaces.Language;
-using WordCount.Models.Results;
-using Xunit;
-
-namespace WordCount.Tests.Language;
+﻿namespace WordCount.Tests.Language;
 
 public class LanguageResourceTests
 {

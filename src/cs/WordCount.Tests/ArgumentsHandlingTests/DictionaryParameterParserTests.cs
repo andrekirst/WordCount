@@ -1,8 +1,4 @@
-﻿using Moq;
-using System;
-using AutoFixture.Xunit2;
-using FluentAssertions;
-using WordCount.Implementations.ArgumentsHandling;
+﻿using FluentAssertions;
 using Xunit;
 
 namespace WordCount.Tests.ArgumentsHandlingTests;

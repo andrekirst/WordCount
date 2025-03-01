@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WordCount.Implementations;
-using WordCount.Interfaces;
 
 namespace WordCount;
 

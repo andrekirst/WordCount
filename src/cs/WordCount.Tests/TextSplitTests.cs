@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using WordCount.Implementations;
-using WordCount.Models.Results;
 using Xunit;
 
 namespace WordCount.Tests;

@@ -12,25 +12,25 @@
     <CodeAnalysisRuleSet>WordCount.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="dict.txt">
+    <Content Include="data/dict.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="sample_chapters.txt">
+    <Content Include="sample-data/sample_chapters.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="sample2_bindestrich.txt">
+    <Content Include="sample-data/sample2_bindestrich.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="sample.txt">
+    <Content Include="sample-data/sample.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="stopwords.de.txt">
+    <Content Include="data/stopwords.de.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="stopwords2.txt">
+    <Content Include="data/stopwords2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="stopwords.en.txt">
+    <Content Include="data/stopwords.en.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
