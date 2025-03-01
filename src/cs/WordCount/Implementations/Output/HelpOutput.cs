@@ -1,4 +1,4 @@
-﻿using WordCount.Abstractions.SystemAbstractions.Reflection;
+﻿using System.Reflection;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
 
@@ -6,18 +6,18 @@ namespace WordCount.Implementations.Output;
 
 public class HelpOutput(
     IDisplayOutput displayOutput,
-    IHelpParameterParser helpParameterParser,
-    IAssembly assembly) : IHelpOutput
+    IHelpParameterParser helpParameterParser) : IHelpOutput
 {
     public bool ShowHelpIfRequested()
     {
+        var assemblyName = Assembly.GetEntryAssembly().GetName();
         var helpParameter = helpParameterParser.ParseHelpParameter();
 
         var isPresent = helpParameter.IsPresent;
 
         if (!isPresent) return helpParameter.IsPresent;
         
-        displayOutput.WriteLine($"{assembly.Name} - {assembly.Version}");
+        displayOutput.WriteLine($"{assemblyName.Name} - {assemblyName.Version}");
         displayOutput.WriteLine(string.Empty);
         displayOutput.WriteLine("-h | -help : Display this help");
         displayOutput.WriteLine("-index : Display the index of the analyzed Text");

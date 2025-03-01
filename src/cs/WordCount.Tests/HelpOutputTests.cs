@@ -1,7 +1,7 @@
-﻿using AutoFixture.Xunit2;
+﻿using System.Reflection;
+using AutoFixture.Xunit2;
 using FluentAssertions;
 using Moq;
-using WordCount.Abstractions.SystemAbstractions.Reflection;
 using WordCount.Implementations.Output;
 using WordCount.Interfaces.ArgumentsHandling;
 using WordCount.Interfaces.Output;
@@ -29,7 +29,6 @@ public class HelpOutputTests
     [Theory, AutoMoqData]
     public void HelpOutputTests_If_HelpParameter_Present_Expect_Outputs(
         [Frozen] Mock<IHelpParameterParser> helpParameterParser,
-        [Frozen] Mock<IAssembly> assembly,
         [Frozen] Mock<IDisplayOutput> displayOutput,
         HelpOutput sut)
     {
@@ -37,17 +36,11 @@ public class HelpOutputTests
             .Setup(m => m.ParseHelpParameter())
             .Returns(new HelpParameter {IsPresent = true});
 
-        assembly
-            .SetupGet(m => m.Name)
-            .Returns("WordCount");
-
-        assembly
-            .SetupGet(m => m.Version)
-            .Returns("1.2.3.4");
-
         sut.ShowHelpIfRequested();
 
-        displayOutput.Verify(v => v.WriteLine("WordCount - 1.2.3.4"), Times.Once);
+        var assemblyName = Assembly.GetEntryAssembly().GetName();
+
+        displayOutput.Verify(v => v.WriteLine($"{assemblyName.Name} - {assemblyName.Version}"), Times.Once);
         displayOutput.Verify(v => v.WriteLine(""), Times.Once);
         displayOutput.Verify(v => v.WriteLine("-h | -help : Display this help"), Times.Once);
         displayOutput.Verify(v => v.WriteLine("-index : Display the index of the analyzed Text"), Times.Once);
