@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using WordCount.Abstractions.SystemAbstractions.Resources;
+using System.Resources;
 using WordCount.Helpers;
 using WordCount.Interfaces.Language;
 
@@ -7,7 +7,7 @@ namespace WordCount.Implementations.Language;
 
 public class LanguageResource(
     ILanguageDecision languageDecision,
-    IResourceManager resourceManager) : ILanguageResource
+    ResourceManager resourceManager) : ILanguageResource
 {
     public string GetResourceStringById(string resourceIdent)
     {
