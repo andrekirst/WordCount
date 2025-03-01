@@ -1,9 +1,10 @@
-﻿using WordCount.Models.Results;
+﻿using System.Threading.Tasks;
+using WordCount.Models.Results;
 
 namespace WordCount.Interfaces
 {
     public interface ITextInput
     {
-        InputTextResult GetInputText();
+        Task<InputTextResult> GetInputText();
     }
 }

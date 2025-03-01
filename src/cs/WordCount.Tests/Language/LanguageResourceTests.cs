@@ -1,7 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using FluentAssertions;
 using Moq;
-using WordCount.Abstractions.SystemAbstractions.Globalization;
 using WordCount.Abstractions.SystemAbstractions.Resources;
 using WordCount.Implementations.Language;
 using WordCount.Interfaces.Language;

@@ -1,4 +1,5 @@
-﻿using WordCount.Abstractions.SystemAbstractions.Net.Http;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using WordCount.Interfaces;
 using WordCount.Interfaces.ArgumentsHandling;
 
@@ -6,14 +7,14 @@ namespace WordCount.Implementations;
 
 public class TextUrlFileLoader(
     ITextUrlParameterParser textUrlParameterParser,
-    IHttpClient httpClient) : ITextUrlFileLoader
+    HttpClient httpClient) : ITextUrlFileLoader
 {
-    public string ReadTextFile()
+    public async Task<string> ReadTextFile()
     {
         var textUrlParameter = textUrlParameterParser.ParseTextUrlParameter();
 
         return textUrlParameter.IsPresent
-            ? httpClient.ReadString(textUrlParameter.Url).Result
+            ? await httpClient.GetStringAsync(textUrlParameter.Url)
             : null;
     }
 }

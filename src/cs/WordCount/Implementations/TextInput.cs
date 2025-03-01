@@ -1,4 +1,5 @@
-﻿using WordCount.Abstractions.SystemAbstractions;
+﻿using System.Threading.Tasks;
+using WordCount.Abstractions.SystemAbstractions;
 using WordCount.Extensions;
 using WordCount.Interfaces;
 using WordCount.Interfaces.Output;
@@ -12,7 +13,7 @@ public class TextInput(
     ITextUrlFileLoader textUrlFileLoader,
     IDisplayOutput displayOutput) : ITextInput
 {
-    public InputTextResult GetInputText()
+    public async Task<InputTextResult> GetInputText()
     {
         var text = textFileLoader.ReadTextFile();
         if (text.IsFilled())
@@ -24,7 +25,7 @@ public class TextInput(
             };
         }
 
-        text = textUrlFileLoader.ReadTextFile();
+        text = await textUrlFileLoader.ReadTextFile();
 
         if (text.IsFilled())
         {

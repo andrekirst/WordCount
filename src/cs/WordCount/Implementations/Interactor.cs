@@ -2,6 +2,7 @@
 using WordCount.Extensions;
 using WordCount.Interfaces.Output;
 using WordCount.Models.Requests;
+using System.Threading.Tasks;
 
 namespace WordCount.Implementations;
 
@@ -12,7 +13,7 @@ public class Interactor(
     IIndexOutput indexOutput,
     IHelpOutput helpOutput) : IInteractor
 {
-    public int Execute()
+    public async Task<int> Execute()
     {
         var hasRequestedHelp = helpOutput.ShowHelpIfRequested();
 
@@ -21,7 +22,7 @@ public class Interactor(
             return 1;
         }
 
-        var inputTextResult = textInput.GetInputText();
+        var inputTextResult = await textInput.GetInputText();
 
         if (inputTextResult.Text.IsNullOrEmpty())
         {
@@ -40,7 +41,7 @@ public class Interactor(
 
             indexOutput.OutputIndex(indexOutputRequest);
 
-            inputTextResult = textInput.GetInputText();
+            inputTextResult = await textInput.GetInputText();
         } while (inputTextResult.HasEnteredConsoleText);
 
         return 0;

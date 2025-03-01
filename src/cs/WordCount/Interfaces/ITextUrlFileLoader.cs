@@ -1,7 +1,9 @@
-﻿namespace WordCount.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace WordCount.Interfaces
 {
     public interface ITextUrlFileLoader
     {
-        string ReadTextFile();
+        Task<string> ReadTextFile();
     }
 }

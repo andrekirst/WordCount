@@ -1,4 +1,5 @@
-﻿using AutoFixture.Xunit2;
+﻿using System.Threading.Tasks;
+using AutoFixture.Xunit2;
 using FluentAssertions;
 using Moq;
 using WordCount.Abstractions.SystemAbstractions;
@@ -12,7 +13,7 @@ namespace WordCount.Tests;
 public class TextInputTests
 {
     [Theory, AutoMoqData]
-    public void TextInputTests_TextFileLoader_returns_bla_Expect_HasEnteredText_false_and_Text_bla(
+    public async Task TextInputTests_TextFileLoader_returns_bla_Expect_HasEnteredText_false_and_Text_bla(
         [Frozen] Mock<ITextFileLoader> textFileLoader,
         TextInput sut)
     {
@@ -20,7 +21,7 @@ public class TextInputTests
             .Setup(m => m.ReadTextFile())
             .Returns("bla");
 
-        var actual = sut.GetInputText();
+        var actual = await sut.GetInputText();
 
         actual.Should().NotBeNull();
         actual.Text.Should().Be("bla");
@@ -28,7 +29,7 @@ public class TextInputTests
     }
 
     [Theory, AutoMoqData]
-    public void TextInputTests_TextUrlFileLoader_returns_bla_Expect_HasEnteredText_false_and_Text_bla(
+    public async Task TextInputTests_TextUrlFileLoader_returns_bla_Expect_HasEnteredText_false_and_Text_bla(
         [Frozen] Mock<ITextFileLoader> textFileLoader,
         TextInput sut)
     {
@@ -36,7 +37,7 @@ public class TextInputTests
             .Setup(m => m.ReadTextFile())
             .Returns("bla");
 
-        var actual = sut.GetInputText();
+        var actual = await sut.GetInputText();
 
         actual.Should().NotBeNull();
         actual.Text.Should().Be("bla");
@@ -44,7 +45,7 @@ public class TextInputTests
     }
 
     [Theory, AutoMoqData]
-    public void TextInputTests_ConsoleInput_bla_Expect_EnterText_and_content_bla_and_HasEnteredConsoleText_true(
+    public async Task TextInputTests_ConsoleInput_bla_Expect_EnterText_and_content_bla_and_HasEnteredConsoleText_true(
         [Frozen] Mock<IConsole> console,
         [Frozen] Mock<IDisplayOutput> displayOutput,
         TextInput sut)
@@ -53,7 +54,7 @@ public class TextInputTests
             .Setup(m => m.ReadLine())
             .Returns("bla");
 
-        var actual = sut.GetInputText();
+        var actual = await sut.GetInputText();
 
         actual.Should().NotBeNull();
         actual.Text.Should().Be("bla");
@@ -63,7 +64,7 @@ public class TextInputTests
     }
 
     [Theory, AutoMoqData]
-    public void TextInputTests_ConsoleInput_empty_Expect_EnterText_and_content_empty_and_HasEnteredConsoleText_false(
+    public async Task TextInputTests_ConsoleInput_empty_Expect_EnterText_and_content_empty_and_HasEnteredConsoleText_false(
         [Frozen] Mock<IConsole> console,
         [Frozen] Mock<IDisplayOutput> displayOutput,
         TextInput sut)
@@ -72,7 +73,7 @@ public class TextInputTests
             .Setup(m => m.ReadLine())
             .Returns(string.Empty);
 
-        var actual = sut.GetInputText();
+        var actual = await sut.GetInputText();
 
         actual.Should().NotBeNull();
         actual.Text.Should().BeEmpty();
