@@ -1,26 +1,24 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
-using WordCount.Models.Parameters;
+using Microsoft.Extensions.Options;
 
 namespace WordCount;
 
 public interface ITextUrlFileLoader
 {
-    Task<string> ReadTextFile();
+    Task<string?> ReadTextFile();
 }
 
 public class TextUrlFileLoader(
-    IParameterParser<TextUrlParameter> textUrlParameterParser,
+    IOptions<WordCountCommand.Settings> settings,
     HttpClient httpClient) : ITextUrlFileLoader
 {
-    public async Task<string> ReadTextFile()
-    {
-        var args = Environment.GetCommandLineArgs();
-        var textUrlParameter = textUrlParameterParser.ParseParameter(args);
+    private readonly WordCountCommand.Settings _settings = settings.Value;
 
-        return textUrlParameter.IsPresent
-            ? await httpClient.GetStringAsync(textUrlParameter.Url)
+    public async Task<string?> ReadTextFile()
+    {
+        return _settings.TextUrl != null
+            ? await httpClient.GetStringAsync(_settings.TextUrl)
             : null;
     }
 }

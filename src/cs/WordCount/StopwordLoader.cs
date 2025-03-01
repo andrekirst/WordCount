@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
-using WordCount.Models.Parameters;
+using Microsoft.Extensions.Options;
 
 namespace WordCount;
 
@@ -13,21 +12,19 @@ public interface IStopwordLoader
 
 public class StopwordLoader(
     IFileSystem fileSystem,
-    IParameterParser<StopwordListParameter> stopwordListParameterParser,
     IDisplayOutput displayOutput,
-    IParameterParser<LanguageParameter> languageParameterParser) : IStopwordLoader
+    IOptions<WordCountCommand.Settings> settings) : IStopwordLoader
 {
+    private readonly WordCountCommand.Settings _settings = settings.Value;
+
     public List<string> GetStopwords()
     {
-        var args = Environment.GetCommandLineArgs();
-        var stopwordListParameter = stopwordListParameterParser.ParseParameter(args);
-        var languageParameter = languageParameterParser.ParseParameter(args);
+        var stopwordList = _settings.StopwordList;
+        var isStopwordListParameterPresent = !string.IsNullOrEmpty(stopwordList);
 
-        var isStopwordListParameterPresent = stopwordListParameter.IsPresent;
-
-        var fileName = isStopwordListParameterPresent ?
-            stopwordListParameter.FileName :
-            $"stopwords.{languageParameter.Language}.txt";
+        var fileName = !string.IsNullOrEmpty(stopwordList) ?
+            stopwordList :
+            $"stopwords.{_settings.Language}.txt";
 
         if (!fileSystem.File.Exists(fileName))
         {

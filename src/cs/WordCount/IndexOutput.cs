@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
 using WordCount.Helpers;
-using WordCount.Models.Parameters;
 
 namespace WordCount;
 
@@ -14,16 +14,16 @@ public interface IIndexOutput
 public class IndexOutput(
     IDisplayOutput displayOutput,
     IDictionaryFileLoader dictionaryFileLoader,
-    IParameterParser<IndexParameter> indexParameterParser,
-    IParameterParser<DictionaryParameter> dictionaryParameterParser) : IIndexOutput
+    IOptions<WordCountCommand.Settings> settings) : IIndexOutput
 {
+    private readonly WordCountCommand.Settings _settings = settings.Value;
+
     public void OutputIndex(IndexOutputRequest indexOutputRequest)
     {
-        var args = Environment.GetCommandLineArgs();
-        var indexParameter = indexParameterParser.ParseParameter(args);
-        var dictionaryParameter = dictionaryParameterParser.ParseParameter(args);
-
-        if (!indexParameter.IsPresent) return;
+        if(!_settings.Index)
+        {
+            return;
+        }
         
         var dictionaryWords = dictionaryFileLoader.ReadWords();
 
@@ -31,7 +31,7 @@ public class IndexOutput(
             indexOutputRequest.DistinctWords,
             dictionaryWords);
 
-        if (dictionaryParameter.IsPresent)
+        if (!string.IsNullOrEmpty(_settings.Dictionary))
         {
             displayOutput.WriteResourceLine("INDEX_WITH_UNKNOWN", unknwonWordsCount);
         }
@@ -64,5 +64,5 @@ public class IndexOutput(
 
 public class IndexOutputRequest
 {
-    public List<string> DistinctWords { get; set; }
+    public List<string> DistinctWords { get; set; } = [];
 }

@@ -6,7 +6,7 @@ namespace WordCount.Extensions
 {
     public static class EnumerableStringExtensions
     {
-        public static string FirstOfMatchingRegex(
+        public static string? FirstOfMatchingRegex(
             this IEnumerable<string> enumerable,
             [StringSyntax(StringSyntaxAttribute.Regex)]string pattern) =>
             enumerable?

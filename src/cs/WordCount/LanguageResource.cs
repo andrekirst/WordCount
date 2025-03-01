@@ -21,7 +21,7 @@ public class LanguageResource(
 
         var mappedLanguageCulture = LanguageToCultureMapping.Mappings[decidedLanguage.Language];
 
-        return resourceManager.GetString(resourceIdent, mappedLanguageCulture);
+        return resourceManager.GetString(resourceIdent, mappedLanguageCulture) ?? string.Empty;
     }
 
     public int DetectLongestResourceString(string[] resourceIdents) => resourceIdents.Max(s => GetResourceStringById(s).Length);

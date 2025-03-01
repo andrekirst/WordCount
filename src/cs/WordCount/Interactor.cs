@@ -1,5 +1,6 @@
 ﻿using WordCount.Extensions;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace WordCount;
 
@@ -12,18 +13,10 @@ public class Interactor(
     ITextInput textInput,
     IWordCountAnalyzer wordCountAnalyzer,
     IWordCountAnalyzerOutput wordCountAnalyzerOutput,
-    IIndexOutput indexOutput,
-    IHelpOutput helpOutput) : IInteractor
+    IIndexOutput indexOutput) : IInteractor
 {
     public async Task<int> Execute()
     {
-        var hasRequestedHelp = helpOutput.ShowHelpIfRequested();
-
-        if (hasRequestedHelp)
-        {
-            return 1;
-        }
-
         var inputTextResult = await textInput.GetInputText();
 
         if (inputTextResult.Text.IsNullOrEmpty())

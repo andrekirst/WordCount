@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO.Abstractions;
-using WordCount.Models.Parameters;
+using Microsoft.Extensions.Options;
 
 namespace WordCount;
 
@@ -12,19 +12,18 @@ public interface ITextFileLoader
 public class TextFileLoader(
     IFileSystem fileSystem,
     IDisplayOutput displayOutput,
-    IParameterParser<SourceFileParameter> sourceFileParameterParser) : ITextFileLoader
+    IOptions<WordCountCommand.Settings> settings) : ITextFileLoader
 {
+    private readonly WordCountCommand.Settings _settings = settings.Value;
+
     public string ReadTextFile()
     {
-        var args = Environment.GetCommandLineArgs();
-        var sourceFileParameter = sourceFileParameterParser.ParseParameter(args);
+        var fileName = _settings.SourceFile;
 
-        if (!sourceFileParameter.IsPresent)
+        if (fileName is null)
         {
             return string.Empty;
         }
-
-        var fileName = sourceFileParameter.FileName;
 
         if (fileSystem.File.Exists(fileName))
         {
@@ -35,6 +34,7 @@ public class TextFileLoader(
         }
 
         displayOutput.WriteErrorResourceLine("FILE_NOT_FOUND", fileName);
+        
         return string.Empty;
     }
 }

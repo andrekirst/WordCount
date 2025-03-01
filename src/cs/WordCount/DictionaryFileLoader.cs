@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO.Abstractions;
+using Microsoft.Extensions.Options;
 using WordCount.Extensions;
-using WordCount.Models.Parameters;
 
 namespace WordCount;
 
@@ -14,16 +13,15 @@ public interface IDictionaryFileLoader
 public class DictionaryFileLoader(
     IFileSystem fileSystem,
     IDisplayOutput displayOutput,
-    IParameterParser<DictionaryParameter> dictionaryParameterParser) : IDictionaryFileLoader
+    IOptions<WordCountCommand.Settings> settings) : IDictionaryFileLoader
 {
+    private readonly WordCountCommand.Settings _settings = settings.Value;
+
     public List<string> ReadWords()
     {
-        var args = Environment.GetCommandLineArgs();
-        var dictionaryParameter = dictionaryParameterParser.ParseParameter(args);
+        var path = _settings.Dictionary;
 
-        var path = dictionaryParameter.FileName;
-
-        switch (dictionaryParameter.IsPresent)
+        switch (!string.IsNullOrEmpty(path))
         {
             case true when
                 !fileSystem.File.Exists(path):

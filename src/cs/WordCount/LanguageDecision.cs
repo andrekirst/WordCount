@@ -3,7 +3,6 @@ using System.Globalization;
 using Microsoft.Extensions.Options;
 using WordCount.Extensions;
 using WordCount.Helpers;
-using WordCount.Models.Parameters;
 
 namespace WordCount;
 
@@ -14,11 +13,12 @@ public interface ILanguageDecision
 
 public class LanguageDecision(
     IOptions<WordCountOptions> options,
-    IParameterParser<LanguageParameter> languageParameterParser) : ILanguageDecision
+    IOptions<WordCountCommand.Settings> settings) : ILanguageDecision
 {
+    private readonly WordCountCommand.Settings _settings = settings.Value;
     private readonly WordCountOptions _options = options.Value;
     private const string DefaultFallbackLanguage = Languages.English;
-    private DecideLanguageResult _cache;
+    private DecideLanguageResult? _cache;
 
     public DecideLanguageResult DecideLanguage()
     {
@@ -27,14 +27,7 @@ public class LanguageDecision(
             return _cache;
         }
 
-        var language = _options.DefaultLanguage;
-        var args = Environment.GetCommandLineArgs();
-        var languageParameter = languageParameterParser.ParseParameter(args);
-
-        if (languageParameter.IsPresent)
-        {
-            language = languageParameter.Language;
-        }
+        var language = string.IsNullOrEmpty(_settings.Language) ? _options.DefaultLanguage : _settings.Language;
 
         if (language.IsFilled() &&
             !LanguageToCultureMapping.Mappings.ContainsKey(language))
@@ -54,7 +47,7 @@ public class LanguageDecision(
 
 public class DecideLanguageResult
 {
-    public string Language { get; set; }
+    public string Language { get; set; } = default!;
 
-    public CultureInfo Culture { get; set; }
+    public CultureInfo Culture { get; set; } = default!;
 }

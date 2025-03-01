@@ -33,7 +33,7 @@ public class TextInput(
             return new InputTextResult
             {
                 HasEnteredConsoleText = false,
-                Text = text
+                Text = text!
             };
         }
 
@@ -43,7 +43,7 @@ public class TextInput(
         return new InputTextResult
         {
             HasEnteredConsoleText = text.IsFilled(),
-            Text = text
+            Text = text!
         };
     }
 }
