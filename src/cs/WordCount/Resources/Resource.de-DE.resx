@@ -150,4 +150,70 @@
   <data name="USED_STOPWORDLIST" xml:space="preserve">
     <value>Benutzte Stopwortliste: {0}</value>
   </data>
+  <data name="MULTI_FILE_DASHBOARD" xml:space="preserve">
+    <value>Mehrfachdatei-Analyse Dashboard</value>
+  </data>
+  <data name="FOLDER_ANALYZED" xml:space="preserve">
+    <value>Analysierter Ordner: {0}</value>
+  </data>
+  <data name="TOTAL_FILES_ANALYZED" xml:space="preserve">
+    <value>Analysierte Dateien insgesamt: {0}</value>
+  </data>
+  <data name="AGGREGATE_STATISTICS" xml:space="preserve">
+    <value>Gesamtstatistiken:</value>
+  </data>
+  <data name="TOTAL_WORDS" xml:space="preserve">
+    <value>Gesamtanzahl Wörter</value>
+  </data>
+  <data name="TOTAL_UNIQUE_WORDS" xml:space="preserve">
+    <value>Eindeutige Wörter gesamt</value>
+  </data>
+  <data name="OVERALL_AVERAGE_WORD_LENGTH" xml:space="preserve">
+    <value>Durchschnittliche Wortlänge gesamt</value>
+  </data>
+  <data name="TOTAL_CHAPTERS" xml:space="preserve">
+    <value>Kapitel gesamt</value>
+  </data>
+  <data name="TOTAL_FILE_SIZE" xml:space="preserve">
+    <value>Dateigröße gesamt</value>
+  </data>
+  <data name="INDIVIDUAL_FILE_RESULTS" xml:space="preserve">
+    <value>Einzelne Dateiergebnisse:</value>
+  </data>
+  <data name="FILE_NAME" xml:space="preserve">
+    <value>Datei: {0}</value>
+  </data>
+  <data name="FILE_SIZE" xml:space="preserve">
+    <value>Dateigröße</value>
+  </data>
+  <data name="FOLDER_NOT_FOUND" xml:space="preserve">
+    <value>Ordner "{0}" nicht gefunden.</value>
+  </data>
+  <data name="NO_FILES_FOUND" xml:space="preserve">
+    <value>Keine Dateien mit Muster "{0}" im Ordner "{1}" gefunden.</value>
+  </data>
+  <data name="FILE_READ_ERROR" xml:space="preserve">
+    <value>Fehler beim Lesen der Datei "{0}": {1}</value>
+  </data>
+  <data name="GOAL_PROGRESS" xml:space="preserve">
+    <value>Zielfortschritt</value>
+  </data>
+  <data name="GOAL_NOT_SET" xml:space="preserve">
+    <value>Kein aktives Ziel gesetzt. Verwende --goal-daily=N, --goal-weekly=N, oder --goal-project=N um ein Ziel zu erstellen.</value>
+  </data>
+  <data name="GOAL_COMPLETED" xml:space="preserve">
+    <value>  ZIEL ERREICHT! Herzlichen Glückwunsch!</value>
+  </data>
+  <data name="GOAL_SUMMARY" xml:space="preserve">
+    <value>Ziel-Übersicht</value>
+  </data>
+  <data name="STREAK_INFO" xml:space="preserve">
+    <value>Serie-Informationen</value>
+  </data>
+  <data name="NEW_MILESTONES" xml:space="preserve">
+    <value>Neue Meilensteine erreicht!</value>
+  </data>
+  <data name="PROGRESS_CHART" xml:space="preserve">
+    <value>Fortschrittsdiagramm</value>
+  </data>
 </root>

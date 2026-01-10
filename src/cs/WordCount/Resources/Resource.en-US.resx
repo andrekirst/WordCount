@@ -150,4 +150,70 @@
   <data name="USED_STOPWORDLIST" xml:space="preserve">
     <value>Used Stopwordlist: {0}</value>
   </data>
+  <data name="MULTI_FILE_DASHBOARD" xml:space="preserve">
+    <value>Multi-File Analysis Dashboard</value>
+  </data>
+  <data name="FOLDER_ANALYZED" xml:space="preserve">
+    <value>Folder analyzed: {0}</value>
+  </data>
+  <data name="TOTAL_FILES_ANALYZED" xml:space="preserve">
+    <value>Total files analyzed: {0}</value>
+  </data>
+  <data name="AGGREGATE_STATISTICS" xml:space="preserve">
+    <value>Aggregate Statistics:</value>
+  </data>
+  <data name="TOTAL_WORDS" xml:space="preserve">
+    <value>Total words</value>
+  </data>
+  <data name="TOTAL_UNIQUE_WORDS" xml:space="preserve">
+    <value>Total unique words</value>
+  </data>
+  <data name="OVERALL_AVERAGE_WORD_LENGTH" xml:space="preserve">
+    <value>Overall average word length</value>
+  </data>
+  <data name="TOTAL_CHAPTERS" xml:space="preserve">
+    <value>Total chapters</value>
+  </data>
+  <data name="TOTAL_FILE_SIZE" xml:space="preserve">
+    <value>Total file size</value>
+  </data>
+  <data name="INDIVIDUAL_FILE_RESULTS" xml:space="preserve">
+    <value>Individual File Results:</value>
+  </data>
+  <data name="FILE_NAME" xml:space="preserve">
+    <value>File: {0}</value>
+  </data>
+  <data name="FILE_SIZE" xml:space="preserve">
+    <value>File size</value>
+  </data>
+  <data name="FOLDER_NOT_FOUND" xml:space="preserve">
+    <value>Folder "{0}" not found.</value>
+  </data>
+  <data name="NO_FILES_FOUND" xml:space="preserve">
+    <value>No files matching pattern "{0}" found in folder "{1}".</value>
+  </data>
+  <data name="FILE_READ_ERROR" xml:space="preserve">
+    <value>Error reading file "{0}": {1}</value>
+  </data>
+  <data name="GOAL_PROGRESS" xml:space="preserve">
+    <value>Goal Progress</value>
+  </data>
+  <data name="GOAL_NOT_SET" xml:space="preserve">
+    <value>No active goal set. Use --goal-daily=N, --goal-weekly=N, or --goal-project=N to create a goal.</value>
+  </data>
+  <data name="GOAL_COMPLETED" xml:space="preserve">
+    <value>  GOAL COMPLETED! Congratulations!</value>
+  </data>
+  <data name="GOAL_SUMMARY" xml:space="preserve">
+    <value>Goal Summary</value>
+  </data>
+  <data name="STREAK_INFO" xml:space="preserve">
+    <value>Streak Information</value>
+  </data>
+  <data name="NEW_MILESTONES" xml:space="preserve">
+    <value>New Milestones Achieved!</value>
+  </data>
+  <data name="PROGRESS_CHART" xml:space="preserve">
+    <value>Progress Chart</value>
+  </data>
 </root>

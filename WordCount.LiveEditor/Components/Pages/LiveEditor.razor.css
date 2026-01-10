@@ -1,0 +1,213 @@
+/* CSS Custom Properties for theming */
+:root {
+    --editor-primary-color: #4361ee;
+    --editor-primary-dark: #3a56d4;
+    --editor-heading-color: #1a1a2e;
+    --editor-text-color: #555;
+    --editor-text-muted: #666;
+    --editor-text-light: #888;
+    --editor-placeholder-color: #999;
+    --editor-background: #ffffff;
+    --editor-background-light: #f8f9fa;
+    --editor-border-color: #e0e0e0;
+    --editor-border-light: #f0f0f0;
+    --editor-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --editor-focus-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+    --editor-border-radius: 8px;
+    --editor-transition-speed: 0.2s;
+}
+
+.editor-container {
+    display: flex;
+    gap: 2rem;
+    height: calc(100vh - 120px);
+    padding: 1rem;
+}
+
+.editor-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.editor-main h1 {
+    margin: 0 0 0.5rem 0;
+    color: var(--editor-heading-color);
+    font-size: 1.8rem;
+}
+
+.editor-description {
+    color: var(--editor-text-muted);
+    margin: 0 0 1rem 0;
+    font-size: 0.95rem;
+}
+
+.editor-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-textarea {
+    flex: 1;
+    width: 100%;
+    padding: 1rem;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    border: 2px solid var(--editor-border-color);
+    border-radius: var(--editor-border-radius);
+    resize: none;
+    outline: none;
+    transition: border-color var(--editor-transition-speed) ease, box-shadow var(--editor-transition-speed) ease;
+}
+
+.editor-textarea:focus {
+    border-color: var(--editor-primary-color);
+    box-shadow: var(--editor-focus-shadow);
+}
+
+.editor-textarea::placeholder {
+    color: var(--editor-placeholder-color);
+}
+
+.editor-status-bar {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--editor-background-light);
+    border-radius: 0 0 var(--editor-border-radius) var(--editor-border-radius);
+    margin-top: -8px;
+    border: 2px solid var(--editor-border-color);
+    border-top: none;
+}
+
+.status-item {
+    font-size: 0.9rem;
+    color: var(--editor-text-color);
+}
+
+.status-item strong {
+    color: var(--editor-primary-color);
+    font-weight: 600;
+}
+
+.editor-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+}
+
+.editor-sidebar h2 {
+    margin: 0 0 0.5rem 0;
+    color: var(--editor-heading-color);
+    font-size: 1.3rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--editor-primary-color);
+}
+
+.stats-card {
+    background: var(--editor-background);
+    border: 1px solid var(--editor-border-color);
+    border-radius: var(--editor-border-radius);
+    padding: 1rem;
+    box-shadow: var(--editor-shadow);
+}
+
+.stats-card h3 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--editor-text-light);
+    font-weight: 600;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--editor-border-light);
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    color: var(--editor-text-color);
+    font-size: 0.9rem;
+}
+
+.stat-value {
+    font-weight: 600;
+    color: var(--editor-primary-color);
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.reading-time {
+    background: linear-gradient(135deg, var(--editor-primary-color) 0%, var(--editor-primary-dark) 100%);
+    color: white;
+}
+
+.reading-time h3 {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.reading-time-display {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.time-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.time-label {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.reading-note {
+    margin: 0;
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+/* Responsive design */
+@media (max-width: 900px) {
+    .editor-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .editor-sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .stats-card {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .editor-main {
+        min-height: 400px;
+    }
+
+    .editor-status-bar {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}

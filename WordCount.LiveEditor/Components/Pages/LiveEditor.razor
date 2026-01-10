@@ -1,0 +1,166 @@
+@page "/editor"
+@page "/"
+@rendermode InteractiveServer
+@using WordCount.LiveEditor.Services
+@inject ITextStatisticsService StatisticsService
+
+<PageTitle>Live Text Editor</PageTitle>
+
+<div class="editor-container">
+    <div class="editor-main">
+        <h1>Live Text Editor</h1>
+        <p class="editor-description">Start typing below to see real-time word count and text statistics.</p>
+
+        <div class="editor-wrapper">
+            <textarea
+                value="@EditorText"
+                @oninput="OnTextChanged"
+                placeholder="Start typing here... Your statistics will update in real-time as you type."
+                class="editor-textarea"
+                data-testid="editor-textarea"
+                rows="20">
+            </textarea>
+        </div>
+
+        <div class="editor-status-bar">
+            <span class="status-item">
+                <strong>@Statistics.WordCount</strong> words
+            </span>
+            <span class="status-item">
+                <strong>@Statistics.CharacterCount</strong> characters
+            </span>
+            <span class="status-item">
+                <strong>@Statistics.SentenceCount</strong> sentences
+            </span>
+            <span class="status-item">
+                <strong>@Statistics.ParagraphCount</strong> paragraphs
+            </span>
+        </div>
+    </div>
+
+    <aside class="editor-sidebar">
+        <h2>Statistics</h2>
+
+        <div class="stats-card">
+            <h3>Basic Counts</h3>
+            <div class="stat-row">
+                <span class="stat-label">Words</span>
+                <span class="stat-value" data-testid="word-count">@Statistics.WordCount</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Characters (with spaces)</span>
+                <span class="stat-value" data-testid="char-count">@Statistics.CharacterCount</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Characters (no spaces)</span>
+                <span class="stat-value" data-testid="char-count-no-spaces">@Statistics.CharacterCountNoSpaces</span>
+            </div>
+        </div>
+
+        <div class="stats-card">
+            <h3>Structure</h3>
+            <div class="stat-row">
+                <span class="stat-label">Sentences</span>
+                <span class="stat-value">@Statistics.SentenceCount</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Paragraphs</span>
+                <span class="stat-value">@Statistics.ParagraphCount</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Lines</span>
+                <span class="stat-value">@Statistics.LineCount</span>
+            </div>
+        </div>
+
+        <div class="stats-card">
+            <h3>Advanced</h3>
+            <div class="stat-row">
+                <span class="stat-label">Unique Words</span>
+                <span class="stat-value">@Statistics.UniqueWordCount</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Avg. Word Length</span>
+                <span class="stat-value">@Statistics.AverageWordLength.ToString("F2")</span>
+            </div>
+        </div>
+
+        <div class="stats-card language-detection">
+            <h3>Language Detection</h3>
+            <div class="stat-row">
+                <span class="stat-label">Detected Language</span>
+                <span class="stat-value" data-testid="detected-language">@Statistics.LanguageDisplayName</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Word Counting Mode</span>
+                <span class="stat-value" data-testid="counting-mode">@(Statistics.IsCharacterBased ? "Character-based" : "Space-based")</span>
+            </div>
+            @if (Statistics.IsCharacterBased)
+            {
+                <p class="language-note">Using character-based counting for CJK text (each character = 1 word)</p>
+            }
+        </div>
+
+        <div class="stats-card reading-time">
+            <h3>Reading Time</h3>
+            <div class="reading-time-display">
+                <span class="time-value">@ReadingTimeMinutes</span>
+                <span class="time-label">min read</span>
+            </div>
+            <p class="reading-note">Based on average reading speed of 200 words/minute</p>
+        </div>
+    </aside>
+</div>
+
+@code {
+    /// <summary>
+    /// The current text content in the editor textarea.
+    /// Updated on every input event for real-time statistics.
+    /// </summary>
+    private string EditorText { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Current text statistics computed from EditorText.
+    /// Includes word count, character count, sentence count, etc.
+    /// </summary>
+    private TextStatistics Statistics { get; set; } = new();
+
+    /// <summary>
+    /// Estimated reading time in minutes.
+    /// Based on average reading speed of 200 words per minute.
+    /// Returns minimum of 1 minute even for very short texts.
+    /// </summary>
+    private int ReadingTimeMinutes => Math.Max(1, (int)Math.Ceiling(Statistics.WordCount / 200.0));
+
+    /// <summary>
+    /// Event handler for textarea input events.
+    /// Called on every keystroke to provide real-time statistics updates.
+    /// </summary>
+    /// <param name="e">The change event arguments containing the new text value.</param>
+    private void OnTextChanged(ChangeEventArgs e)
+    {
+        // Extract the text value from the event, defaulting to empty string if null
+        EditorText = e.Value?.ToString() ?? string.Empty;
+
+        // Recalculate all statistics with the new text
+        UpdateStatistics();
+    }
+
+    /// <summary>
+    /// Updates the Statistics property by analyzing the current EditorText.
+    /// Called both on input changes and during component initialization.
+    /// </summary>
+    private void UpdateStatistics()
+    {
+        Statistics = StatisticsService.Analyze(EditorText);
+    }
+
+    /// <summary>
+    /// Component lifecycle method called when the component is first initialized.
+    /// Ensures statistics are calculated even for empty initial text.
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        UpdateStatistics();
+    }
+}
